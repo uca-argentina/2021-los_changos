@@ -6,6 +6,6 @@ Class {
 
 { #category : #tests }
 DummyTest >> testDummy [
-
-	self assert: Chona new isDummy
+ "comentario del poron"
+	self assert: Dummy new isDummy
 ]
