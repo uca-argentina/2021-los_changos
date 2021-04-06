@@ -7,5 +7,5 @@ Class {
 { #category : #tests }
 DummyTest >> testDummy [
  "comentario del poron"
-	self assert: Dummy new isDummy
+	self assert: Chona new isDummy
 ]
