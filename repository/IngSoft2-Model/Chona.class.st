@@ -1,11 +1,11 @@
 Class {
-	#name : #Dummy,
+	#name : #Chona,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #testing }
-Dummy >> isDummy [
+Chona >> isDummy [
 
 	^ true
 ]
