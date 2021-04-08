@@ -5,10 +5,10 @@ Class {
 }
 
 { #category : #tests }
-DiceTest >> test01ADiceWithNumberOfFacesIsBeingThrown [
+DiceTest >> test01ADiceWithNumberOfFacesThrowARandomNumberBetweenOneAndAnotherNumber [
 	
-	| aDice maxNumber |
-	maxNumber:= 10.
-	aDice:= Dice withNumberOfFaces: maxNumber .
-	self assert: (aDice throw between:1  and: maxNumber ). 
+	| aDice aNumber |
+	aNumber:= 10.
+	aDice:= Dice withNumberOfFaces: aNumber .
+	self assert: (aDice throw between: 1  and: aNumber ). 
 ]
