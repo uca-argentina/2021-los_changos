@@ -12,3 +12,37 @@ DiceTest >> test01ADiceWithNumberOfFacesThrowARandomNumberBetweenOneAndAnotherNu
 	aDice:= Dice withNumberOfFaces: aNumber .
 	self assert: (aDice throw between: 1  and: aNumber ). 
 ]
+
+{ #category : #tests }
+DiceTest >> test02ADeterministicDiceIsThrownOnceAndReturnsTheFirstValueOfAnArray [
+	
+	| aDeterministicDice |
+	
+	aDeterministicDice:= DeterministicDice withNumbers: #(1 2 3 4 5 6).
+	self assert: (aDeterministicDice throw = 1 ).
+]
+
+{ #category : #tests }
+DiceTest >> test03ADeterministicDiceIsThrownTwiceAndReturnsTheFirstTwoValues [
+	
+	| aDeterministicDice |
+	
+	aDeterministicDice:= DeterministicDice withNumbers: #(1 2 3 4 5 6).
+	self assert: (aDeterministicDice throw = 1 ).
+	self assert: (aDeterministicDice throw = 2 ).
+]
+
+{ #category : #tests }
+DiceTest >> test04ADeterministicDiceIsThrownMoreTimesThanArraySize [
+	
+	| aDeterministicDice |
+	
+	aDeterministicDice:= DeterministicDice withNumbers: #(1 2 3 4 5 6).
+	self assert: (aDeterministicDice throw = 1 ).
+	self assert: (aDeterministicDice throw = 2 ).
+	self assert: (aDeterministicDice throw = 3 ).
+	self assert: (aDeterministicDice throw = 4 ).
+	self assert: (aDeterministicDice throw = 5 ).
+	self assert: (aDeterministicDice throw = 6 ).
+	self assert: (aDeterministicDice throw = 1 ).
+]
