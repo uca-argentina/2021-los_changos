@@ -32,7 +32,7 @@ DiceTest >> test03ADeterministicDiceIsThrownTwiceAndReturnsTheFirstTwoValues [
 	self assert: (aDeterministicDice throw = 2 ).
 ]
 
-{ #category : #tests }
+{ #category : #'as yet unclassified' }
 DiceTest >> test04ADeterministicDiceIsThrownMoreTimesThanArraySize [
 	
 	| aDeterministicDice |
@@ -45,4 +45,26 @@ DiceTest >> test04ADeterministicDiceIsThrownMoreTimesThanArraySize [
 	self assert: (aDeterministicDice throw = 5 ).
 	self assert: (aDeterministicDice throw = 6 ).
 	self assert: (aDeterministicDice throw = 1 ).
+]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test05APlayerThrowsADeterministicDice [
+	
+	| aDeterministicDice aPlayer |
+	
+	aDeterministicDice := DeterministicDice withNumbers: #(1 2 3 4 5).
+	aPlayer:=  Player new.
+	
+	self assert: ((aPlayer throws:aDeterministicDice )= 1 ).
+]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test06 [ 
+	
+	| aDeterministicDice aPlayer |
+	
+	aDeterministicDice := DeterministicDice withNumbers: #(1 2 3 4 5).
+	aPlayer:=  Player named: 'Ignacio'.
+	
+	self assert: (aPlayer name = 'Ignacio').
 ]
