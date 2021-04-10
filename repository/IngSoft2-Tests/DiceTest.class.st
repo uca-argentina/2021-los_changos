@@ -80,3 +80,21 @@ DiceTest >> test07APlayerStartsInPositionZero [
 	self assert: (aPlayer position = 0).
 	
 ]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test08ABoardGameHasADeterminedSizeAndAGroupOfPlayers [
+    | aNumber aBoardGame aGroupOfPlayers playerOne playerTwo|
+    
+		aNumber:= 10.
+
+		playerOne:= Player named: 'Ignacio'.
+		playerTwo:= Player named: 'Gonzalo'.
+		aGroupOfPlayers:= OrderedCollection with: playerOne with: playerTwo.
+		
+    aBoardGame := BoardGame withSize: aNumber andPlayers: aGroupOfPlayers.
+
+    self assert: (aBoardGame boardSize = aNumber).
+		self assert: ((aBoardGame players at: 1) name = playerOne name).
+		self assert: ((aBoardGame players at: 2) name = playerTwo name).
+	
+]
