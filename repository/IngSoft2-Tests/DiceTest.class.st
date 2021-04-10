@@ -59,7 +59,7 @@ DiceTest >> test05APlayerThrowsADeterministicDice [
 ]
 
 { #category : #'as yet unclassified' }
-DiceTest >> test06 [ 
+DiceTest >> test06APlayerHasAName [ 
 	
 	| aDeterministicDice aPlayer |
 	
@@ -67,4 +67,16 @@ DiceTest >> test06 [
 	aPlayer:=  Player named: 'Ignacio'.
 	
 	self assert: (aPlayer name = 'Ignacio').
+]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test07APlayerStartsInPositionZero [
+	
+	| aDeterministicDice aPlayer |
+	
+	aDeterministicDice := DeterministicDice withNumbers: #(1 2 3 4 5).
+	aPlayer:=  Player named: 'Ignacio'.
+	
+	self assert: (aPlayer position = 0).
+	
 ]

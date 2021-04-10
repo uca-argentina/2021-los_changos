@@ -2,7 +2,8 @@ Class {
 	#name : #Player,
 	#superclass : #Object,
 	#instVars : [
-		'name'
+		'name',
+		'position'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,11 +16,17 @@ Player class >> named: aName [
 { #category : #initialization }
 Player >> initializeWithAName: aName [ 
 	name:= aName.
+	position:= 0.
 ]
 
 { #category : #accesing }
 Player >> name [
 	^ name
+]
+
+{ #category : #accessing }
+Player >> position [
+	^ position.
 ]
 
 { #category : #'as yet unclassified' }
