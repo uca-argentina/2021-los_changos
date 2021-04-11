@@ -10,19 +10,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-BoardGame class >> withPlayers: aCollectionOfPlayers andSize: aSize [ 
-	^ self new initializeWithPlayers: aCollectionOfPlayers andSize: aSize.
-]
-
-{ #category : #'instance creation' }
 BoardGame class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [ 
 	^ self new initializeWithPlayers: aCollectionOfPlayers withDices:aCollectionOfDices andSize: aSize .
-]
-
-{ #category : #initialization }
-BoardGame >> initializeWithPlayers: aCollectionOfPlayers andSize: aSize [ 
-	players:= aCollectionOfPlayers .
-	size:= aSize.
 ]
 
 { #category : #initialization }
