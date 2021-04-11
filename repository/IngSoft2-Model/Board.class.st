@@ -10,8 +10,18 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [ 
-	^ self new initializeWithPlayers: aCollectionOfPlayers withDices:aCollectionOfDices andSize: aSize .
+Board class >> hasAValidSize: aSize [
+	^ aSize > 0
+]
+
+{ #category : #'instance creation' }
+Board class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [
+	^ (self hasAValidSize: aSize)
+		ifTrue: [ self new
+				initializeWithPlayers: aCollectionOfPlayers
+				withDices: aCollectionOfDices
+				andSize: aSize ]
+		ifFalse: [ self error: 'The size of the board must be greater than zero' ]
 ]
 
 { #category : #initialization }
