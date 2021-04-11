@@ -55,80 +55,114 @@ DiceTest >> test05APlayerThrowsALoadedDice [
 	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5).
 	aPlayer:=  Player new.
 	
-	self assert: ((aPlayer throws:aLoadedDice )= 1 ).
+	self assert: ((aPlayer throws:{aLoadedDice} )= 1 ).
 ]
 
 { #category : #'as yet unclassified' }
-DiceTest >> test06APlayerHasAName [ 
+DiceTest >> test06APlayerStartsInPositionZero [
 	
-	| aDeterministicDice aPlayer |
+	| aLoadedDice aPlayer |
 	
-	aDeterministicDice := LoadedDice withNumbers: #(1 2 3 4 5).
-	aPlayer:=  Player named: 'Ignacio'.
-	
-	self assert: (aPlayer name = 'Ignacio').
-]
-
-{ #category : #'as yet unclassified' }
-DiceTest >> test07APlayerStartsInPositionZero [
-	
-	| aDeterministicDice aPlayer |
-	
-	aDeterministicDice := LoadedDice withNumbers: #(1 2 3 4 5).
-	aPlayer:=  Player named: 'Ignacio'.
+	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5).
+	aPlayer:=  Player new.
 	
 	self assert: (aPlayer position = 0).
 	
 ]
 
 { #category : #'as yet unclassified' }
-DiceTest >> test08ABoardGameHasADeterminedSizeAndAGroupOfPlayers [
-    | aNumber aBoardGame aGroupOfPlayers playerOne playerTwo|
-    
-		aNumber:= 10.
+DiceTest >> test07APlayerThrowsTheDiceTwice [
+	
+	| aLoadedDice aPlayer |
+	
+	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5).
+	aPlayer:=  Player new.
+	
+	aPlayer throws:{aLoadedDice} .
+	aPlayer throws:{aLoadedDice} .
+	
+	self assert: ((aPlayer position  )= 3 ).
+]
 
-		playerOne:= Player named: 'Ignacio'.
-		playerTwo:= Player named: 'Gonzalo'.
-		aGroupOfPlayers:= OrderedCollection with: playerOne with: playerTwo.
+{ #category : #'as yet unclassified' }
+DiceTest >> test08aNewBoardGameIsNotFinished [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices |
 		
-    aBoardGame := BoardGame withSize: aNumber andPlayers: aGroupOfPlayers.
+	aGroupOfPlayers:= OrderedCollection with:(Player new)  with: (Player new).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= BoardGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	self deny:  (aBoard isFinished ) .
+]
 
-    self assert: (aBoardGame boardSize = aNumber).
-		self assert: ((aBoardGame players at: 1) name = playerOne name).
-		self assert: ((aBoardGame players at: 2) name = playerTwo name).
+{ #category : #'as yet unclassified' }
+DiceTest >> test09aNewBoardGameRollsTheDiceForThePlayers [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= BoardGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	
+	self assert:  (playerOne position = 5  ) .
+	self assert: (playerTwo position = 7)
+]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test10ABoardGameRollsTheDiceForThePlayersTwiceAndIsFinished [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= BoardGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	aBoard rolls.
+	
+	self assert:  (aBoard isFinished  ) .
+]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test11aNewBoardGameHasAWinner [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= BoardGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	aBoard rolls.
+	
+	self assert:  (aBoard winner = playerOne ) .
 	
 ]
 
 { #category : #'as yet unclassified' }
-DiceTest >> test09ABoardGameRetrievesThePositionOfAPlayer [
-    | aNumber aBoardGame aGroupOfPlayers playerOne playerTwo|
-    
-		aNumber:= 10.
-
-		playerOne:= Player named: 'Ignacio'.
-		playerTwo:= Player named: 'Gonzalo'.
-		aGroupOfPlayers:= OrderedCollection with: playerOne with: playerTwo.
-		
-    aBoardGame := BoardGame withSize: aNumber andPlayers: aGroupOfPlayers.
-
-    self assert: ((aBoardGame positionOf: playerOne) = 0 ).
+DiceTest >> test12WhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
 	
-]
-
-{ #category : #'as yet unclassified' }
-DiceTest >> test10ABoardGameRetrievesThePositionOfAPlayerThatRollsTheDice [
-    | aNumber aBoardGame aGroupOfPlayers playerOne playerTwo aLoadedDice |
-    
-		aNumber:= 10.
-		aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5 6).
-		playerOne:= Player named: 'Ignacio'.
-		playerTwo:= Player named: 'Gonzalo'.
-		aGroupOfPlayers:= OrderedCollection with: playerOne with: playerTwo.
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
-    aBoardGame := BoardGame withSize: aNumber andPlayers: aGroupOfPlayers.
-		
-		playerOne throws: aLoadedDice .
-
-    self assert: ((aBoardGame positionOf: playerOne) = 1).
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= BoardGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	aBoard rolls.
+	
+	self assert:  (playerOne position = 14) .
+	self assert: (playerTwo position = 7).
 	
 ]

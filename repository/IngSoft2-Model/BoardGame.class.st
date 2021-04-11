@@ -2,40 +2,49 @@ Class {
 	#name : #BoardGame,
 	#superclass : #Object,
 	#instVars : [
+		'players',
 		'size',
-		'players'
+		'dices'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #instanceCreation }
-BoardGame class >> withSize: aNumber andPlayers: aCollectionOfPlayers [
-	
-	^self new initializeWithSize: aNumber andPlayers: aCollectionOfPlayers.
+{ #category : #'instance creation' }
+BoardGame class >> withPlayers: aCollectionOfPlayers andSize: aSize [ 
+	^ self new initializeWithPlayers: aCollectionOfPlayers andSize: aSize.
 ]
 
-{ #category : #accesing }
-BoardGame >> boardSize [
-	^size.
+{ #category : #'instance creation' }
+BoardGame class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [ 
+	^ self new initializeWithPlayers: aCollectionOfPlayers withDices:aCollectionOfDices andSize: aSize .
 ]
 
-{ #category : #initialize }
-BoardGame >> initializeWithSize: aNumber andPlayers: aCollectionOfPlayers [
-	size:= aNumber.
-	players:= aCollectionOfPlayers.
+{ #category : #initialization }
+BoardGame >> initializeWithPlayers: aCollectionOfPlayers andSize: aSize [ 
+	players:= aCollectionOfPlayers .
+	size:= aSize.
 ]
 
-{ #category : #accessing }
-BoardGame >> players [
-	^ players copy.
+{ #category : #initialization }
+BoardGame >> initializeWithPlayers: aCollectionOfPlayers  withDices: aCollectionOfDices andSize: aSize [ 
+	players:= aCollectionOfPlayers .
+	dices:= aCollectionOfDices .
+	size:= aSize.
 ]
 
-{ #category : #accessing }
-BoardGame >> positionOf: aPlayer [ 
-	
-	| result |
-	result:= players detect:[: player| player isEqualTo: aPlayer]
-	ifNone:['Cannot bring position of aPlayer'].
-	^(result position)
-		
+{ #category : #'as yet unclassified' }
+BoardGame >> isFinished [
+	^ players anySatisfy: [:player | player position >= size].
+]
+
+{ #category : #'as yet unclassified' }
+BoardGame >> rolls [
+	players do:[:player| self isFinished
+		ifFalse:[player throws: dices ].	
+		].
+]
+
+{ #category : #'as yet unclassified' }
+BoardGame >> winner [
+	^ players detect:[:player | player position >= size].
 ]
