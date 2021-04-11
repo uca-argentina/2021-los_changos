@@ -18,6 +18,6 @@ Dice >> initializeWithANumberOfFaces: aNumberOfFaces [
 ]
 
 { #category : #'as yet unclassified' }
-Dice >> throw [
+Dice >> roll [
 	^ 5.
 ]
