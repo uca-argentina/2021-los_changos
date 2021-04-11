@@ -36,5 +36,8 @@ Player >> position [
 
 { #category : #'as yet unclassified' }
 Player >> throws: aDeterministicDice [ 
-	^ aDeterministicDice roll .
+	| roll |
+	roll:= aDeterministicDice roll .
+	position:= position + roll  .
+	^ roll.
 ]

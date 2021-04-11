@@ -114,3 +114,21 @@ DiceTest >> test09ABoardGameRetrievesThePositionOfAPlayer [
     self assert: ((aBoardGame positionOf: playerOne) = 0 ).
 	
 ]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test10ABoardGameRetrievesThePositionOfAPlayerThatRollsTheDice [
+    | aNumber aBoardGame aGroupOfPlayers playerOne playerTwo aLoadedDice |
+    
+		aNumber:= 10.
+		aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5 6).
+		playerOne:= Player named: 'Ignacio'.
+		playerTwo:= Player named: 'Gonzalo'.
+		aGroupOfPlayers:= OrderedCollection with: playerOne with: playerTwo.
+		
+    aBoardGame := BoardGame withSize: aNumber andPlayers: aGroupOfPlayers.
+		
+		playerOne throws: aLoadedDice .
+
+    self assert: ((aBoardGame positionOf: playerOne) = 1).
+	
+]
