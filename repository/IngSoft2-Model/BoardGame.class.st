@@ -29,3 +29,13 @@ BoardGame >> initializeWithSize: aNumber andPlayers: aCollectionOfPlayers [
 BoardGame >> players [
 	^ players copy.
 ]
+
+{ #category : #accessing }
+BoardGame >> positionOf: aPlayer [ 
+	
+	| result |
+	result:= players detect:[: player| player isEqualTo: aPlayer]
+	ifNone:['Cannot bring position of aPlayer'].
+	^(result position)
+		
+]

@@ -19,6 +19,11 @@ Player >> initializeWithAName: aName [
 	position:= 0.
 ]
 
+{ #category : #comparing }
+Player >> isEqualTo: aPlayer [ 
+	^(self name = aPlayer name).
+]
+
 { #category : #accesing }
 Player >> name [
 	^ name

@@ -98,3 +98,19 @@ DiceTest >> test08ABoardGameHasADeterminedSizeAndAGroupOfPlayers [
 		self assert: ((aBoardGame players at: 2) name = playerTwo name).
 	
 ]
+
+{ #category : #'as yet unclassified' }
+DiceTest >> test09ABoardGameRetrievesThePositionOfAPlayer [
+    | aNumber aBoardGame aGroupOfPlayers playerOne playerTwo|
+    
+		aNumber:= 10.
+
+		playerOne:= Player named: 'Ignacio'.
+		playerTwo:= Player named: 'Gonzalo'.
+		aGroupOfPlayers:= OrderedCollection with: playerOne with: playerTwo.
+		
+    aBoardGame := BoardGame withSize: aNumber andPlayers: aGroupOfPlayers.
+
+    self assert: ((aBoardGame positionOf: playerOne) = 0 ).
+	
+]
