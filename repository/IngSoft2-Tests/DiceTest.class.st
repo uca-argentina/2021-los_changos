@@ -5,57 +5,57 @@ Class {
 }
 
 { #category : #tests }
-DiceTest >> test01ADiceWithNumberOfFacesThrowARandomNumberBetweenOneAndAnotherNumber [
+DiceTest >> test01ADiceWithNumberOfFacesRollsANumberBetweenOneAndAnotherNumber [
 	
 	| aDice aNumber |
 	aNumber:= 10.
 	aDice:= Dice withNumberOfFaces: aNumber .
-	self assert: (aDice throw between: 1  and: aNumber ). 
+	self assert: (aDice roll between: 1  and: aNumber ). 
 ]
 
 { #category : #tests }
-DiceTest >> test02ADeterministicDiceIsThrownOnceAndReturnsTheFirstValueOfAnArray [
+DiceTest >> test02ALoadedDiceRollsOnceAndReturnsTheFirstValueOfAnArray [
 	
-	| aDeterministicDice |
+	| aLoadedDice |
 	
-	aDeterministicDice:= DeterministicDice withNumbers: #(1 2 3 4 5 6).
-	self assert: (aDeterministicDice throw = 1 ).
+	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5 6).
+	self assert: (aLoadedDice roll = 1 ).
 ]
 
 { #category : #tests }
-DiceTest >> test03ADeterministicDiceIsThrownTwiceAndReturnsTheFirstTwoValues [
+DiceTest >> test03ALoadedDiceRollsTwiceAndReturnsTheFirstTwoValues [
 	
-	| aDeterministicDice |
+	| aLoadedDice |
 	
-	aDeterministicDice:= DeterministicDice withNumbers: #(1 2 3 4 5 6).
-	self assert: (aDeterministicDice throw = 1 ).
-	self assert: (aDeterministicDice throw = 2 ).
+	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5 6).
+	self assert: (aLoadedDice roll = 1 ).
+	self assert: (aLoadedDice roll = 2 ).
 ]
 
 { #category : #'as yet unclassified' }
-DiceTest >> test04ADeterministicDiceIsThrownMoreTimesThanArraySize [
+DiceTest >> test04ALoadedDiceRollsMoreTimesThanArraySize [
 	
-	| aDeterministicDice |
+	| aLoadedDice |
 	
-	aDeterministicDice:= DeterministicDice withNumbers: #(1 2 3 4 5 6).
-	self assert: (aDeterministicDice throw = 1 ).
-	self assert: (aDeterministicDice throw = 2 ).
-	self assert: (aDeterministicDice throw = 3 ).
-	self assert: (aDeterministicDice throw = 4 ).
-	self assert: (aDeterministicDice throw = 5 ).
-	self assert: (aDeterministicDice throw = 6 ).
-	self assert: (aDeterministicDice throw = 1 ).
+	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5 6).
+	self assert: (aLoadedDice roll = 1 ).
+	self assert: (aLoadedDice roll = 2 ).
+	self assert: (aLoadedDice roll = 3 ).
+	self assert: (aLoadedDice roll = 4 ).
+	self assert: (aLoadedDice roll = 5 ).
+	self assert: (aLoadedDice roll = 6 ).
+	self assert: (aLoadedDice roll = 1 ).
 ]
 
 { #category : #'as yet unclassified' }
-DiceTest >> test05APlayerThrowsADeterministicDice [
+DiceTest >> test05APlayerThrowsALoadedDice [
 	
-	| aDeterministicDice aPlayer |
+	| aLoadedDice aPlayer |
 	
-	aDeterministicDice := DeterministicDice withNumbers: #(1 2 3 4 5).
+	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5).
 	aPlayer:=  Player new.
 	
-	self assert: ((aPlayer throws:aDeterministicDice )= 1 ).
+	self assert: ((aPlayer throws:aLoadedDice )= 1 ).
 ]
 
 { #category : #'as yet unclassified' }
@@ -63,7 +63,7 @@ DiceTest >> test06APlayerHasAName [
 	
 	| aDeterministicDice aPlayer |
 	
-	aDeterministicDice := DeterministicDice withNumbers: #(1 2 3 4 5).
+	aDeterministicDice := LoadedDice withNumbers: #(1 2 3 4 5).
 	aPlayer:=  Player named: 'Ignacio'.
 	
 	self assert: (aPlayer name = 'Ignacio').
@@ -74,7 +74,7 @@ DiceTest >> test07APlayerStartsInPositionZero [
 	
 	| aDeterministicDice aPlayer |
 	
-	aDeterministicDice := DeterministicDice withNumbers: #(1 2 3 4 5).
+	aDeterministicDice := LoadedDice withNumbers: #(1 2 3 4 5).
 	aPlayer:=  Player named: 'Ignacio'.
 	
 	self assert: (aPlayer position = 0).

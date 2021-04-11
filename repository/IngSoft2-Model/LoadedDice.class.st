@@ -1,5 +1,5 @@
 Class {
-	#name : #DeterministicDice,
+	#name : #LoadedDice,
 	#superclass : #Object,
 	#instVars : [
 		'arrayOfNumbers',
@@ -9,18 +9,18 @@ Class {
 }
 
 { #category : #'instance creation' }
-DeterministicDice class >> withNumbers: anArrayOfNumbers [
+LoadedDice class >> withNumbers: anArrayOfNumbers [
 	^self new initializeWithNumbers: anArrayOfNumbers.
 ]
 
 { #category : #initialization }
-DeterministicDice >> initializeWithNumbers: anArrayOfNumbers [
+LoadedDice >> initializeWithNumbers: anArrayOfNumbers [
 	index:=1.
 	arrayOfNumbers:= anArrayOfNumbers.
 ]
 
 { #category : #'as yet unclassified' }
-DeterministicDice >> throw [
+LoadedDice >> roll [
 	| number |
 	number:=arrayOfNumbers at: index.
 	index:=(index rem: arrayOfNumbers size) +1.
