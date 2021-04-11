@@ -19,5 +19,7 @@ Dice >> initializeWithANumberOfFaces: aNumberOfFaces [
 
 { #category : #'as yet unclassified' }
 Dice >> roll [
-	^ 5.
+	| aNumberGenerator |
+	aNumberGenerator := Random new.
+	^ aNumberGenerator nextInt: (numberOfFaces  - 1)
 ]
