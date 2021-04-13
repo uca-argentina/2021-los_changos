@@ -21,5 +21,5 @@ Dice >> initializeWithANumberOfFaces: aNumberOfFaces [
 Dice >> roll [
 	| aNumberGenerator |
 	aNumberGenerator := Random new.
-	^ aNumberGenerator nextInt: (numberOfFaces  - 1)
+	^aNumberGenerator nextInt: (numberOfFaces).
 ]

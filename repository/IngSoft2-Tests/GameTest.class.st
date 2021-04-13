@@ -86,6 +86,22 @@ GameTest >> testANewBoardGameRollsTheDiceForThePlayers [
 ]
 
 { #category : #'as yet unclassified' }
+GameTest >> testANewBoardThrowsAnExceptionWhenSizeIsZero [
+	
+	| aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	
+	self should: [Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 0]
+	raise: Error
+	description: 'The size of the board must be greater than zero'.
+
+]
+
+{ #category : #'as yet unclassified' }
 GameTest >> testWhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
