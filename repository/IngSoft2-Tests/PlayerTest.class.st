@@ -29,11 +29,8 @@ PlayerTest >> testAPlayerThrowsLoadedDiceOnceAndMoveForward [
 PlayerTest >> testAPlayerThrowsLoadedDices [
 	
 	|  aPlayer dices |
-	
 	dices := {  LoadedDice withNumbers: #(1 2 3 4 5) . LoadedDice withNumbers: #(3 4 5)  }.
-	
 	aPlayer:=  Player new.
-	
 	self assert: (aPlayer throws: dices ) equals: 4 .
 ]
 
