@@ -10,18 +10,31 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> hasAValidSize: aSize [
-	^ aSize > 0
+Board class >> validateBoardWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
+	| boardValidators |
+	boardValidators := OrderedCollection new.
+	BoardValidator
+		subclassesDo: [ :aValidatorSubclass | boardValidators add: aValidatorSubclass new ].
+	boardValidators
+		select: [ :aValidator | 
+			aValidator
+				isNotValidBoardWithSize: aSize
+				withPlayers: aCollectionOfPlayers
+				andDices: aCollectionOfDices ]
+		thenDo: [ :aValidator | aValidator throwError ]
+		ifNone: [  ]
 ]
 
 { #category : #'instance creation' }
 Board class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [
-	^ (self hasAValidSize: aSize)
-		ifTrue: [ self new
-				initializeWithPlayers: aCollectionOfPlayers
-				withDices: aCollectionOfDices
-				andSize: aSize ]
-		ifFalse: [ self error: 'The size of the board must be greater than zero' ]
+	self
+		validateBoardWithPlayers: aCollectionOfPlayers
+		Dices: aCollectionOfDices
+		AndSize: aSize.
+	^ self new
+		initializeWithPlayers: aCollectionOfPlayers
+		withDices: aCollectionOfDices
+		andSize: aSize
 ]
 
 { #category : #initialization }
@@ -38,6 +51,8 @@ Board >> isFinished [
 
 { #category : #'as yet unclassified' }
 Board >> rolls [
+	self isFinished
+	ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ].
 	players do:[:player| self isFinished
 		ifFalse:[player throws: dices ].	
 		].

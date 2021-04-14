@@ -1,11 +1,11 @@
 Class {
-	#name : #GameTest,
+	#name : #BoardTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'as yet unclassified' }
-GameTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
+BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -22,7 +22,7 @@ GameTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughP
 ]
 
 { #category : #'as yet unclassified' }
-GameTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
+BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -39,7 +39,27 @@ GameTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreTha
 ]
 
 { #category : #'as yet unclassified' }
-GameTest >> testANewBoardGameHasAWinner [
+BoardTest >> testABoardThrowsAndExceptionWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	aBoard rolls.
+	
+	self should:  [aBoard rolls ]
+	raise: Error 
+	description: 'Game is finished, no more rolls are allowed'.
+	
+]
+
+{ #category : #'as yet unclassified' }
+BoardTest >> testANewBoardGameHasAWinner [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -57,7 +77,7 @@ GameTest >> testANewBoardGameHasAWinner [
 ]
 
 { #category : #'as yet unclassified' }
-GameTest >> testANewBoardGameIsNotFinished [
+BoardTest >> testANewBoardGameIsNotFinished [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices |
 		
@@ -69,7 +89,7 @@ GameTest >> testANewBoardGameIsNotFinished [
 ]
 
 { #category : #'as yet unclassified' }
-GameTest >> testANewBoardGameRollsTheDiceForThePlayers [
+BoardTest >> testANewBoardGameRollsTheDiceForThePlayers [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -86,7 +106,7 @@ GameTest >> testANewBoardGameRollsTheDiceForThePlayers [
 ]
 
 { #category : #'as yet unclassified' }
-GameTest >> testANewBoardThrowsAnExceptionWhenSizeIsZero [
+BoardTest >> testANewBoardThrowsAnExceptionWhenSizeIsZero [
 	
 	| aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -102,7 +122,22 @@ GameTest >> testANewBoardThrowsAnExceptionWhenSizeIsZero [
 ]
 
 { #category : #'as yet unclassified' }
-GameTest >> testWhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
+BoardTest >> testNewBoardThrowsExceptionWhenZeroOrOnePlayerAreCreated [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne  |
+		
+	playerOne:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with: playerOne.
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	
+	self should:[aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10]
+	raise: Error
+	description: 'Cannot start a game with one player'.
+
+]
+
+{ #category : #'as yet unclassified' }
+BoardTest >> testWhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
