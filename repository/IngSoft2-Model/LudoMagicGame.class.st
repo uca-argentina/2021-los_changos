@@ -10,25 +10,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-LudoMagicGame class >> validateBoardWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
-	| boardValidators |
-	boardValidators := OrderedCollection new.
-	LudoMagicGameValidator
-		subclassesDo: [ :aValidatorSubclass | boardValidators add: aValidatorSubclass new ].
-	boardValidators
-		select: [ :aValidator | 
-			aValidator
-				isNotValidBoardWithSize: aSize
-				withPlayers: aCollectionOfPlayers
-				andDices: aCollectionOfDices ]
-		thenDo: [ :aValidator | aValidator throwError ]
-		ifNone: [  ]
+LudoMagicGame class >> validateWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
+	| aValidator |
+	aValidator:= LudoMagicValidator new.
+	
+	aValidator valid: aCollectionOfPlayers  with: aCollectionOfDices  with: aSize. 
 ]
 
 { #category : #'instance creation' }
 LudoMagicGame class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [
 	self
-		validateBoardWithPlayers: aCollectionOfPlayers
+		validateWithPlayers: aCollectionOfPlayers
 		Dices: aCollectionOfDices
 		AndSize: aSize.
 	^ self new
@@ -46,7 +38,7 @@ LudoMagicGame >> initializeWithPlayers: aCollectionOfPlayers  withDices: aCollec
 
 { #category : #'as yet unclassified' }
 LudoMagicGame >> isFinished [
-	^ players anySatisfy: [:player | player position >= size].
+	^ players anySatisfy: [:player | player finished: size].
 ]
 
 { #category : #'as yet unclassified' }
@@ -54,7 +46,7 @@ LudoMagicGame >> rolls [
 	self isFinished
 	ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ].
 	players do:[:player| self isFinished
-		ifFalse:[player throws: dices ].	
+		ifFalse:[player throws: dices withFinishLine: size].
 		].
 ]
 

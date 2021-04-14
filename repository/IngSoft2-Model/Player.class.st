@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #accessing }
+Player >> finished: aSize [
+	^ position = aSize.
+]
+
 { #category : #initialization }
 Player >> initialize [
 	position:= 0.
@@ -18,10 +23,8 @@ Player >> position [
 ]
 
 { #category : #'as yet unclassified' }
-Player >> throws: aCollectionOfDices [
+Player >> throws: aCollectionOfDices withFinishLine: aSize [
 	| roll |
 	roll := (aCollectionOfDices collect:[ :dice | dice roll ]) sum .
-	position := position + roll.
-	
-	^roll
+	position := aSize min: position + roll.
 ]

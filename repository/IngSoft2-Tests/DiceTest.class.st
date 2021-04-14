@@ -9,7 +9,7 @@ DiceTest >> testADiceWithNumberOfFacesRollsANumberBetweenOneAndAnotherNumber [
 	
 	| aDice aNumber |
 	aNumber:= 10.
-	aDice:= Dice withNumberOfFaces: aNumber .
+	aDice:= Dice with: aNumber .
 	self assert: (aDice roll between: 1  and: aNumber ). 
 ]
 

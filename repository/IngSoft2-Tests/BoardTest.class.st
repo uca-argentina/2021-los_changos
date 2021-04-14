@@ -5,7 +5,54 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
+BoardTest >> testALudoMagicGameHasAWinner [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	aBoard rolls.
+	
+	self assert:  aBoard winner equals: playerOne .
+	
+]
+
+{ #category : #'as yet unclassified' }
+BoardTest >> testALudoMagicGameIsNotFinished [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices |
+		
+	aGroupOfPlayers:= OrderedCollection with:(Player new)  with: (Player new).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	self deny:  (aBoard isFinished ) .
+]
+
+{ #category : #'as yet unclassified' }
+BoardTest >> testALudoMagicGameRollsTheDiceForThePlayers [
+	
+	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	
+	aBoard rolls.
+	
+	self assert:  playerOne position equals: 5 .
+	self assert: playerTwo position equals: 7.
+]
+
+{ #category : #'as yet unclassified' }
+BoardTest >> testALudoMagicGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -22,7 +69,7 @@ BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnough
 ]
 
 { #category : #'as yet unclassified' }
-BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
+BoardTest >> testALudoMagicGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -39,7 +86,23 @@ BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreTh
 ]
 
 { #category : #'as yet unclassified' }
-BoardTest >> testABoardThrowsAndExceptionWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
+BoardTest >> testALudoMagicGameThrowsAnExceptionWhenSizeIsZero [
+	
+	| aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+		
+	playerOne:= Player new.	
+	playerTwo:= Player new.	
+	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
+	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	
+	self should: [LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 0]
+	raise: Error
+	description: 'The size of the board must be greater than zero'.
+
+]
+
+{ #category : #'as yet unclassified' }
+BoardTest >> testALudoMagicGameThrowsAndExceptionWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
 		
@@ -59,70 +122,7 @@ BoardTest >> testABoardThrowsAndExceptionWhenIsFinishedAndPlayerTriesToRollTheDi
 ]
 
 { #category : #'as yet unclassified' }
-BoardTest >> testANewBoardGameHasAWinner [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	aBoard rolls.
-	
-	self assert:  aBoard winner equals: playerOne .
-	
-]
-
-{ #category : #'as yet unclassified' }
-BoardTest >> testANewBoardGameIsNotFinished [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices |
-		
-	aGroupOfPlayers:= OrderedCollection with:(Player new)  with: (Player new).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	self deny:  (aBoard isFinished ) .
-]
-
-{ #category : #'as yet unclassified' }
-BoardTest >> testANewBoardGameRollsTheDiceForThePlayers [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	
-	self assert:  playerOne position equals: 5 .
-	self assert: playerTwo position equals: 7.
-]
-
-{ #category : #'as yet unclassified' }
-BoardTest >> testANewBoardThrowsAnExceptionWhenSizeIsZero [
-	
-	| aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	
-	self should: [LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 0]
-	raise: Error
-	description: 'The size of the board must be greater than zero'.
-
-]
-
-{ #category : #'as yet unclassified' }
-BoardTest >> testNewBoardThrowsExceptionWhenZeroOrOnePlayerAreCreated [
+BoardTest >> testNewLudoMagicGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
 	
 	|aBoard aGroupOfPlayers aGroupOfDices playerOne  |
 		
@@ -150,7 +150,7 @@ BoardTest >> testWhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
 	aBoard rolls.
 	aBoard rolls.
 	
-	self assert:  playerOne position equals: 14.
+	self assert:  playerOne position equals: 10.
 	self assert: playerTwo position equals: 7.
 	
 ]

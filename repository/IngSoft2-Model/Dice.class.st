@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Dice class >> withNumberOfFaces: numberOfFaces [. 
+Dice class >> with: numberOfFaces [. 
 	^ self new initializeWithANumberOfFaces: numberOfFaces .
 ]
 
