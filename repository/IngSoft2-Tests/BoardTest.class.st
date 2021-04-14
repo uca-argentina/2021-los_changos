@@ -13,7 +13,7 @@ BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnough
 	playerTwo:= Player new.	
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 4 1 5 )) with: (LoadedDice withNumbers: #(4 5  1 1))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	aBoard rolls.
 	aBoard rolls.
@@ -30,7 +30,7 @@ BoardTest >> testABoardGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreTh
 	playerTwo:= Player new.	
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	aBoard rolls.
 	aBoard rolls.
@@ -47,7 +47,7 @@ BoardTest >> testABoardThrowsAndExceptionWhenIsFinishedAndPlayerTriesToRollTheDi
 	playerTwo:= Player new.	
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	aBoard rolls.
 	aBoard rolls.
@@ -67,7 +67,7 @@ BoardTest >> testANewBoardGameHasAWinner [
 	playerTwo:= Player new.	
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	aBoard rolls.
 	aBoard rolls.
@@ -83,7 +83,7 @@ BoardTest >> testANewBoardGameIsNotFinished [
 		
 	aGroupOfPlayers:= OrderedCollection with:(Player new)  with: (Player new).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	self deny:  (aBoard isFinished ) .
 ]
@@ -97,7 +97,7 @@ BoardTest >> testANewBoardGameRollsTheDiceForThePlayers [
 	playerTwo:= Player new.	
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	aBoard rolls.
 	
@@ -115,7 +115,7 @@ BoardTest >> testANewBoardThrowsAnExceptionWhenSizeIsZero [
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
 	
-	self should: [Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 0]
+	self should: [LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 0]
 	raise: Error
 	description: 'The size of the board must be greater than zero'.
 
@@ -130,7 +130,7 @@ BoardTest >> testNewBoardThrowsExceptionWhenZeroOrOnePlayerAreCreated [
 	aGroupOfPlayers:= OrderedCollection with: playerOne.
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
 	
-	self should:[aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10]
+	self should:[aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10]
 	raise: Error
 	description: 'Cannot start a game with one player'.
 
@@ -145,7 +145,7 @@ BoardTest >> testWhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
 	playerTwo:= Player new.	
 	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
 	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= Board withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
 	
 	aBoard rolls.
 	aBoard rolls.

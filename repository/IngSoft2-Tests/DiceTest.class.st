@@ -13,7 +13,7 @@ DiceTest >> testADiceWithNumberOfFacesRollsANumberBetweenOneAndAnotherNumber [
 	self assert: (aDice roll between: 1  and: aNumber ). 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 DiceTest >> testALoadedDiceRollsMoreTimesThanArraySize [
 	
 	| aLoadedDice |

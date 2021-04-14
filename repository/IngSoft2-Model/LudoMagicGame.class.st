@@ -1,5 +1,5 @@
 Class {
-	#name : #Board,
+	#name : #LudoMagicGame,
 	#superclass : #Object,
 	#instVars : [
 		'players',
@@ -10,10 +10,10 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> validateBoardWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
+LudoMagicGame class >> validateBoardWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
 	| boardValidators |
 	boardValidators := OrderedCollection new.
-	BoardValidator
+	LudoMagicGameValidator
 		subclassesDo: [ :aValidatorSubclass | boardValidators add: aValidatorSubclass new ].
 	boardValidators
 		select: [ :aValidator | 
@@ -26,7 +26,7 @@ Board class >> validateBoardWithPlayers: aCollectionOfPlayers Dices: aCollection
 ]
 
 { #category : #'instance creation' }
-Board class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [
+LudoMagicGame class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [
 	self
 		validateBoardWithPlayers: aCollectionOfPlayers
 		Dices: aCollectionOfDices
@@ -38,19 +38,19 @@ Board class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices a
 ]
 
 { #category : #initialization }
-Board >> initializeWithPlayers: aCollectionOfPlayers  withDices: aCollectionOfDices andSize: aSize [ 
+LudoMagicGame >> initializeWithPlayers: aCollectionOfPlayers  withDices: aCollectionOfDices andSize: aSize [ 
 	players:= aCollectionOfPlayers .
 	dices:= aCollectionOfDices .
 	size:= aSize.
 ]
 
 { #category : #'as yet unclassified' }
-Board >> isFinished [
+LudoMagicGame >> isFinished [
 	^ players anySatisfy: [:player | player position >= size].
 ]
 
 { #category : #'as yet unclassified' }
-Board >> rolls [
+LudoMagicGame >> rolls [
 	self isFinished
 	ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ].
 	players do:[:player| self isFinished
@@ -59,6 +59,6 @@ Board >> rolls [
 ]
 
 { #category : #'as yet unclassified' }
-Board >> winner [
+LudoMagicGame >> winner [
 	^ players detect:[:player | player position >= size].
 ]

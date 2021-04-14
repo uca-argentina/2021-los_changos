@@ -1,6 +1,6 @@
 Class {
 	#name : #SizeBoardValidator,
-	#superclass : #BoardValidator,
+	#superclass : #LudoMagicGameValidator,
 	#category : #'IngSoft2-Model'
 }
 

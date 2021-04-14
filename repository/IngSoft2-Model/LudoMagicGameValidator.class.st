@@ -1,15 +1,15 @@
 Class {
-	#name : #BoardValidator,
+	#name : #LudoMagicGameValidator,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #testing }
-BoardValidator >> isNotValidBoardWithSize:aSize withPlayers:aGroupOfPlayers andDices: aGroupOfDices [
+LudoMagicGameValidator >> isNotValidBoardWithSize:aSize withPlayers:aGroupOfPlayers andDices: aGroupOfDices [
 self subclassResponsibility 
 ]
 
 { #category : #testing }
-BoardValidator >> throwError [
+LudoMagicGameValidator >> throwError [
  self subclassResponsibility 
 ]
