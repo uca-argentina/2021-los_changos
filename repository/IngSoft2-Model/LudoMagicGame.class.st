@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #'instance creation' }
+LudoMagicGame class >> errorMessageGameIsAlreadyFinished [
+
+	^ self error: 'Game is finished, no more rolls are allowed'
+]
+
+{ #category : #'instance creation' }
 LudoMagicGame class >> validateWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
 	| aValidator |
 	aValidator:= LudoMagicValidator new.
@@ -44,7 +50,7 @@ LudoMagicGame >> isFinished [
 { #category : #'as yet unclassified' }
 LudoMagicGame >> rolls [
 	self isFinished
-	ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ].
+	ifTrue: [ LudoMagicGame errorMessageGameIsAlreadyFinished ].
 	players do:[:player| self isFinished
 		ifFalse:[player throws: dices withFinishLine: size].
 		].
