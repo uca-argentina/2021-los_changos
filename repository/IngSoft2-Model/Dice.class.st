@@ -9,17 +9,15 @@ Class {
 
 { #category : #'instance creation' }
 Dice class >> with: numberOfFaces [. 
-	^ self new initializeWithANumberOfFaces: numberOfFaces .
+	^ self new initializeWith: numberOfFaces .
 ]
 
 { #category : #initialize }
-Dice >> initializeWithANumberOfFaces: aNumberOfFaces [
+Dice >> initializeWith: aNumberOfFaces [
 	numberOfFaces:= aNumberOfFaces .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accesing }
 Dice >> roll [
-	| aNumberGenerator |
-	aNumberGenerator := Random new.
-	^aNumberGenerator nextInt: (numberOfFaces).
+	^ Random new nextInt: (numberOfFaces).
 ]

@@ -2,28 +2,28 @@ Class {
 	#name : #LoadedDice,
 	#superclass : #Object,
 	#instVars : [
-		'arrayOfNumbers',
-		'index'
+		'index',
+		'numbers'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-LoadedDice class >> withNumbers: anArrayOfNumbers [
-	^self new initializeWithNumbers: anArrayOfNumbers.
+LoadedDice class >> with: aCollectionOfNumbers [
+	^self new initializeWith: aCollectionOfNumbers.
 ]
 
 { #category : #initialization }
-LoadedDice >> initializeWithNumbers: anArrayOfNumbers [
+LoadedDice >> initializeWith: aCollectionOfNumbers [
 	index:=1.
-	arrayOfNumbers:= anArrayOfNumbers.
+	numbers:= aCollectionOfNumbers.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 LoadedDice >> roll [
 	| number |
-	number:=arrayOfNumbers at: index.
-	index:=(index rem: arrayOfNumbers size) +1.
+	number:=numbers at: index.
+	index:=(index rem: numbers size) +1.
 	^number.
 	
 ]

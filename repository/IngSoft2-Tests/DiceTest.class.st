@@ -18,7 +18,7 @@ DiceTest >> testALoadedDiceRollsMoreTimesThanArraySize [
 	
 	| aLoadedDice |
 	
-	aLoadedDice := LoadedDice withNumbers: #(0 9 7 1).
+	aLoadedDice := LoadedDice with: #(0 9 7 1).
 	self assert: aLoadedDice roll equals: 0.
 	self assert: aLoadedDice roll equals: 9.
 	self assert: aLoadedDice roll equals: 7.
@@ -31,7 +31,7 @@ DiceTest >> testALoadedDiceRollsOnceAndReturnsTheFirstValueOfAnArray [
 	
 	| aLoadedDice |
 	
-	aLoadedDice := LoadedDice withNumbers: #(1 2 3 4 5 6).
+	aLoadedDice := LoadedDice with: #(1 2 3 4 5 6).
 	self assert: aLoadedDice roll equals: 1.
 ]
 
@@ -40,7 +40,7 @@ DiceTest >> testALoadedDiceRollsTwiceAndReturnsTheFirstTwoValues [
 	
 	| aLoadedDice |
 	
-	aLoadedDice := LoadedDice withNumbers: #(5 1 0 5 7 6).
+	aLoadedDice := LoadedDice with: #(5 1 0 5 7 6).
 	self assert: aLoadedDice roll equals: 5.
 	self assert: aLoadedDice roll equals: 1.
 ]

@@ -22,7 +22,7 @@ Player >> position [
 	^ position.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 Player >> throws: aCollectionOfDices withFinishLine: aSize [
 	| roll |
 	roll := (aCollectionOfDices collect:[ :dice | dice roll ]) sum .

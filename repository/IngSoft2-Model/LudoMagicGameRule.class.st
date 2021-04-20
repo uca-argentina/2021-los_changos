@@ -4,12 +4,17 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #accessing }
+LudoMagicGameRule >> errorMessage [
+	self subclassResponsibility 
+]
+
 { #category : #testing }
-LudoMagicGameRule >> isNotValidBoardWithSize:aSize withPlayers:aGroupOfPlayers andDices: aGroupOfDices [
+LudoMagicGameRule >> isNotValidBoardWith: size with: players and: dices [
 self subclassResponsibility 
 ]
 
 { #category : #testing }
 LudoMagicGameRule >> throwError [
- self subclassResponsibility 
+	^ self error: self errorMessage
 ]

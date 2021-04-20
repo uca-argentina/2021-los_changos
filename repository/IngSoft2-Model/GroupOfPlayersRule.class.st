@@ -4,15 +4,15 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-GroupOfPlayersRule >> isNotValidBoardWithSize:aSize withPlayers:aGroupOfPlayers andDices: aGroupOfDices [
-
-^ aGroupOfPlayers size <=1
-	
-
+{ #category : #accessing }
+GroupOfPlayersRule >> errorMessage [ 
+	^ 'Quantity of players shloud be greater than one'
 ]
 
 { #category : #testing }
-GroupOfPlayersRule >> throwError [
- ^self error:'Cannot start a game with one player'
+GroupOfPlayersRule >> isNotValidBoardWith: size with: players and: dices [
+
+^ players size <=1
+	
+
 ]

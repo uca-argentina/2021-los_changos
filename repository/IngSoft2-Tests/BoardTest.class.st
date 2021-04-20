@@ -4,153 +4,175 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> testALudoMagicGameHasAWinner [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
+	| aLudoMagicGame players dices aPlayer |
+	aPlayer := Player new.
+	players := OrderedCollection with: aPlayer with: Player new.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
 		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
+	aLudoMagicGame makePlayersThrowDices.
+	aLudoMagicGame makePlayersThrowDices.
 	
-	aBoard rolls.
-	aBoard rolls.
-	
-	self assert:  aBoard winner equals: playerOne .
-	
+	self assert: aLudoMagicGame winner equals: aPlayer
 ]
 
-{ #category : #'as yet unclassified' }
-BoardTest >> testALudoMagicGameIsNotFinished [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices |
-		
-	aGroupOfPlayers:= OrderedCollection with:(Player new)  with: (Player new).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	self deny:  (aBoard isFinished ) .
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> testALudoMagicGameRollsTheDiceForThePlayers [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	
-	self assert:  playerOne position equals: 5 .
-	self assert: playerTwo position equals: 7.
+	| aLudoMagicGame players dices playerOne playerTwo |
+	playerOne := Player new.
+	playerTwo := Player new.
+	players := OrderedCollection with: playerOne with: playerTwo.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
+	aLudoMagicGame makePlayersThrowDices.
+	self assert: playerOne position equals: 5.
+	self assert: playerTwo position equals: 7
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> testALudoMagicGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 4 1 5 )) with: (LoadedDice withNumbers: #(4 5  1 1))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	aBoard rolls.
-	
-	self assert:  (aBoard isFinished ) .
+	| aLudoMagicGame players dices |
+	players := OrderedCollection
+		with: Player new
+		with: Player new.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 4 1 5))
+		with: (LoadedDice with: #(4 5 1 1)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
+	aLudoMagicGame makePlayersThrowDices.
+	aLudoMagicGame makePlayersThrowDices.
+	self assert: aLudoMagicGame isFinished
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> testALudoMagicGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	aBoard rolls.
-	
-	self assert:  (aBoard isFinished ) .
+	| aLudoMagicGame players dices |
+	players := OrderedCollection
+		with: Player new
+		with: Player new.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
+	aLudoMagicGame makePlayersThrowDices.
+	aLudoMagicGame makePlayersThrowDices.
+	self assert: aLudoMagicGame isFinished
 ]
 
-{ #category : #'as yet unclassified' }
-BoardTest >> testALudoMagicGameThrowsAnExceptionWhenSizeIsZero [
+{ #category : #tests }
+BoardTest >> testALudoMagicGameThrowsAnErrorWhenHasNoDices [
+	| players dices |
+	players := OrderedCollection
+		with: Player new
+		with: Player new.
+	dices := {}.
+	self
+		should: [ LudoMagicGame
+				with: players
+				with: dices
+				and: 5 ]
+		raise: Error
+		description: DicesRule new errorMessage
+]
+
+{ #category : #tests }
+BoardTest >> testALudoMagicGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
+	| aLudoMagicGame players dices |
+	players := OrderedCollection
+		with: Player new
+		with: Player new.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
+	aLudoMagicGame makePlayersThrowDices.
+	aLudoMagicGame makePlayersThrowDices.
+	self
+		should: [ aLudoMagicGame makePlayersThrowDices ]
+		raise: Error
+		description: 'Game is finished, no more rolls are allowed'
+]
+
+{ #category : #tests }
+BoardTest >> testALudoMagicGameThrowsAnErrorWhenSizeIsZero [
 	
-	| aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
+	| players dices |
+
+	players := OrderedCollection with: Player new  with: Player new.
+	dices:= (OrderedCollection with: (LoadedDice with: #(1 2 3 4 5 )) with: (LoadedDice with: #(4 5 6 7))).	
 	
-	self should: [LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 0]
+	self should: [LudoMagicGame with:(players) with:(dices) and: 0]
 	raise: Error
-	description: 'The size of the board must be greater than zero'.
+	description: SizeBoardRule new errorMessage .
 
 ]
 
-{ #category : #'as yet unclassified' }
-BoardTest >> testALudoMagicGameThrowsAndExceptionWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	aBoard rolls.
-	
-	self should:  [aBoard rolls ]
-	raise: Error 
-	description: 'Game is finished, no more rolls are allowed'.
-	
+{ #category : #tests }
+BoardTest >> testANewLudoMagicGameIsNotFinished [
+	| aLudoMagicGame players dices |
+	players := OrderedCollection with: Player new with: Player new.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
+	self deny: aLudoMagicGame isFinished
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> testNewLudoMagicGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne  |
-		
-	playerOne:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with: playerOne.
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	
-	self should:[aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10]
-	raise: Error
-	description: 'Cannot start a game with one player'.
-
+	| players dices |
+	players := OrderedCollection with: Player new.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	self
+		should: [ LudoMagicGame
+				with: players
+				with: dices
+				and: 10 ]
+		raise: Error
+		description: GroupOfPlayersRule new errorMessage
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 BoardTest >> testWhenPlayerOneWinsTheOtherPlayerDoesNotRollTheDice [
-	
-	|aBoard aGroupOfPlayers aGroupOfDices playerOne playerTwo |
-		
-	playerOne:= Player new.	
-	playerTwo:= Player new.	
-	aGroupOfPlayers:= OrderedCollection with:(playerOne)  with: (playerTwo).
-	aGroupOfDices:= (OrderedCollection with: (LoadedDice withNumbers: #(1 2 3 4 5 )) with: (LoadedDice withNumbers: #(4 5 6 7))).	
-	aBoard:= LudoMagicGame withPlayers:(aGroupOfPlayers) withDices:(aGroupOfDices) andSize: 10.
-	
-	aBoard rolls.
-	aBoard rolls.
-	
-	self assert:  playerOne position equals: 10.
-	self assert: playerTwo position equals: 7.
-	
+	| aLudoMagicGame players dices playerOne playerTwo |
+	playerOne := Player new.
+	playerTwo := Player new.
+	players := OrderedCollection with: playerOne with: playerTwo.
+	dices := OrderedCollection
+		with: (LoadedDice with: #(1 2 3 4 5))
+		with: (LoadedDice with: #(4 5 6 7)).
+	aLudoMagicGame := LudoMagicGame
+		with: players
+		with: dices
+		and: 10.
+	aLudoMagicGame makePlayersThrowDices.
+	aLudoMagicGame makePlayersThrowDices.
+	self assert: playerOne position equals: 10.
+	self assert: playerTwo position equals: 7
 ]

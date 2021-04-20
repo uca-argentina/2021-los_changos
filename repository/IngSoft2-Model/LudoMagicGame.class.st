@@ -10,53 +10,50 @@ Class {
 }
 
 { #category : #'instance creation' }
-LudoMagicGame class >> errorMessageGameIsAlreadyFinished [
-
-	^ self error: 'Game is finished, no more rolls are allowed'
+LudoMagicGame class >> validateWith: aCollectionOfPlayers with: aCollectionOfDices and: aSize [
+	LudoMagicValidator new valid: aCollectionOfPlayers  with: aCollectionOfDices  with: aSize. 
 ]
 
 { #category : #'instance creation' }
-LudoMagicGame class >> validateWithPlayers: aCollectionOfPlayers Dices: aCollectionOfDices AndSize: aSize [
-	| aValidator |
-	aValidator:= LudoMagicValidator new.
-	
-	aValidator valid: aCollectionOfPlayers  with: aCollectionOfDices  with: aSize. 
-]
-
-{ #category : #'instance creation' }
-LudoMagicGame class >> withPlayers: aCollectionOfPlayers withDices: aCollectionOfDices andSize: aSize [
+LudoMagicGame class >> with: aCollectionOfPlayers with: aCollectionOfDices and: aSize [
 	self
-		validateWithPlayers: aCollectionOfPlayers
-		Dices: aCollectionOfDices
-		AndSize: aSize.
+		validateWith: aCollectionOfPlayers
+		with: aCollectionOfDices
+		and: aSize.
 	^ self new
-		initializeWithPlayers: aCollectionOfPlayers
-		withDices: aCollectionOfDices
-		andSize: aSize
+		initializeWith: aCollectionOfPlayers
+		with: aCollectionOfDices
+		and: aSize
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeWithPlayers: aCollectionOfPlayers  withDices: aCollectionOfDices andSize: aSize [ 
+LudoMagicGame >> initializeWith: aCollectionOfPlayers  with: aCollectionOfDices and: aSize [ 
 	players:= aCollectionOfPlayers .
 	dices:= aCollectionOfDices .
 	size:= aSize.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accesing }
 LudoMagicGame >> isFinished [
 	^ players anySatisfy: [:player | player finished: size].
 ]
 
-{ #category : #'as yet unclassified' }
-LudoMagicGame >> rolls [
-	self isFinished
-	ifTrue: [ LudoMagicGame errorMessageGameIsAlreadyFinished ].
+{ #category : #accesing }
+LudoMagicGame >> makePlayersThrowDices [
+	self validateIfMoreRollsAreAllowed.
+
 	players do:[:player| self isFinished
 		ifFalse:[player throws: dices withFinishLine: size].
 		].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #validation }
+LudoMagicGame >> validateIfMoreRollsAreAllowed [
+	self isFinished
+		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
+]
+
+{ #category : #accesing }
 LudoMagicGame >> winner [
-	^ players detect:[:player | player position >= size].
+	^ players detect:[:player | player position = size].
 ]
