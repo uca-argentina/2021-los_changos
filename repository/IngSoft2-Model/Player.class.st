@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #accessing }
-Player >> finished: aSize [
-	^ position = aSize.
+Player >> finished: size [
+	^ position = size.
 ]
 
 { #category : #initialization }
@@ -23,8 +23,8 @@ Player >> position [
 ]
 
 { #category : #actions }
-Player >> throws: aCollectionOfDices withFinishLine: aSize [
+Player >> throws: aCollectionOfDices with: aFinishLine [
 	| roll |
 	roll := (aCollectionOfDices collect:[ :dice | dice roll ]) sum .
-	position := aSize min: position + roll.
+	position := aFinishLine min: position + roll.
 ]

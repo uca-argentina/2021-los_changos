@@ -43,7 +43,7 @@ LudoMagicGame >> makePlayersThrowDices [
 	self validateIfMoreRollsAreAllowed.
 
 	players do:[:player| self isFinished
-		ifFalse:[player throws: dices withFinishLine: size].
+		ifFalse:[player throws: dices with: size].
 		].
 ]
 

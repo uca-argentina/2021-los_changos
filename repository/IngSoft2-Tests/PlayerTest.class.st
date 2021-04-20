@@ -17,7 +17,7 @@ PlayerTest >> testAPlayerThrowsLoadedDiceOnceAndMoveForward [
 	aLoadedDice := LoadedDice with: #(1 2 3 4 5).
 	aPlayer:=  Player new.
 	
-	aPlayer throws: {aLoadedDice} withFinishLine:8.
+	aPlayer throws: {aLoadedDice} with:8.
 	
 	self assert: aPlayer position equals:  1.
 ]
@@ -28,7 +28,7 @@ PlayerTest >> testAPlayerThrowsLoadedDices [
 	|  aPlayer dices |
 	dices := {  LoadedDice with: #(1 2 3 4 5) . LoadedDice with: #(3 4 5)  }.
 	aPlayer:=  Player new.
-	self assert: (aPlayer throws: dices withFinishLine:8) position equals: 4 .
+	self assert: (aPlayer throws: dices with:8) position equals: 4 .
 ]
 
 { #category : #tests }
@@ -39,8 +39,8 @@ PlayerTest >> testAPlayerThrowsLoadedDicesTwiceAndMoveForward [
 	aLoadedDice := LoadedDice with: #(4 5 6 7 8).
 	aPlayer:=  Player new.
 	
-	aPlayer throws:{aLoadedDice} withFinishLine:8.
-	aPlayer throws:{aLoadedDice} withFinishLine:8.
+	aPlayer throws:{aLoadedDice} with:8.
+	aPlayer throws:{aLoadedDice} with:8.
 	
 	self assert: aPlayer position  equals: 8.
 ]
