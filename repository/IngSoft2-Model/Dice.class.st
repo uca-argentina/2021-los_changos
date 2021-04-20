@@ -7,9 +7,19 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #validation }
+Dice class >> validate: numberOfFaces [
+	
+	numberOfFaces <= 1
+		ifTrue: [self error: 'The number of faces must be greater than 1']
+]
+
 { #category : #'instance creation' }
 Dice class >> with: numberOfFaces [. 
-	^ self new initializeWith: numberOfFaces .
+
+	self validate: numberOfFaces.
+	
+	^self new initializeWith: numberOfFaces .
 ]
 
 { #category : #initialize }

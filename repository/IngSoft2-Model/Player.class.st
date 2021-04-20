@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #accessing }
-Player >> finished: size [
-	^ position = size.
+Player >> finished: aFinishLine [
+	^ position = aFinishLine.
 ]
 
 { #category : #initialization }

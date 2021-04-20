@@ -5,6 +5,23 @@ Class {
 }
 
 { #category : #tests }
+DiceTest >> testADiceThrowsErrorWhenNumberOfFacesIsNegative [
+	
+	self should: [Dice with: -6]
+	raise: Error
+	description: 'The number of faces must be greater than 1'.
+	
+	self should: [Dice with: 0]
+	raise: Error
+	description: 'The number of faces must be greater than 1'.
+	
+	self should: [Dice with: 1]
+	raise: Error
+	description: 'The number of faces must be greater than 1'.
+	
+]
+
+{ #category : #tests }
 DiceTest >> testADiceWithNumberOfFacesRollsANumberBetweenOneAndAnotherNumber [
 	
 	| aDice aNumber |
