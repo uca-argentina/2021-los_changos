@@ -1,19 +1,27 @@
 Class {
 	#name : #LudoMagicGameTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'jorge',
+		'julian',
+		'players',
+		'dices',
+		'aGame'
+	],
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #running }
+LudoMagicGameTest >> setUp [
+	jorge := Player new.
+	julian := Player new.
+	players := OrderedCollection with: jorge with: julian.
+	dices := OrderedCollection with: (LoadedDice with: #(1 2 3 4 5)) with: (LoadedDice with: #(4 5 6 7)).
+	aGame := LudoMagicGame with: players with: dices and: 10.
+]
+
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
-	| aGame players dices julian jorge |
-	julian := Player new.
-	jorge := Player new.
-	players := OrderedCollection with: jorge with: julian.
-	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame with: players with: dices and: 10.
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
 	self assert: aGame winner equals: jorge
@@ -21,30 +29,13 @@ LudoMagicGameTest >> testAGameHasAWinner [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
-	| aGame players dices julian jorge |
-	julian := Player new.
-	jorge := Player new.
-	players := OrderedCollection with: julian with: jorge.
-	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame
-		with: players
-		with: dices
-		and: 10.
 	aGame makePlayersThrowDices.
-	self assert: julian position equals: 5.
-	self assert: jorge position equals: 7
+	self assert: jorge position equals: 5.
+	self assert: julian position equals: 7
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
-	| aGame players dices julian jorge|
-	julian := Player new.
-	jorge := Player new.	
-	players := OrderedCollection
-		with: julian 
-		with: jorge.
 	dices := OrderedCollection
 		with: (LoadedDice with: #(1 2 4 1 5))
 		with: (LoadedDice with: #(4 5 1 1)).
@@ -52,6 +43,7 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 		with: players
 		with: dices
 		and: 10.
+	
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
 	self assert: aGame isFinished
@@ -59,19 +51,6 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
-	| aGame players dices julian jorge|
-	julian := Player new.
-	jorge := Player new.	
-	players := OrderedCollection
-		with: julian
-		with: jorge.
-	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame
-		with: players
-		with: dices
-		and: 10.
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
 	self assert: aGame isFinished
@@ -79,12 +58,6 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMor
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
-	|  players dices julian jorge |
-	julian := Player new.
-	jorge := Player new.	
-	players := OrderedCollection
-		with: julian
-		with: jorge.
 	dices := {}.
 	self
 		should: [ LudoMagicGame
@@ -97,19 +70,7 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
-	| aGame players dices julian jorge |
-	jorge := Player new.
-	julian := Player new.
-	players := OrderedCollection
-		with: jorge
-		with: julian.
-	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame
-		with: players
-		with: dices
-		and: 10.
+
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
 	self
@@ -121,13 +82,6 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollThe
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenSizeIsZero [
 	
-	| players dices julian jorge |
-	jorge := Player new.
-	julian := Player new.
-
-	players := OrderedCollection with: jorge with: julian.
-	dices:= (OrderedCollection with: (LoadedDice with: #(1 2 3 4 5 )) with: (LoadedDice with: #(4 5 6 7))).	
-	
 	self should: [LudoMagicGame with:(players) with:(dices) and: 0]
 	raise: Error
 	description: SizeBoardRule new errorMessage .
@@ -136,25 +90,12 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenSizeIsZero [
 
 { #category : #tests }
 LudoMagicGameTest >> testANewGameIsNotFinished [
-	| aGame players dices julian jorge |
-	jorge := Player new.
-	julian := Player new.
-	players := OrderedCollection with: jorge  with: julian.
-	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame
-		with: players
-		with: dices
-		and: 10.
 	self deny: aGame isFinished
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testNewGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
-	| players dices aPlayer|
-	aPlayer := Player new.
-	players := OrderedCollection with: aPlayer .
+	players remove: jorge.
 	dices := OrderedCollection
 		with: (LoadedDice with: #(1 2 3 4 5))
 		with: (LoadedDice with: #(4 5 6 7)).
@@ -169,17 +110,6 @@ LudoMagicGameTest >> testNewGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
 
 { #category : #tests }
 LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
-	| aGame players dices jorge julian |
-	jorge := Player new.
-	julian := Player new.
-	players := OrderedCollection with: jorge with: julian.
-	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame
-		with: players
-		with: dices
-		and: 10.
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
 	self assert: jorge position equals: 10.
