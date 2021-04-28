@@ -22,7 +22,7 @@ DiceTest >> testADiceThrowsErrorWhenNumberOfFacesIsNegative [
 ]
 
 { #category : #tests }
-DiceTest >> testADiceWithNumberOfFacesRollsANumberBetweenOneAndAnotherNumber [
+DiceTest >> testADiceWithNumberOfFacesRolls [
 	
 	| aDice aNumber |
 	aNumber:= 10.
@@ -31,7 +31,7 @@ DiceTest >> testADiceWithNumberOfFacesRollsANumberBetweenOneAndAnotherNumber [
 ]
 
 { #category : #tests }
-DiceTest >> testALoadedDiceRollsMoreTimesThanArraySize [
+DiceTest >> testALoadedDiceRollsMoreTimesThanQuantityOfValues [
 	
 	| aLoadedDice |
 	
@@ -44,7 +44,7 @@ DiceTest >> testALoadedDiceRollsMoreTimesThanArraySize [
 ]
 
 { #category : #tests }
-DiceTest >> testALoadedDiceRollsOnceAndReturnsTheFirstValueOfAnArray [
+DiceTest >> testALoadedDiceRollsOnceAndReturnsTheFirstValue [
 	
 	| aLoadedDice |
 	

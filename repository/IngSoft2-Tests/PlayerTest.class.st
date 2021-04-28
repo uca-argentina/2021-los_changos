@@ -6,7 +6,9 @@ Class {
 
 { #category : #tests }
 PlayerTest >> testAPlayerStartsInPositionZero [
-	self assert: Player new position equals: 0.
+	| aPlayer |
+	aPlayer := Player new.
+	self assert: aPlayer position equals: 0
 ]
 
 { #category : #tests }
