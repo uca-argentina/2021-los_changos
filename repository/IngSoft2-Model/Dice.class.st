@@ -10,7 +10,7 @@ Class {
 { #category : #validation }
 Dice class >> validate: numberOfFaces [
 	
-	numberOfFaces <= 1
+	numberOfFaces <= 2
 		ifTrue: [self error: 'The number of faces must be greater than 1']
 ]
 

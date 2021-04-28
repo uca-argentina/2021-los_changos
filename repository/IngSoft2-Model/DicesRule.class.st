@@ -12,5 +12,5 @@ DicesRule >> errorMessage [
 { #category : #testing }
 DicesRule >> isNotValidBoardWith: size with: players and: dices [
 	
-	^ dices size = 0
+	^ dices isEmpty 
 ]
