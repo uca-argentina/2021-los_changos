@@ -2,28 +2,28 @@ Class {
 	#name : #LoadedDice,
 	#superclass : #Object,
 	#instVars : [
-		'numbers',
-		'nextValue'
+		'nextValue',
+		'values'
 	],
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'instance creation' }
-LoadedDice class >> with: aCollectionOfNumbers [
-	^self new initializeWithFaces: aCollectionOfNumbers.
+LoadedDice class >> withValues: values [
+	^self new initializeWithValues: values.
 ]
 
 { #category : #initialization }
-LoadedDice >> initializeWithFaces: aCollectionOfNumbers [
+LoadedDice >> initializeWithValues: aGroupOfValues [.
 	nextValue:=1.
-	numbers:= aCollectionOfNumbers.
+	values:= aGroupOfValues.
 ]
 
 { #category : #accessing }
 LoadedDice >> roll [
 	| number |
-	number:=numbers at: nextValue.
-	nextValue:=(nextValue rem: numbers size) +1.
+	number:=values at: nextValue.
+	nextValue:=(nextValue rem: values size) +1.
 	^number.
 	
 ]

@@ -10,7 +10,7 @@ LudoMagicGameRule >> errorMessage [
 ]
 
 { #category : #testing }
-LudoMagicGameRule >> isNotValidBoardWith: size with: players and: dices [
+LudoMagicGameRule >> isNotAValidGamePlayedBy: players throwing: dices onBoardOf: size [
 self subclassResponsibility 
 ]
 

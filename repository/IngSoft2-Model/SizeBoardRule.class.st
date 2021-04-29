@@ -10,6 +10,6 @@ SizeBoardRule >> errorMessage [
 ]
 
 { #category : #testing }
-SizeBoardRule >> isNotValidBoardWith: size with: players and: dices [
+SizeBoardRule >> isNotAValidGamePlayedBy: players throwing: dices onBoardOf: size [
 	^ size <= 0
 ]

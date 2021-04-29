@@ -8,16 +8,16 @@ Class {
 }
 
 { #category : #validation }
-Dice class >> validate: numberOfFaces [
+Dice class >> validateADiceWithFaces: aNumberOfFaces [
 	
-	numberOfFaces <= 2
+	aNumberOfFaces <= 2
 		ifTrue: [self error: 'The number of faces must be greater than 1']
 ]
 
 { #category : #'instance creation' }
-Dice class >> with: numberOfFaces [. 
+Dice class >> withFaces: numberOfFaces [. 
 
-	self validate: numberOfFaces.
+	self validateADiceWithFaces: numberOfFaces.
 	
 	^self new initializeWithFaces: numberOfFaces .
 ]

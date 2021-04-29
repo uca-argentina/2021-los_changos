@@ -10,9 +10,9 @@ GroupOfPlayersRule >> errorMessage [
 ]
 
 { #category : #testing }
-GroupOfPlayersRule >> isNotValidBoardWith: size with: players and: dices [
+GroupOfPlayersRule >> isNotAValidGamePlayedBy: players throwing: dices onBoardOf: size [
 
-^ players size <=1
+^ players size <= 1.
 	
 
 ]

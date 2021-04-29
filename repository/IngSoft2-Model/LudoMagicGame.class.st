@@ -11,20 +11,26 @@ Class {
 }
 
 { #category : #'instance creation' }
-LudoMagicGame class >> validateWith: aCollectionOfPlayers with: aCollectionOfDices and: aSize [
-	LudoMagicValidator new valid: aCollectionOfPlayers  with: aCollectionOfDices  with: aSize. 
+LudoMagicGame class >> playedBy: players throwing: dices onBoardOf: size [
+	self
+		validateGamePlayedBy: players
+		throwing: dices
+		onBoardOf: size.
+	^ self new
+		initializeGamePlayedBy: players
+		throwing: dices
+		onBoardOf: size
 ]
 
 { #category : #'instance creation' }
-LudoMagicGame class >> with: aCollectionOfPlayers with: aCollectionOfDices and: aSize [
-	self
-		validateWith: aCollectionOfPlayers
-		with: aCollectionOfDices
-		and: aSize.
-	^ self new
-		initializeWithPlayers: aCollectionOfPlayers
-		dices: aCollectionOfDices
-		andSize: aSize
+LudoMagicGame class >> validateGamePlayedBy: players throwing: dices onBoardOf: size [
+	LudoMagicValidator new validateAGamePlayedBy: players  throwing: dices  onBoardOf: size. 
+]
+
+{ #category : #validation }
+LudoMagicGame >> checkIfRollsAreAllowed [
+	finished
+		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
 ]
 
 { #category : #accesing }
@@ -33,18 +39,23 @@ LudoMagicGame >> finished [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeWithPlayers: aCollectionOfPlayers  dices: aCollectionOfDices andSize: aSize [ 
-	players:= OrderedDictionary newFromKeys: aCollectionOfPlayers andValues: (OrderedCollection new: aCollectionOfPlayers size withAll: 0).
-	dices:= aCollectionOfDices .
+LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers  throwing: aGroupOfDices onBoardOf: aSize [ 
+	players:= OrderedDictionary newFromKeys: aGroupOfPlayers andValues: (OrderedCollection new: aGroupOfPlayers size withAll: 0).
+	dices:= aGroupOfDices .
 	size:= aSize.
 	finished:=false.
 	
 ]
 
-{ #category : #accesing }
-LudoMagicGame >> makePlayersThrowDices [
+{ #category : #'as yet unclassified' }
+LudoMagicGame >> positionOf: player [ 
+	^ players at: player.
+]
 
-	self validateIfMoreRollsAreAllowed.
+{ #category : #accesing }
+LudoMagicGame >> turn [
+
+	self checkIfRollsAreAllowed.
 
 	players keysAndValuesDo: [:player :position | 
 		finished ifFalse:[
@@ -54,17 +65,6 @@ LudoMagicGame >> makePlayersThrowDices [
 			players at: player put: newPosition.
 		].
 		].
-]
-
-{ #category : #'as yet unclassified' }
-LudoMagicGame >> positionOf: aPlayer [ 
-	^ players at: aPlayer.
-]
-
-{ #category : #validation }
-LudoMagicGame >> validateIfMoreRollsAreAllowed [
-	finished
-		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
 ]
 
 { #category : #accesing }

@@ -7,15 +7,15 @@ Class {
 { #category : #tests }
 DiceTest >> testADiceThrowsErrorWhenNumberOfFacesIsNegative [
 	
-	self should: [Dice with: -6]
+	self should: [Dice withFaces: -6]
 	raise: Error
 	description: 'The number of faces must be greater than 1'.
 	
-	self should: [Dice with: 0]
+	self should: [Dice withFaces: 0]
 	raise: Error
 	description: 'The number of faces must be greater than 1'.
 	
-	self should: [Dice with: 1]
+	self should: [Dice withFaces: 1]
 	raise: Error
 	description: 'The number of faces must be greater than 1'.
 	
@@ -26,7 +26,7 @@ DiceTest >> testADiceWithNumberOfFacesRolls [
 	
 	| aDice aNumber |
 	aNumber:= 10.
-	aDice:= Dice with: aNumber .
+	aDice:= Dice withFaces: aNumber .
 	self assert: (aDice roll between: 1  and: aNumber ). 
 ]
 
@@ -35,7 +35,7 @@ DiceTest >> testALoadedDiceRollsMoreTimesThanQuantityOfValues [
 	
 	| aLoadedDice |
 	
-	aLoadedDice := LoadedDice with: #(0 9 7 1).
+	aLoadedDice := LoadedDice withValues: #(0 9 7 1).
 	self assert: aLoadedDice roll equals: 0.
 	self assert: aLoadedDice roll equals: 9.
 	self assert: aLoadedDice roll equals: 7.
@@ -48,7 +48,7 @@ DiceTest >> testALoadedDiceRollsOnceAndReturnsTheFirstValue [
 	
 	| aLoadedDice |
 	
-	aLoadedDice := LoadedDice with: #(1 2 3 4 5 6).
+	aLoadedDice := LoadedDice withValues: #(1 2 3 4 5 6).
 	self assert: aLoadedDice roll equals: 1.
 ]
 
@@ -57,7 +57,7 @@ DiceTest >> testALoadedDiceRollsTwiceAndReturnsTheFirstTwoValues [
 	
 	| aLoadedDice |
 	
-	aLoadedDice := LoadedDice with: #(5 1 0 5 7 6).
+	aLoadedDice := LoadedDice withValues: #(5 1 0 5 7 6).
 	self assert: aLoadedDice roll equals: 5.
 	self assert: aLoadedDice roll equals: 1.
 ]

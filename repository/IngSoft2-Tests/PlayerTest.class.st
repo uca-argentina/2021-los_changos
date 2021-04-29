@@ -9,7 +9,7 @@ PlayerTest >> testAPlayerThrowsLoadedDiceOnce [
 	
 	| aLoadedDice aPlayer |
 	
-	aLoadedDice := LoadedDice with: #(1 2 3 4 5).
+	aLoadedDice := LoadedDice withValues: #(1 2 3 4 5).
 	aPlayer:=  Player new.
 	
 	
@@ -21,7 +21,7 @@ PlayerTest >> testAPlayerThrowsLoadedDiceOnce [
 PlayerTest >> testAPlayerThrowsLoadedDices [
 	
 	|  aPlayer dices |
-	dices := {  LoadedDice with: #(1 2 3 4 5) . LoadedDice with: #(3 4 5)  }.
+	dices := {  LoadedDice withValues: #(1 2 3 4 5) . LoadedDice withValues: #(3 4 5)  }.
 	aPlayer:=  Player new.
 	self assert: (aPlayer throws: dices) equals: 4 .
 ]
@@ -31,7 +31,7 @@ PlayerTest >> testAPlayerThrowsLoadedDicesTwiceAndMoveForward [
 	
 	| aLoadedDice aPlayer |
 	
-	aLoadedDice := LoadedDice with: #(4 5 6 7 8).
+	aLoadedDice := LoadedDice withValues: #(4 5 6 7 8).
 	aPlayer:=  Player new.
 	
 	aPlayer throws:{aLoadedDice}.

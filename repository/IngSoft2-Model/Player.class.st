@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #actions }
-Player >> throws: aCollectionOfDices [
+Player >> throws: dices [
 	
-	^(aCollectionOfDices collect:[ :dice | dice roll ]) sum .
+	^(dices collect:[ :dice | dice roll ]) sum .
 ]

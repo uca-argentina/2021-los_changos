@@ -5,11 +5,16 @@ Class {
 }
 
 { #category : #validation }
-LudoMagicValidator >> valid: players with: dices with: aSize [
-
+LudoMagicValidator >> validateAGamePlayedBy: players throwing: dices onBoardOf: size [
 	| rules |
-	rules := OrderedCollection new. 
+	rules := OrderedCollection new.
 	LudoMagicGameRule subclassesDo: [ :aRule | rules add: aRule new ].
-	
-	rules select: [ :aRule | aRule isNotValidBoardWith: aSize with: players and: dices ] thenDo: [ :aRule | aRule throwError ] ifNone: [].
+	rules
+		select: [ :aRule | 
+			aRule
+				isNotAValidGamePlayedBy: players
+				throwing: dices
+				onBoardOf: size ]
+		thenDo: [ :aRule | aRule throwError ]
+		ifNone: [  ]
 ]

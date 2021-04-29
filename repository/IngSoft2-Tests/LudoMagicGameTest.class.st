@@ -16,21 +16,21 @@ LudoMagicGameTest >> setUp [
 	jorge := Player new.
 	julian := Player new.
 	players := OrderedCollection with: jorge with: julian.
-	dices:= OrderedCollection with: (LoadedDice with: #(1 2 3 4 5)) with: (LoadedDice with: #(4 5 6 7)).
-	aGame := LudoMagicGame with: players with: dices and: 10.
+	dices:= OrderedCollection with: (LoadedDice withValues: #(1 2 3 4 5)) with: (LoadedDice withValues: #(4 5 6 7)).
+	aGame := LudoMagicGame playedBy: players throwing: dices onBoardOf: 10.
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
 	self setUp.
-	aGame makePlayersThrowDices.
-	aGame makePlayersThrowDices.
+	aGame turn.
+	aGame turn.
 	self assert: aGame winner equals: jorge.
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
-	aGame makePlayersThrowDices.
+	aGame turn.
 	self assert: (aGame positionOf:jorge) equals: 5.
 	self assert: (aGame positionOf:julian) equals: 7
 ]
@@ -38,22 +38,22 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
 	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 4 1 5))
-		with: (LoadedDice with: #(4 5 1 1)).
+		with: (LoadedDice withValues: #(1 2 4 1 5))
+		with: (LoadedDice withValues: #(4 5 1 1)).
 	aGame := LudoMagicGame
-		with: players
-		with: dices
-		and: 10.
+		playedBy: players
+		throwing: dices
+		onBoardOf: 10.
 	
-	aGame makePlayersThrowDices.
-	aGame makePlayersThrowDices.
+	aGame turn.
+	aGame turn.
 	self assert: aGame finished
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
-	aGame makePlayersThrowDices.
-	aGame makePlayersThrowDices.
+	aGame turn.
+	aGame turn.
 	self assert: aGame finished
 ]
 
@@ -62,9 +62,9 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
 	dices := {}.
 	self
 		should: [ LudoMagicGame
-				with: players
-				with: dices
-				and: 5 ]
+				playedBy: players
+				throwing: dices
+				onBoardOf: 5 ]
 		raise: Error
 		description: DicesRule new errorMessage
 ]
@@ -72,10 +72,10 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
 
-	aGame makePlayersThrowDices.
-	aGame makePlayersThrowDices.
+	aGame turn.
+	aGame turn.
 	self
-		should: [ aGame makePlayersThrowDices ]
+		should: [ aGame turn ]
 		raise: Error
 		description: 'Game is finished, no more rolls are allowed'
 ]
@@ -83,7 +83,7 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollThe
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenSizeIsZero [
 	
-	self should: [LudoMagicGame with:(players) with:(dices) and: 0]
+	self should: [LudoMagicGame playedBy:(players) throwing:(dices) onBoardOf: 0]
 	raise: Error
 	description: SizeBoardRule new errorMessage .
 
@@ -98,21 +98,21 @@ LudoMagicGameTest >> testANewGameIsNotFinished [
 LudoMagicGameTest >> testNewGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
 	players remove: jorge.
 	dices := OrderedCollection
-		with: (LoadedDice with: #(1 2 3 4 5))
-		with: (LoadedDice with: #(4 5 6 7)).
+		with: (LoadedDice withValues: #(1 2 3 4 5))
+		with: (LoadedDice withValues: #(4 5 6 7)).
 	self
 		should: [ LudoMagicGame
-				with: players
-				with: dices
-				and: 10 ]
+				playedBy: players
+				throwing: dices
+				onBoardOf: 10 ]
 		raise: Error
 		description: GroupOfPlayersRule new errorMessage
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
-	aGame makePlayersThrowDices.
-	aGame makePlayersThrowDices.
+	aGame turn.
+	aGame turn.
 	self assert: (aGame positionOf: jorge) equals: 10.
 	self assert: (aGame positionOf: julian) equals: 7.
 
