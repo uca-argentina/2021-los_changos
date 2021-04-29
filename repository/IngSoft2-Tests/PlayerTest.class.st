@@ -5,23 +5,16 @@ Class {
 }
 
 { #category : #tests }
-PlayerTest >> testAPlayerStartsInPositionZero [
-	| aPlayer |
-	aPlayer := Player new.
-	self assert: aPlayer position equals: 0
-]
-
-{ #category : #tests }
-PlayerTest >> testAPlayerThrowsLoadedDiceOnceAndMoveForward [
+PlayerTest >> testAPlayerThrowsLoadedDiceOnce [
 	
 	| aLoadedDice aPlayer |
 	
 	aLoadedDice := LoadedDice with: #(1 2 3 4 5).
 	aPlayer:=  Player new.
 	
-	aPlayer throws: {aLoadedDice} with:8.
 	
-	self assert: aPlayer position equals:  1.
+	
+	self assert: (aPlayer throws: {aLoadedDice}) equals:  1.
 ]
 
 { #category : #tests }
@@ -30,7 +23,7 @@ PlayerTest >> testAPlayerThrowsLoadedDices [
 	|  aPlayer dices |
 	dices := {  LoadedDice with: #(1 2 3 4 5) . LoadedDice with: #(3 4 5)  }.
 	aPlayer:=  Player new.
-	self assert: (aPlayer throws: dices with:8) position equals: 4 .
+	self assert: (aPlayer throws: dices) equals: 4 .
 ]
 
 { #category : #tests }
@@ -41,8 +34,8 @@ PlayerTest >> testAPlayerThrowsLoadedDicesTwiceAndMoveForward [
 	aLoadedDice := LoadedDice with: #(4 5 6 7 8).
 	aPlayer:=  Player new.
 	
-	aPlayer throws:{aLoadedDice} with:8.
-	aPlayer throws:{aLoadedDice} with:8.
+	aPlayer throws:{aLoadedDice}.
+	aPlayer throws:{aLoadedDice}.
 	
-	self assert: aPlayer position  equals: 8.
+	self assert: (aPlayer throws:{aLoadedDice}) equals: 6.
 ]

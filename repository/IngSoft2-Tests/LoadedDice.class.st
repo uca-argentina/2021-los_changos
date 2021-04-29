@@ -10,11 +10,11 @@ Class {
 
 { #category : #'instance creation' }
 LoadedDice class >> with: aCollectionOfNumbers [
-	^self new initializeWith: aCollectionOfNumbers.
+	^self new initializeWithFaces: aCollectionOfNumbers.
 ]
 
 { #category : #initialization }
-LoadedDice >> initializeWith: aCollectionOfNumbers [
+LoadedDice >> initializeWithFaces: aCollectionOfNumbers [
 	nextValue:=1.
 	numbers:= aCollectionOfNumbers.
 ]

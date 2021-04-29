@@ -19,11 +19,11 @@ Dice class >> with: numberOfFaces [.
 
 	self validate: numberOfFaces.
 	
-	^self new initializeWith: numberOfFaces .
+	^self new initializeWithFaces: numberOfFaces .
 ]
 
 { #category : #initialize }
-Dice >> initializeWith: aNumberOfFaces [
+Dice >> initializeWithFaces: aNumberOfFaces [
 	numberOfFaces:= aNumberOfFaces .
 ]
 

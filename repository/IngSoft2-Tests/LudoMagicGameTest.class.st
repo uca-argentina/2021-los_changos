@@ -16,22 +16,23 @@ LudoMagicGameTest >> setUp [
 	jorge := Player new.
 	julian := Player new.
 	players := OrderedCollection with: jorge with: julian.
-	dices := OrderedCollection with: (LoadedDice with: #(1 2 3 4 5)) with: (LoadedDice with: #(4 5 6 7)).
+	dices:= OrderedCollection with: (LoadedDice with: #(1 2 3 4 5)) with: (LoadedDice with: #(4 5 6 7)).
 	aGame := LudoMagicGame with: players with: dices and: 10.
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
+	self setUp.
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
-	self assert: aGame winner equals: jorge
+	self assert: aGame winner equals: jorge.
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	aGame makePlayersThrowDices.
-	self assert: jorge position equals: 5.
-	self assert: julian position equals: 7
+	self assert: (aGame positionOf:jorge) equals: 5.
+	self assert: (aGame positionOf:julian) equals: 7
 ]
 
 { #category : #tests }
@@ -46,14 +47,14 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 	
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
-	self assert: aGame isFinished
+	self assert: aGame finished
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
-	self assert: aGame isFinished
+	self assert: aGame finished
 ]
 
 { #category : #tests }
@@ -90,7 +91,7 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenSizeIsZero [
 
 { #category : #tests }
 LudoMagicGameTest >> testANewGameIsNotFinished [
-	self deny: aGame isFinished
+	self deny: aGame finished
 ]
 
 { #category : #tests }
@@ -112,6 +113,7 @@ LudoMagicGameTest >> testNewGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
 LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
 	aGame makePlayersThrowDices.
 	aGame makePlayersThrowDices.
-	self assert: jorge position equals: 10.
-	self assert: julian position equals: 7
+	self assert: (aGame positionOf: jorge) equals: 10.
+	self assert: (aGame positionOf: julian) equals: 7.
+
 ]
