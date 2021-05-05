@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'player',
-		'value'
+		'location'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -15,26 +15,26 @@ Position class >> assignedTo: aPlayer [
 
 { #category : #comparing }
 Position >> >= aPosition [ 
-	^ value >= aPosition value 
+	^ location >= aPosition location
 ]
 
 { #category : #initialization }
 Position >> initializeAssignedTo: aPlayer [ 
 	player := aPlayer.
-	value := 0.
+	location := 0.
+]
+
+{ #category : #accesing }
+Position >> location [
+	^location
 ]
 
 { #category : #action }
-Position >> move: newValue upTo: aLimit [
-	value := (value + newValue ) min: aLimit.
+Position >> move: advancedSquares upTo: aLimit [
+	location := (location + advancedSquares ) min: aLimit.
 ]
 
 { #category : #accesing }
 Position >> player [
 	^ player
-]
-
-{ #category : #accesing }
-Position >> value [
-	^value
 ]

@@ -11,18 +11,20 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> withSize: aSize and: laps and: aGroupOfPlayers [
-	
-	^ self new initializeWithSize: aSize and: laps and: aGroupOfPlayers 
+Board class >> playedBy: players withNumberOfLaps: laps with: size [
+	^ self new
+		initializeBoardPlayedBy: players
+		withNumberOfLaps: laps
+		with: size
 ]
 
 { #category : #accessing }
 Board >> finished: aPlayer [ 
-	^ (self positionOf: aPlayer) value  = (size * laps)
+	^ (self positionOf: aPlayer) location  = (size * laps)
 ]
 
 { #category : #initialization }
-Board >> initializeWithSize: aSize and:  numberOfLaps and: aGroupOfPlayers [
+Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aSize [
 	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
 	size := aSize.
 	laps := numberOfLaps.
@@ -31,7 +33,7 @@ Board >> initializeWithSize: aSize and:  numberOfLaps and: aGroupOfPlayers [
 
 { #category : #accessing }
 Board >> lapOf: aPlayer [ 
-	^ ( (self positionOf: aPlayer) value ) // size
+	^ ( (self positionOf: aPlayer) location  ) // size
 ]
 
 { #category : #action }

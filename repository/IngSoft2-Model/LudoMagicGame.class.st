@@ -47,11 +47,14 @@ LudoMagicGame >> finished [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers  throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [ 
+LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [
 	players := aGroupOfPlayers.
-	dices := aGroupOfDices .
-	finished:=false.
-	board := Board withSize: aSize and: laps and: aGroupOfPlayers.
+	dices := aGroupOfDices.
+	finished := false.
+	board := Board
+		playedBy: aGroupOfPlayers
+		withNumberOfLaps: laps
+		with: aSize
 ]
 
 { #category : #accessing }
@@ -60,8 +63,8 @@ LudoMagicGame >> lapOf: player [
 ]
 
 { #category : #accesing }
-LudoMagicGame >> squareOf: player [ 
-	^ (board positionOf: player) value
+LudoMagicGame >> locationOf: player [ 
+	^ (board positionOf: player) location
 ]
 
 { #category : #accesing }

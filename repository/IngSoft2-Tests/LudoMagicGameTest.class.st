@@ -43,8 +43,8 @@ LudoMagicGameTest >> testAGameHasNoWinner [
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	anOneLapGame turn.
-	self assert: (anOneLapGame squareOf:jorge) equals: 5.
-	self assert: (anOneLapGame squareOf:julian) equals: 7
+	self assert: (anOneLapGame locationOf:jorge) equals: 5.
+	self assert: (anOneLapGame locationOf:julian) equals: 7
 ]
 
 { #category : #tests }
@@ -198,7 +198,7 @@ LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
 	anOneLapGame turn.
 	anOneLapGame turn.
 	anOneLapGame turn.
-	self assert: (anOneLapGame squareOf: jorge) equals: 20.
-	self assert: (anOneLapGame squareOf: julian) equals: 18.
+	self assert: (anOneLapGame locationOf: jorge) equals: 20.
+	self assert: (anOneLapGame locationOf: julian) equals: 18.
 
 ]
