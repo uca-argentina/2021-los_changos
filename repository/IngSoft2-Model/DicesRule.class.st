@@ -1,7 +1,7 @@
 Class {
 	#name : #DicesRule,
 	#superclass : #LudoMagicGameRule,
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Validators'
 }
 
 { #category : #accessing }

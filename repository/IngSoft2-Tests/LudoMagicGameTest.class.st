@@ -25,7 +25,6 @@ LudoMagicGameTest >> setUp [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
-	self setUp.
 	anOneLapGame turn.
 	anOneLapGame turn.
 	anOneLapGame turn.
@@ -93,13 +92,13 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollThe
 	self
 		should: [ anOneLapGame turn ]
 		raise: Error
-		description: 'Game is finished, no more rolls are allowed'
+		description: LudoMagicGame messageOfNoMoreRollsAllowed 
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenSizeIsZero [
 	
-	self should: [LudoMagicGame playedBy:(players) throwing:(dices) onBoardOf: 0]
+	self should: [LudoMagicGame playedBy:(players) throwing:(dices) withNumberOfLaps: 6 onBoardOf: 0]
 	raise: Error
 	description: SizeBoardRule new errorMessage .
 
@@ -124,6 +123,15 @@ LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 
 	self assert: (aThreeLapGame lapOf: jorge) equals: 0.
 	self assert: (aThreeLapGame lapOf: julian) equals: 1.
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
+
+	aThreeLapGame turn.
+	aThreeLapGame turn.
+	self assert: aThreeLapGame winner equals: julian.
+	self assert: (aThreeLapGame lapOf: julian) equals: 3.
 ]
 
 { #category : #tests }
@@ -172,6 +180,17 @@ LudoMagicGameTest >> testNewGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
 				onBoardOf: 10 ]
 		raise: Error
 		description: GroupOfPlayersRule new errorMessage
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testNoMoreTurnAreAllowedWhenThreeLapGameIsFinished [
+
+	aThreeLapGame turn.
+	aThreeLapGame turn.
+	
+	self 	should: [ aThreeLapGame turn ] 
+			raise: Error
+			description: [ LudoMagicGame messageOfNoMoreRollsAllowed  ]
 ]
 
 { #category : #tests }

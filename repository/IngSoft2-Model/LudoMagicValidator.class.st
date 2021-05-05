@@ -1,7 +1,7 @@
 Class {
 	#name : #LudoMagicValidator,
 	#superclass : #Object,
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Validators'
 }
 
 { #category : #validation }

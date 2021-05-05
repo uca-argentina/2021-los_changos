@@ -2,14 +2,18 @@ Class {
 	#name : #LudoMagicGame,
 	#superclass : #Object,
 	#instVars : [
-		'size',
 		'dices',
 		'finished',
-		'positions',
-		'players'
+		'players',
+		'board'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
+
+{ #category : #'instance creation' }
+LudoMagicGame class >> messageOfNoMoreRollsAllowed [
+	^ 'Game is finished, no more rolls are allowed'
+]
 
 { #category : #'instance creation' }
 LudoMagicGame class >> playedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
@@ -44,44 +48,32 @@ LudoMagicGame >> finished [
 
 { #category : #initialization }
 LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers  throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [ 
-	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
 	players := aGroupOfPlayers.
 	dices := aGroupOfDices .
-	size:= aSize.
 	finished:=false.
-	
+	board := Board withSize: aSize and: laps and: aGroupOfPlayers.
 ]
 
 { #category : #accessing }
-LudoMagicGame >> lapOf: aPlayer [ 
-	^ (self squareOf: aPlayer) // size
-]
-
-{ #category : #accesing }
-LudoMagicGame >> sortedPositions [
-	^ positions
-		asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
+LudoMagicGame >> lapOf: player [ 
+	^ board lapOf: player
 ]
 
 { #category : #accesing }
 LudoMagicGame >> squareOf: player [ 
-	^ (positions detect: [ :position | position player = player ]) squaresMoved
+	^ (board positionOf: player) value
 ]
 
 { #category : #accesing }
 LudoMagicGame >> turn [
 
 	self checkIfRollsAreAllowed.
-
-	players do: [:player  | 
-		
-		finished ifFalse:[
-			| playerPosition|
-			playerPosition := positions detect: [ :aPosition | aPosition player = player  ].
-			playerPosition move: (player  throws: dices) upTo: size.
-			finished:=(playerPosition squaresMoved = size).
-		].
 	
+	players do: [:player  | 
+		finished ifFalse:[
+			board move: player  to: (player  throws: dices).
+			finished:=( board finished: player ).
+		].
 		].
 ]
 
@@ -90,5 +82,5 @@ LudoMagicGame >> winner [
 	finished
 		ifFalse:
 			[ self error: 'There is no winner because game has not finished yet' ].
-	^ self sortedPositions first player
+	^ board sortedPositions first player
 ]

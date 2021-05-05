@@ -3,10 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'player',
-		'square',
-		'laps'
+		'value'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #'instance creation' }
@@ -16,19 +15,18 @@ Position class >> assignedTo: aPlayer [
 
 { #category : #comparing }
 Position >> >= aPosition [ 
-	^ square >= aPosition squaresMoved 
+	^ value >= aPosition value 
 ]
 
 { #category : #initialization }
 Position >> initializeAssignedTo: aPlayer [ 
 	player := aPlayer.
-	square := 0.
-	laps := 0.
+	value := 0.
 ]
 
 { #category : #action }
-Position >> move: newSquare upTo: aLimit [
-	square := (square + newSquare) min: aLimit.
+Position >> move: newValue upTo: aLimit [
+	value := (value + newValue ) min: aLimit.
 ]
 
 { #category : #accesing }
@@ -37,6 +35,6 @@ Position >> player [
 ]
 
 { #category : #accesing }
-Position >> squaresMoved [
-	^square
+Position >> value [
+	^value
 ]
