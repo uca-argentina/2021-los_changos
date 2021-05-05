@@ -10,8 +10,8 @@ LudoMagicGameRule >> errorMessage [
 ]
 
 { #category : #testing }
-LudoMagicGameRule >> isNotAValidGamePlayedBy: players throwing: dices onBoardOf: size [
-self subclassResponsibility 
+LudoMagicGameRule >> isNotAValidGamePlayedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
+	self subclassResponsibility 
 ]
 
 { #category : #testing }

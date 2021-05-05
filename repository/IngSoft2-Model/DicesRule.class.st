@@ -10,7 +10,6 @@ DicesRule >> errorMessage [
 ]
 
 { #category : #testing }
-DicesRule >> isNotAValidGamePlayedBy: players throwing: dices onBoardOf: size [
-	
+DicesRule >> isNotAValidGamePlayedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
 	^ dices isEmpty 
 ]

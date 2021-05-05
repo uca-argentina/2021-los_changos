@@ -2,29 +2,33 @@ Class {
 	#name : #LudoMagicGame,
 	#superclass : #Object,
 	#instVars : [
-		'players',
 		'size',
 		'dices',
-		'finished'
+		'finished',
+		'positions',
+		'players'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }
-LudoMagicGame class >> playedBy: players throwing: dices onBoardOf: size [
+LudoMagicGame class >> playedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
+
 	self
 		validateGamePlayedBy: players
 		throwing: dices
+		withNumberOfLaps: laps
 		onBoardOf: size.
 	^ self new
 		initializeGamePlayedBy: players
 		throwing: dices
+		withNumberOfLaps: laps
 		onBoardOf: size
 ]
 
 { #category : #'instance creation' }
-LudoMagicGame class >> validateGamePlayedBy: players throwing: dices onBoardOf: size [
-	LudoMagicValidator new validateAGamePlayedBy: players  throwing: dices  onBoardOf: size. 
+LudoMagicGame class >> validateGamePlayedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
+	LudoMagicValidator new validateAGamePlayedBy: players  throwing: dices withNumberOfLaps: laps onBoardOf: size. 
 ]
 
 { #category : #validation }
@@ -39,17 +43,29 @@ LudoMagicGame >> finished [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers  throwing: aGroupOfDices onBoardOf: aSize [ 
-	players:= OrderedDictionary newFromKeys: aGroupOfPlayers andValues: (OrderedCollection new: aGroupOfPlayers size withAll: 0).
-	dices:= aGroupOfDices .
+LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers  throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [ 
+	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
+	players := aGroupOfPlayers.
+	dices := aGroupOfDices .
 	size:= aSize.
 	finished:=false.
 	
 ]
 
-{ #category : #'as yet unclassified' }
-LudoMagicGame >> positionOf: player [ 
-	^ players at: player.
+{ #category : #accessing }
+LudoMagicGame >> lapOf: aPlayer [ 
+	^ (self squareOf: aPlayer) // size
+]
+
+{ #category : #accesing }
+LudoMagicGame >> sortedPositions [
+	^ positions
+		asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
+]
+
+{ #category : #accesing }
+LudoMagicGame >> squareOf: player [ 
+	^ (positions detect: [ :position | position player = player ]) squaresMoved
 ]
 
 { #category : #accesing }
@@ -57,17 +73,22 @@ LudoMagicGame >> turn [
 
 	self checkIfRollsAreAllowed.
 
-	players keysAndValuesDo: [:player :position | 
+	players do: [:player  | 
+		
 		finished ifFalse:[
-			| newPosition |
-			newPosition:= (position + (player throws: dices)) min: size.
-			finished:=(newPosition = size).
-			players at: player put: newPosition.
+			| playerPosition|
+			playerPosition := positions detect: [ :aPosition | aPosition player = player  ].
+			playerPosition move: (player  throws: dices) upTo: size.
+			finished:=(playerPosition squaresMoved = size).
 		].
+	
 		].
 ]
 
 { #category : #accesing }
 LudoMagicGame >> winner [
-	^ players keys detect:[:player| (players at: player) = size].
+	finished
+		ifFalse:
+			[ self error: 'There is no winner because game has not finished yet' ].
+	^ self sortedPositions first player
 ]

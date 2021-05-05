@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #validation }
-LudoMagicValidator >> validateAGamePlayedBy: players throwing: dices onBoardOf: size [
+LudoMagicValidator >> validateAGamePlayedBy: players  throwing: dices withNumberOfLaps: laps onBoardOf: size [
 	| rules |
 	rules := OrderedCollection new.
 	LudoMagicGameRule subclassesDo: [ :aRule | rules add: aRule new ].
@@ -14,6 +14,7 @@ LudoMagicValidator >> validateAGamePlayedBy: players throwing: dices onBoardOf: 
 			aRule
 				isNotAValidGamePlayedBy: players
 				throwing: dices
+				withNumberOfLaps: laps
 				onBoardOf: size ]
 		thenDo: [ :aRule | aRule throwError ]
 		ifNone: [  ]

@@ -10,7 +10,7 @@ GroupOfPlayersRule >> errorMessage [
 ]
 
 { #category : #testing }
-GroupOfPlayersRule >> isNotAValidGamePlayedBy: players throwing: dices onBoardOf: size [
+GroupOfPlayersRule >> isNotAValidGamePlayedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
 
 ^ players size <= 1.
 	
