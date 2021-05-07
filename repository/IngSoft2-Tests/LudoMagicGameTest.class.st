@@ -35,22 +35,6 @@ LudoMagicGameTest >> setUp [
 ]
 
 { #category : #tests }
-LudoMagicGameTest >> testAFixedBoard [
-
-	| squares aBoard aGame |
-	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare new. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare new.}.
-	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
-	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
-	
-	aGame turn.
-	
-	self assert: (aGame locationOf: jorge) equals: 1.
-	self assert: (aGame locationOf: julian) equals: 4.
-	
-	
-]
-
-{ #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
 	anOneLapGame turn.
 	anOneLapGame turn.
@@ -148,6 +132,40 @@ LudoMagicGameTest >> testANewGameIsNotFinished [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
+
+	| squares aBoard aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare with:3.}.
+	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
+	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame turn.
+	
+	self assert: (aGame locationOf: jorge) equals: 1.
+	
+	
+	
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
+
+	| squares aBoard aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. AtomicBombSquare new. MoonWalkSquare with: 5. EffectlessSquare new. SpeedUpSquare new. MoonWalkSquare with:3.}.
+	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
+	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame turn.
+	aGame turn.
+	
+	self assert: (aGame locationOf: jorge) equals: 10.
+
+	
+	
+	
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 
 	aThreeLapGame turn.
@@ -163,6 +181,40 @@ LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 	aThreeLapGame turn.
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
+
+	| squares aBoard aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. AtomicBombSquare new. MoonWalkSquare with: 5. EffectlessSquare new. SpeedUpSquare new. MoonWalkSquare with:3.}.
+	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
+	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame turn.
+	aGame turn.
+	
+	self assert: (aGame locationOf: julian) equals: 16.
+
+	
+	
+	
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
+
+	| squares aBoard aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare with:3.}.
+	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
+	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame turn.
+	
+
+	self assert: (aGame locationOf: julian) equals: 4.
+	
+	
 ]
 
 { #category : #tests }

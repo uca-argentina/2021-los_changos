@@ -66,6 +66,11 @@ Board >> positionOf: aPlayer [
 ]
 
 { #category : #accesing }
+Board >> size [ 
+	^ (laps * (squares size))
+]
+
+{ #category : #accesing }
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
 ]

@@ -36,7 +36,7 @@ Position >> move: advancedSquares upTo: aLimit [
 
 { #category : #actions }
 Position >> moveBack: anInteger [ 
-	location:= (location - anInteger) max: 0.
+	location:= (location - anInteger) max: 1.
 ]
 
 { #category : #accesing }
