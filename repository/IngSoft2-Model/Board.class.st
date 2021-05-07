@@ -38,14 +38,6 @@ Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLap
 	players := aGroupOfPlayers.
 ]
 
-{ #category : #initialization }
-Board >> initializeWithSize: aSize and:  numberOfLaps and: aGroupOfPlayers [
-	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
-	size := aSize.
-	laps := numberOfLaps.
-	players := aGroupOfPlayers.
-]
-
 { #category : #accessing }
 Board >> lapOf: aPlayer [ 
 	^(((self positionOf: aPlayer) location)-1) // (squares size).

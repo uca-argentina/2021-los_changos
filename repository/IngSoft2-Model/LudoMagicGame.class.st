@@ -52,17 +52,6 @@ LudoMagicGame >> finished [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [
-	players := aGroupOfPlayers.
-	dices := aGroupOfDices.
-	finished := false.
-	board := Board
-		playedBy: aGroupOfPlayers
-		withNumberOfLaps: laps
-		with: aSize
-]
-
-{ #category : #'as yet unclassified' }
 LudoMagicGame >> initializeThrowing: aGroupOfDices on: aBoard [
 	finished:=false.
 	dices:= aGroupOfDices.
