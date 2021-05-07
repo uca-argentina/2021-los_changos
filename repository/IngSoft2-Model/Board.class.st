@@ -2,10 +2,11 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'size',
 		'laps',
 		'players',
-		'positions'
+		'positions',
+		'squares',
+		'numberOfSquareToMove'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -52,13 +53,13 @@ Board >> lapOf: aPlayer [
 
 { #category : #action }
 Board >> move: aPlayer to: squaresToMove [
-	| currentSquare numberOfSquareToSelect |
-	(self positionOf: aPlayer) move: squaresToMove upTo: (((squares size) * laps)+1).
+	| currentSquare |
+	(self positionOf: aPlayer) move: squaresToMove upTo: ((squares size) * laps)+1.
 	
-	numberOfSquareToSelect := (( (self positionOf:aPlayer) location ) % (squares size)) .
-	numberOfSquareToSelect = 0 ifTrue: [ numberOfSquareToSelect := squares size ].
-	
-	currentSquare := squares at: numberOfSquareToSelect .
+	numberOfSquareToMove := ((self positionOf:aPlayer)location % (squares size)).
+	numberOfSquareToMove = 0 ifTrue: [ numberOfSquareToMove := 1 ].
+
+	currentSquare:=squares at: numberOfSquareToMove.
 	currentSquare makeEffectOn: aPlayer thatHasItsPositionIn: self.
 ]
 
