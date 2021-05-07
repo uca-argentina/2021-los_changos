@@ -7,7 +7,11 @@ Class {
 		'players',
 		'dices',
 		'anOneLapGame',
-		'aThreeLapGame'
+		'aThreeLapGame',
+		'twentySquares',
+		'sixSquares',
+		'twentySquaresBoard',
+		'sixSquaresBoard'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -18,9 +22,32 @@ LudoMagicGameTest >> setUp [
 	julian := Player new.
 	players := OrderedCollection with: jorge with: julian.
 	dices:= OrderedCollection with: (LoadedDice withValues: #(1 2 3 4 5)) with: (LoadedDice withValues: #(4 5 6 7)).
-	anOneLapGame := LudoMagicGame playedBy: players throwing: dices withNumberOfLaps: 1 onBoardOf: 20.
-	aThreeLapGame := LudoMagicGame playedBy: players throwing: dices withNumberOfLaps: 3 onBoardOf: 6.
+	
+	twentySquares:= OrderedCollection new: 20 withAll: EffectlessSquare new.
+	sixSquares:= OrderedCollection new: 6 withAll: EffectlessSquare new.
+	
+	twentySquaresBoard:= FixedBoard playedBy: players withNumberOfLaps: 1 with: twentySquares.
+	sixSquaresBoard:= FixedBoard playedBy: players withNumberOfLaps: 3 with: sixSquares.
+	
+	anOneLapGame := LudoMagicGame throwing: dices withBoard: twentySquaresBoard.
+	aThreeLapGame := LudoMagicGame throwing: dices withBoard: sixSquaresBoard.
 
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAFixedBoard [
+
+	| squares aBoard aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare new. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare new.}.
+	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
+	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame turn.
+	
+	self assert: (aGame locationOf: jorge) equals: 1.
+	self assert: (aGame locationOf: julian) equals: 4.
+	
+	
 ]
 
 { #category : #tests }
@@ -43,20 +70,24 @@ LudoMagicGameTest >> testAGameHasNoWinner [
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	anOneLapGame turn.
-	self assert: (anOneLapGame squareOf:jorge) equals: 5.
-	self assert: (anOneLapGame squareOf:julian) equals: 7
+	self assert: (anOneLapGame locationOf:jorge) equals: 6.
+	self assert: (anOneLapGame locationOf:julian) equals: 8.
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
-	dices := OrderedCollection
+	
+	| someDices tenSquares tenSquaresBoard |
+	
+	someDices := OrderedCollection
 		with: (LoadedDice withValues: #(1 2 4 1 5))
 		with: (LoadedDice withValues: #(4 5 1 1)).
-	anOneLapGame := LudoMagicGame
-		playedBy: players
-		throwing: dices
-		withNumberOfLaps: 1
-		onBoardOf: 10.
+	
+	tenSquares:= OrderedCollection new: 10 withAll: EffectlessSquare new.
+	
+	tenSquaresBoard:= FixedBoard playedBy: players withNumberOfLaps: 1 with: tenSquares.
+	
+	anOneLapGame := LudoMagicGame throwing: someDices withBoard: tenSquaresBoard.
 	
 	anOneLapGame turn.
 	anOneLapGame turn.
@@ -135,6 +166,15 @@ LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJulianWinsAThreeLapGame [
+
+	aThreeLapGame turn.
+	aThreeLapGame turn.
+	self assert: aThreeLapGame winner equals: julian.
+	self assert: (aThreeLapGame lapOf: julian) equals: 3.
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testNewGameThrowsExceptionWhenTheNumberOfLapsIsNegative [
 	players remove: jorge.
 	dices := OrderedCollection
@@ -198,7 +238,7 @@ LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
 	anOneLapGame turn.
 	anOneLapGame turn.
 	anOneLapGame turn.
-	self assert: (anOneLapGame squareOf: jorge) equals: 20.
-	self assert: (anOneLapGame squareOf: julian) equals: 18.
+	self assert: (anOneLapGame locationOf: jorge) equals: 21.
+	self assert: (anOneLapGame locationOf: julian) equals: 19.
 
 ]

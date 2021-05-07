@@ -2,13 +2,21 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'size',
 		'laps',
 		'players',
-		'positions'
+		'positions',
+		'squares'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
+
+{ #category : #'instance creation' }
+Board class >> playedBy: players withNumberOfLaps: laps with: size [
+	^ self new
+		initializeBoardPlayedBy: players
+		withNumberOfLaps: laps
+		with: size
+]
 
 { #category : #'instance creation' }
 Board class >> withSize: aSize and: laps and: aGroupOfPlayers [
@@ -18,7 +26,15 @@ Board class >> withSize: aSize and: laps and: aGroupOfPlayers [
 
 { #category : #accessing }
 Board >> finished: aPlayer [ 
-	^ (self positionOf: aPlayer) value  = (size * laps)
+	^ (self positionOf: aPlayer) location  = (((squares size) * laps) +1)
+]
+
+{ #category : #initialization }
+Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquare [
+	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
+	squares := aGroupOfSquare.
+	laps := numberOfLaps.
+	players := aGroupOfPlayers.
 ]
 
 { #category : #initialization }
@@ -31,12 +47,24 @@ Board >> initializeWithSize: aSize and:  numberOfLaps and: aGroupOfPlayers [
 
 { #category : #accessing }
 Board >> lapOf: aPlayer [ 
-	^ ( (self positionOf: aPlayer) value ) // size
+	^(((self positionOf: aPlayer) location)-1) // (squares size).
 ]
 
 { #category : #action }
 Board >> move: aPlayer to: squaresToMove [
-	(self positionOf: aPlayer) move: squaresToMove upTo: size * laps.
+	| currentSquare numberOfSquareToSelect |
+	(self positionOf: aPlayer) move: squaresToMove upTo: (((squares size) * laps)+1).
+	
+	numberOfSquareToSelect := (( (self positionOf:aPlayer) location ) % (squares size)) .
+	numberOfSquareToSelect = 0 ifTrue: [ numberOfSquareToSelect := squares size ].
+	
+	currentSquare := squares at: numberOfSquareToSelect .
+	currentSquare makeEffectOn: aPlayer thatHasItsPositionIn: self.
+]
+
+{ #category : #accessing }
+Board >> players [
+	^ players copy.
 ]
 
 { #category : #accesing }

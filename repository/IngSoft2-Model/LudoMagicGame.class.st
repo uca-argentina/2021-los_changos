@@ -30,6 +30,11 @@ LudoMagicGame class >> playedBy: players throwing: dices withNumberOfLaps: laps 
 		onBoardOf: size
 ]
 
+{ #category : #'as yet unclassified' }
+LudoMagicGame class >> throwing: dices withBoard: board [
+	^self new initializeThrowing: dices on: board.
+]
+
 { #category : #'instance creation' }
 LudoMagicGame class >> validateGamePlayedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
 	LudoMagicValidator new validateAGamePlayedBy: players  throwing: dices withNumberOfLaps: laps onBoardOf: size. 
@@ -47,16 +52,32 @@ LudoMagicGame >> finished [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers  throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [ 
+LudoMagicGame >> initializeGamePlayedBy: aGroupOfPlayers throwing: aGroupOfDices withNumberOfLaps: laps onBoardOf: aSize [
 	players := aGroupOfPlayers.
-	dices := aGroupOfDices .
+	dices := aGroupOfDices.
+	finished := false.
+	board := Board
+		playedBy: aGroupOfPlayers
+		withNumberOfLaps: laps
+		with: aSize
+]
+
+{ #category : #'as yet unclassified' }
+LudoMagicGame >> initializeThrowing: aGroupOfDices on: aBoard [
 	finished:=false.
-	board := Board withSize: aSize and: laps and: aGroupOfPlayers.
+	dices:= aGroupOfDices.
+	board:= aBoard.
+	
 ]
 
 { #category : #accessing }
 LudoMagicGame >> lapOf: player [ 
 	^ board lapOf: player
+]
+
+{ #category : #accesing }
+LudoMagicGame >> locationOf: player [ 
+	^ (board positionOf: player) location
 ]
 
 { #category : #accesing }
@@ -69,10 +90,10 @@ LudoMagicGame >> turn [
 
 	self checkIfRollsAreAllowed.
 	
-	players do: [:player  | 
+	(board players) do: [:player  | 
 		finished ifFalse:[
 			board move: player  to: (player  throws: dices).
-			finished:=( board finished: player ).
+			finished:=(board finished: player).
 		].
 		].
 ]
