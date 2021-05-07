@@ -2,10 +2,10 @@ Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
+		'size',
 		'laps',
 		'players',
-		'positions',
-		'squares'
+		'positions'
 	],
 	#category : #'IngSoft2-Model-Core'
 }

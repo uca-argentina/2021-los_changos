@@ -81,11 +81,6 @@ LudoMagicGame >> locationOf: player [
 ]
 
 { #category : #accesing }
-LudoMagicGame >> squareOf: player [ 
-	^ (board positionOf: player) value
-]
-
-{ #category : #accesing }
 LudoMagicGame >> turn [
 
 	self checkIfRollsAreAllowed.
