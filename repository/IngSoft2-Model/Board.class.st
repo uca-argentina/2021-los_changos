@@ -11,6 +11,20 @@ Class {
 	#category : #'IngSoft2-Model-Core'
 }
 
+{ #category : #'instance creation - old' }
+Board class >> playedBy: players withNumberOfLaps: laps andSize: size [
+	| squares |
+	squares := OrderedCollection new.
+	squares add: WormHoleSquare new withOccurrences:  (size*0.20) ceiling .
+	squares add: SpeedUpSquare new withOccurrences: (size*0.20) ceiling .
+	squares add: MoonWalkSquare new withOccurrences:  (size*0.1) ceiling .
+	squares add: AtomicBombSquare new withOccurrences: (size*0.02) ceiling .
+	squares add: EffectlessSquare new withOccurrences: (size - squares size).
+	squares shuffle.
+	
+	^ self new initializeBoardPlayedBy: players withNumberOfLaps:  laps with: squares
+]
+
 { #category : #'instance creation' }
 Board class >> playedBy: players withNumberOfLaps: laps with: size [
 	^ self new
@@ -36,6 +50,14 @@ Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLap
 	squares := aGroupOfSquare.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
+]
+
+{ #category : #initialization }
+Board >> initializePlayedBy:  groupOfPlayers withNumberOfLaps: numberOfLaps andSize: size [ 
+	players := groupOfPlayers.
+	laps := numberOfLaps.
+	
+	
 ]
 
 { #category : #accessing }
@@ -73,4 +95,9 @@ Board >> size [
 { #category : #accesing }
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
+]
+
+{ #category : #accesing }
+Board >> squares [
+	^ squares
 ]

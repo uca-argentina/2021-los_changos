@@ -151,7 +151,7 @@ LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 
 	| squares aBoard aGame |
-	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. AtomicBombSquare new. MoonWalkSquare with: 5. EffectlessSquare new. SpeedUpSquare new. MoonWalkSquare with:3.}.
+	squares := { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. AtomicBombSquare new. MoonWalkSquare with: 5. EffectlessSquare new. SpeedUpSquare new. MoonWalkSquare with:3. }.
 	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
 	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
 	
