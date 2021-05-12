@@ -14,6 +14,14 @@ BoardTest >> setUp [
 ]
 
 { #category : #tests }
+BoardTest >> should: errorBlock raise: expectedErrorClass withErrorMessage: expectedMessage [
+	self
+		should: errorBlock
+		raise: expectedErrorClass
+		withExceptionDo: [ :error | self assert: error messageText equals: expectedMessage ]
+]
+
+{ #category : #tests }
 BoardTest >> testABoardCannotBeCreatedWithInvalidNumberOfLaps [
 	self should: [  Board playedBy: { Player new } withNumberOfLaps: 0 andSize: 20 ] raise: Error description:  'Number of laps must be greater than 0'.
 	self should: [  Board playedBy: { Player new  . Player new} withNumberOfLaps: -5 andSize: 10 ] raise: Error description:   'Number of laps must be greater than 0'.
@@ -21,8 +29,19 @@ BoardTest >> testABoardCannotBeCreatedWithInvalidNumberOfLaps [
 
 { #category : #tests }
 BoardTest >> testABoardCannotBeCreatedWithZInvalidSize [
-	self should: [  Board playedBy: { Player new . Player new } withNumberOfLaps: 3 andSize: 4 ] raise: Error description:  'Size must be greater than 4'.
-	self should: [  Board playedBy: { Player new . Player new} withNumberOfLaps: 3 andSize: -5 ] raise: Error description:  'Size must be greater than 4'.
+	self
+		should: [ Board playedBy: 	{Player new. 	Player new} withNumberOfLaps: 3 	andSize: 3 ]
+		raise: Error
+		withErrorMessage: 'Size must be greater than 4'.
+	self
+		should: [ Board
+				playedBy:
+					{Player new.
+					Player new}
+				withNumberOfLaps: 3
+				andSize: -5 ]
+		raise: Error
+		description: 'Size must be greater than 4'
 ]
 
 { #category : #tests }

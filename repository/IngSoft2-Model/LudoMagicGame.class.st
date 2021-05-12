@@ -15,33 +15,13 @@ LudoMagicGame class >> messageOfNoMoreRollsAllowed [
 	^ 'Game is finished, no more rolls are allowed'
 ]
 
-{ #category : #'instance creation' }
-LudoMagicGame class >> playedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
-
-	self
-		validateGamePlayedBy: players
-		throwing: dices
-		withNumberOfLaps: laps
-		onBoardOf: size.
-	^ self new
-		initializeGamePlayedBy: players
-		throwing: dices
-		withNumberOfLaps: laps
-		onBoardOf: size
-]
-
 { #category : #'as yet unclassified' }
 LudoMagicGame class >> throwing: dices withBoard: board [
 	
-	dices size = 0 ifTrue: [ self error: 'There must be dices' ].
+	dices isEmpty ifTrue: [ self error: 'There must be dices' ].
 	
 	
 	^self new initializeGameWith: dices on: board.
-]
-
-{ #category : #'instance creation' }
-LudoMagicGame class >> validateGamePlayedBy: players throwing: dices withNumberOfLaps: laps onBoardOf: size [
-	LudoMagicValidator new validateAGamePlayedBy: players  throwing: dices withNumberOfLaps: laps onBoardOf: size. 
 ]
 
 { #category : #validation }

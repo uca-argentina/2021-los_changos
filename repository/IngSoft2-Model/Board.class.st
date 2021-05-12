@@ -47,7 +47,7 @@ Board class >> validatePlayers: players withNumberOfLaps: laps andSize: size [
 		ifTrue: [ self error: 'There must be 2 or more players' ].
 	laps < 1
 		ifTrue: [ self error: 'Number of laps must be greater than 0' ].
-	size < 5
+	size < 4
 		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 
