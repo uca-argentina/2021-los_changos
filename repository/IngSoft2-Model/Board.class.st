@@ -11,43 +11,23 @@ Class {
 }
 
 { #category : #'instance creation - old' }
-Board class >> buildSquares: size [
-
-	| squares |
-	squares := OrderedCollection new.
-	squares add: WormHoleSquare new withOccurrences: (size * 0.2) ceiling.
-	squares add: SpeedUpSquare new withOccurrences: (size * 0.2) ceiling.
-	squares add: MoonWalkSquare new withOccurrences: (size * 0.1) ceiling.
-	squares
-		add: AtomicBombSquare new
-		withOccurrences: (size * 0.02) ceiling.
-	squares
-		add: EffectlessSquare new
-		withOccurrences: size - squares size - 1.
-	squares shuffle.
-	squares addFirst: EffectlessSquare new.
+Board class >> playedBy: players withNumberOfLaps: laps andWith: squares [
 	
-	^ squares
-]
+	self validatePlayers: players withNumberOfLaps: laps andWith: squares.
 
-{ #category : #'instance creation - old' }
-Board class >> playedBy: players withNumberOfLaps: laps andSize: size [
-	| squares |
-	self validatePlayers: players withNumberOfLaps: laps andSize: size.
-	squares := self buildSquares: size.
 	^ self new
 		initializeBoardPlayedBy: players
 		withNumberOfLaps: laps
-		with: squares
+		andWith: squares
 ]
 
 { #category : #'instance creation - old' }
-Board class >> validatePlayers: players withNumberOfLaps: laps andSize: size [
-	players size <= 1
+Board class >> validatePlayers: players withNumberOfLaps: laps andWith: squares [
+	(players size) <= 1
 		ifTrue: [ self error: 'There must be 2 or more players' ].
 	laps < 1
 		ifTrue: [ self error: 'Number of laps must be greater than 0' ].
-	size < 4
+	(squares size) < 4
 		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 
@@ -65,9 +45,9 @@ Board >> finished: aPlayer [
 ]
 
 { #category : #initialization }
-Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquare [
+Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps andWith: aGroupOfSquares [
 	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
-	squares := aGroupOfSquare.
+	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
 ]

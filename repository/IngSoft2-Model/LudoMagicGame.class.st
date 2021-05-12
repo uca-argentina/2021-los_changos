@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'dices',
 		'finished',
-		'players',
 		'board'
 	],
 	#category : #'IngSoft2-Model-Core'
@@ -13,6 +12,15 @@ Class {
 { #category : #'instance creation' }
 LudoMagicGame class >> messageOfNoMoreRollsAllowed [
 	^ 'Game is finished, no more rolls are allowed'
+]
+
+{ #category : #'as yet unclassified' }
+LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing:dices andWithBoardOfSquares:squares [ .
+
+
+	dices isEmpty ifTrue: [ self error: 'There must be dices' ].
+	
+	^self new initializePlayedBy: players withNumberOfLaps:laps throwing:dices andWithBoardOfSquares:squares .
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,10 +44,10 @@ LudoMagicGame >> finished [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeGameWith: aGroupOfDices on: aBoard [
+LudoMagicGame >> initializePlayedBy:players withNumberOfLaps:laps throwing:aGroupOfDices andWithBoardOfSquares:squares [ 
 	finished:=false.
 	dices:= aGroupOfDices.
-	board:= aBoard.
+	board:= Board playedBy: players withNumberOfLaps:laps  andWith:squares. 
 	
 ]
 

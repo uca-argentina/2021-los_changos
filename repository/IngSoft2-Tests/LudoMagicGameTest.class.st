@@ -9,9 +9,7 @@ Class {
 		'anOneLapGame',
 		'aThreeLapGame',
 		'twentySquares',
-		'sixSquares',
-		'twentySquaresBoard',
-		'sixSquaresBoard'
+		'sixSquares'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -23,14 +21,11 @@ LudoMagicGameTest >> setUp [
 	players := OrderedCollection with: jorge with: julian.
 	dices:= OrderedCollection with: (LoadedDice withValues: #(1 2 3 4 5)) with: (LoadedDice withValues: #(4 5 6 7)).
 	
-	twentySquares:= OrderedCollection new: 20 withAll: EffectlessSquare new.
-	sixSquares:= OrderedCollection new: 6 withAll: EffectlessSquare new.
+	sixSquares := OrderedCollection  new: 6 withAll: EffectlessSquare new. 
+	twentySquares := OrderedCollection new:20 withAll: EffectlessSquare new. 
+	anOneLapGame := LudoMagicGame playedBy: players withNumberOfLaps: 1 throwing:dices andWithBoardOfSquares:twentySquares.
+	aThreeLapGame:= LudoMagicGame  playedBy: players withNumberOfLaps: 3 throwing:dices andWithBoardOfSquares:sixSquares .
 	
-	twentySquaresBoard:= FixedBoard playedBy: players withNumberOfLaps: 1 with: twentySquares.
-	sixSquaresBoard:= FixedBoard playedBy: players withNumberOfLaps: 3 with: sixSquares.
-	
-	anOneLapGame := LudoMagicGame throwing: dices withBoard: twentySquaresBoard.
-	aThreeLapGame := LudoMagicGame throwing: dices withBoard: sixSquaresBoard.
 
 ]
 
@@ -61,17 +56,14 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
 	
-	| someDices tenSquares tenSquaresBoard |
+	| someDices |
 	
 	someDices := OrderedCollection
 		with: (LoadedDice withValues: #(1 2 4 1 5))
 		with: (LoadedDice withValues: #(4 5 1 1)).
 	
-	tenSquares:= OrderedCollection new: 10 withAll: EffectlessSquare new.
-	
-	tenSquaresBoard:= FixedBoard playedBy: players withNumberOfLaps: 1 with: tenSquares.
-	
-	anOneLapGame := LudoMagicGame throwing: someDices withBoard: tenSquaresBoard.
+
+	anOneLapGame := LudoMagicGame playedBy:players  withNumberOfLaps:1  throwing:someDices   andWithBoardOfSquares:(OrderedCollection new:10 withAll: EffectlessSquare new). 
 	
 	anOneLapGame round.
 	anOneLapGame round.
@@ -89,9 +81,7 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMor
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
 	self
-		should: [ LudoMagicGame
-				throwing: { }
-				withBoard:  sixSquaresBoard]
+		should: [ LudoMagicGame playedBy: players withNumberOfLaps:3  throwing:{}  andWithBoardOfSquares:6]
 		raise: Error
 		description: 'There must be dices'
 ]
@@ -123,10 +113,10 @@ LudoMagicGameTest >> testANewGameIsNotFinished [
 { #category : #tests }
 LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 
-	| squares aBoard aGame |
+	| squares  aGame |
 	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare with:3.}.
-	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
-	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  andWithBoardOfSquares: squares. 
 	
 	aGame round.
 	
@@ -139,10 +129,10 @@ LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 { #category : #tests }
 LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 
-	| squares aBoard aGame |
+	| squares  aGame |
 	squares := { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. AtomicBombSquare new. MoonWalkSquare with: 5. EffectlessSquare new. SpeedUpSquare new. MoonWalkSquare with:3. }.
-	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
-	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices andWithBoardOfSquares:squares. 
 	
 	aGame round.
 	aGame round.
@@ -175,10 +165,10 @@ LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 { #category : #tests }
 LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 
-	| squares aBoard aGame |
+	| squares  aGame |
 	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. AtomicBombSquare new. MoonWalkSquare with: 5. EffectlessSquare new. SpeedUpSquare new. MoonWalkSquare with:3.}.
-	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
-	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  andWithBoardOfSquares:squares. 
 	
 	aGame round.
 	aGame round.
@@ -193,10 +183,10 @@ LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 { #category : #tests }
 LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 
-	| squares aBoard aGame |
+	| squares aGame |
 	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare with:3.}.
-	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
-	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  andWithBoardOfSquares: squares.
 	
 	aGame round.
 	
