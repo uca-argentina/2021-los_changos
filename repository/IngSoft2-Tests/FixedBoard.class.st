@@ -4,12 +4,11 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #actions }
-FixedBoard >> move: aPlayer back: anInteger [ 
-	(self positionOf: aPlayer) moveBack:4.
-]
+{ #category : #'instance creation' }
+FixedBoard class >> playedBy: players withNumberOfLaps: laps with: squares [
 
-{ #category : #actions }
-FixedBoard >> moveAllPlayersToStart [
-	positions do:[:position | position restart].
+	^ self new
+		initializeBoardPlayedBy: players
+		withNumberOfLaps: laps
+		with: squares
 ]

@@ -5,43 +5,63 @@ Class {
 		'laps',
 		'players',
 		'positions',
-		'squares',
-		'numberOfSquareToMove'
+		'squares'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #'instance creation - old' }
-Board class >> playedBy: players withNumberOfLaps: laps andSize: size [
+Board class >> buildSquares: size [
+
 	| squares |
 	squares := OrderedCollection new.
-	squares add: WormHoleSquare new withOccurrences:  (size*0.20) ceiling .
-	squares add: SpeedUpSquare new withOccurrences: (size*0.20) ceiling .
-	squares add: MoonWalkSquare new withOccurrences:  (size*0.1) ceiling .
-	squares add: AtomicBombSquare new withOccurrences: (size*0.02) ceiling .
-	squares add: EffectlessSquare new withOccurrences: (size - squares size).
+	squares add: WormHoleSquare new withOccurrences: (size * 0.2) ceiling.
+	squares add: SpeedUpSquare new withOccurrences: (size * 0.2) ceiling.
+	squares add: MoonWalkSquare new withOccurrences: (size * 0.1) ceiling.
+	squares
+		add: AtomicBombSquare new
+		withOccurrences: (size * 0.02) ceiling.
+	squares
+		add: EffectlessSquare new
+		withOccurrences: size - squares size - 1.
 	squares shuffle.
+	squares addFirst: EffectlessSquare new.
 	
-	^ self new initializeBoardPlayedBy: players withNumberOfLaps:  laps with: squares
+	^ squares
 ]
 
-{ #category : #'instance creation' }
-Board class >> playedBy: players withNumberOfLaps: laps with: size [
+{ #category : #'instance creation - old' }
+Board class >> playedBy: players withNumberOfLaps: laps andSize: size [
+	| squares |
+	self validatePlayers: players withNumberOfLaps: laps andSize: size.
+	squares := self buildSquares: size.
 	^ self new
 		initializeBoardPlayedBy: players
 		withNumberOfLaps: laps
-		with: size
+		with: squares
 ]
 
-{ #category : #'instance creation' }
-Board class >> withSize: aSize and: laps and: aGroupOfPlayers [
-	
-	^ self new initializeWithSize: aSize and: laps and: aGroupOfPlayers 
+{ #category : #'instance creation - old' }
+Board class >> validatePlayers: players withNumberOfLaps: laps andSize: size [
+	players size <= 1
+		ifTrue: [ self error: 'There must be 2 or more players' ].
+	laps < 1
+		ifTrue: [ self error: 'Number of laps must be greater than 0' ].
+	size < 5
+		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 
 { #category : #accessing }
-Board >> finished: aPlayer [ 
-	^ (self positionOf: aPlayer) location  = (((squares size) * laps) +1)
+Board >> currentSquare: playerPosition [
+     | numberOfSquareToAdvance |
+	numberOfSquareToAdvance := playerPosition quantityOfSquaresAdvanced % squares size.
+	numberOfSquareToAdvance = 0 ifTrue: [ numberOfSquareToAdvance := 1 ].
+	^ numberOfSquareToAdvance
+]
+
+{ #category : #accessing }
+Board >> finished: aPlayer [
+	^ (self quantityOfSquaresAdvancedBy: aPlayer) = self limit
 ]
 
 { #category : #initialization }
@@ -52,29 +72,28 @@ Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLap
 	players := aGroupOfPlayers.
 ]
 
-{ #category : #initialization }
-Board >> initializePlayedBy:  groupOfPlayers withNumberOfLaps: numberOfLaps andSize: size [ 
-	players := groupOfPlayers.
-	laps := numberOfLaps.
-	
-	
+{ #category : #accessing }
+Board >> lapOf: aPlayer [ 
+	^ ( (self quantityOfSquaresAdvancedBy: aPlayer) - 1) // (squares size).
 ]
 
 { #category : #accessing }
-Board >> lapOf: aPlayer [ 
-	^(((self positionOf: aPlayer) location)-1) // (squares size).
+Board >> limit [
+	^ self quantityOfSquaresToAdvance + 1
 ]
 
-{ #category : #action }
-Board >> move: aPlayer to: squaresToMove [
-	| currentSquare |
-	(self positionOf: aPlayer) move: squaresToMove upTo: ((squares size) * laps)+1.
-	
-	numberOfSquareToMove := ((self positionOf:aPlayer)location % (squares size)).
-	numberOfSquareToMove = 0 ifTrue: [ numberOfSquareToMove := 1 ].
+{ #category : #actions }
+Board >> move: aPlayer backwards: numberOfSquares [
+	(self positionOf: aPlayer) moveBackwards: numberOfSquares.
+]
 
-	currentSquare:=squares at: numberOfSquareToMove.
-	currentSquare makeEffectOn: aPlayer thatHasItsPositionIn: self.
+{ #category : #actions }
+Board >> move: aPlayer forward: squaresToMove [
+	| currentSquare playerPosition |
+	playerPosition := self positionOf: aPlayer.
+	playerPosition movePlayerForward: squaresToMove upTo: self limit.
+	currentSquare := squares at: (self currentSquare: playerPosition ).
+	currentSquare makeEffectOn: aPlayer thatHasItsPositionIn: self
 ]
 
 { #category : #accessing }
@@ -82,22 +101,32 @@ Board >> players [
 	^ players copy.
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Board >> positionOf: aPlayer [ 
 	^ positions detect: [ :aPosition | aPosition player = aPlayer  ]
 ]
 
-{ #category : #accesing }
-Board >> size [ 
+{ #category : #accessing }
+Board >> quantityOfSquaresAdvancedBy: aPlayer [
+	^ (self positionOf: aPlayer) quantityOfSquaresAdvanced
+]
+
+{ #category : #accessing }
+Board >> quantityOfSquaresToAdvance [
 	^ (laps * (squares size))
 ]
 
-{ #category : #accesing }
+{ #category : #actions }
+Board >> restartAllPlayers [
+	positions do:[:position | position restart].
+]
+
+{ #category : #accessing }
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Board >> squares [
 	^ squares
 ]

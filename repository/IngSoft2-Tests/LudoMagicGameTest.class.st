@@ -36,16 +36,16 @@ LudoMagicGameTest >> setUp [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame round.
+	anOneLapGame round.
+	anOneLapGame round.
 	self assert: anOneLapGame winner equals: jorge.
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasNoWinner [
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame round.
+	anOneLapGame round.
 	self 	should: [anOneLapGame winner]  
 			raise: Error 
 			description:  'There is no winner because game has not finished yet'.
@@ -53,9 +53,9 @@ LudoMagicGameTest >> testAGameHasNoWinner [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
-	anOneLapGame turn.
-	self assert: (anOneLapGame locationOf:jorge) equals: 6.
-	self assert: (anOneLapGame locationOf:julian) equals: 8.
+	anOneLapGame round.
+	self assert: (anOneLapGame squaresAdvancedBy:jorge) equals: 6.
+	self assert: (anOneLapGame squaresAdvancedBy:julian) equals: 8.
 ]
 
 { #category : #tests }
@@ -73,50 +73,39 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 	
 	anOneLapGame := LudoMagicGame throwing: someDices withBoard: tenSquaresBoard.
 	
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame round.
+	anOneLapGame round.
 	self assert: anOneLapGame finished
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame round.
+	anOneLapGame round.
+	anOneLapGame round.
 	self assert: anOneLapGame finished
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
-	dices := {}.
 	self
 		should: [ LudoMagicGame
-				playedBy: players
-				throwing: dices
-				onBoardOf: 5 ]
+				throwing: { }
+				withBoard:  sixSquaresBoard]
 		raise: Error
-		description: DicesRule new errorMessage
+		description: 'There must be dices'
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
 
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame round.
+	anOneLapGame round.
+	anOneLapGame round.
 	self
-		should: [ anOneLapGame turn ]
+		should: [ anOneLapGame round ]
 		raise: Error
 		description: LudoMagicGame messageOfNoMoreRollsAllowed 
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testAGameThrowsAnErrorWhenSizeIsZero [
-	
-	self should: [LudoMagicGame playedBy:(players) throwing:(dices) withNumberOfLaps: 6 onBoardOf: 0]
-	raise: Error
-	description: SizeBoardRule new errorMessage .
-
 ]
 
 { #category : #tests }
@@ -139,9 +128,9 @@ LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
 	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
 	
-	aGame turn.
+	aGame round.
 	
-	self assert: (aGame locationOf: jorge) equals: 1.
+	self assert: (aGame squaresAdvancedBy: jorge) equals: 1.
 	
 	
 	
@@ -155,10 +144,10 @@ LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
 	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
 	
-	aGame turn.
-	aGame turn.
+	aGame round.
+	aGame round.
 	
-	self assert: (aGame locationOf: jorge) equals: 10.
+	self assert: (aGame squaresAdvancedBy: jorge) equals: 10.
 
 	
 	
@@ -168,7 +157,7 @@ LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 { #category : #tests }
 LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 
-	aThreeLapGame turn.
+	aThreeLapGame round.
 
 	self assert: (aThreeLapGame lapOf: jorge) equals: 0.
 	self assert: (aThreeLapGame lapOf: julian) equals: 1.
@@ -177,8 +166,8 @@ LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 { #category : #tests }
 LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 
-	aThreeLapGame turn.
-	aThreeLapGame turn.
+	aThreeLapGame round.
+	aThreeLapGame round.
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
 ]
@@ -191,10 +180,10 @@ LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
 	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
 	
-	aGame turn.
-	aGame turn.
+	aGame round.
+	aGame round.
 	
-	self assert: (aGame locationOf: julian) equals: 16.
+	self assert: (aGame squaresAdvancedBy: julian) equals: 16.
 
 	
 	
@@ -209,10 +198,10 @@ LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 	aBoard:= FixedBoard playedBy: players withNumberOfLaps: 2 with: squares.
 	aGame:= LudoMagicGame throwing: dices withBoard: aBoard.
 	
-	aGame turn.
+	aGame round.
 	
 
-	self assert: (aGame locationOf: julian) equals: 4.
+	self assert: (aGame squaresAdvancedBy: julian) equals: 4.
 	
 	
 ]
@@ -220,77 +209,29 @@ LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 { #category : #tests }
 LudoMagicGameTest >> testJulianWinsAThreeLapGame [
 
-	aThreeLapGame turn.
-	aThreeLapGame turn.
+	aThreeLapGame round.
+	aThreeLapGame round.
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
 ]
 
 { #category : #tests }
-LudoMagicGameTest >> testNewGameThrowsExceptionWhenTheNumberOfLapsIsNegative [
-	players remove: jorge.
-	dices := OrderedCollection
-		with: (LoadedDice withValues: #(1 2 3 4 5))
-		with: (LoadedDice withValues: #(4 5 6 7)).
-	self
-		should: [ LudoMagicGame
-				playedBy: players
-				throwing: dices
-				withNumberOfLaps: -2
-				onBoardOf: 10 ]
-		raise: Error
-		description: NumberOfLapsRule new errorMessage
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testNewGameThrowsExceptionWhenTheNumberOfLapsIsZero [
-	players remove: jorge.
-	dices := OrderedCollection
-		with: (LoadedDice withValues: #(1 2 3 4 5))
-		with: (LoadedDice withValues: #(4 5 6 7)).
-	self
-		should: [ LudoMagicGame
-				playedBy: players
-				throwing: dices
-				withNumberOfLaps: 0
-				onBoardOf: 10 ]
-		raise: Error
-		description: NumberOfLapsRule new errorMessage
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testNewGameThrowsExceptionWhenZeroOrOnePlayerAreCreated [
-	players remove: jorge.
-	dices := OrderedCollection
-		with: (LoadedDice withValues: #(1 2 3 4 5))
-		with: (LoadedDice withValues: #(4 5 6 7)).
-	self
-		should: [ LudoMagicGame
-				playedBy: players
-				throwing: dices
-				withNumberOfLaps: 12
-				onBoardOf: 10 ]
-		raise: Error
-		description: GroupOfPlayersRule new errorMessage
-]
-
-{ #category : #tests }
 LudoMagicGameTest >> testNoMoreTurnAreAllowedWhenThreeLapGameIsFinished [
 
-	aThreeLapGame turn.
-	aThreeLapGame turn.
+	aThreeLapGame round.
+	aThreeLapGame round.
 	
-	self 	should: [ aThreeLapGame turn ] 
+	self 	should: [ aThreeLapGame round ] 
 			raise: Error
 			description: [ LudoMagicGame messageOfNoMoreRollsAllowed  ]
 ]
 
 { #category : #tests }
 LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	self assert: (anOneLapGame locationOf: jorge) equals: 21.
-	self assert: (anOneLapGame locationOf: julian) equals: 19.
+	anOneLapGame round.
+	anOneLapGame round.
+	anOneLapGame round.
+	self assert: (anOneLapGame squaresAdvancedBy: jorge) equals: 21.
+	self assert: (anOneLapGame squaresAdvancedBy: julian) equals: 19.
 
 ]

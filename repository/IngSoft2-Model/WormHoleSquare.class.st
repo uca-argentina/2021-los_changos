@@ -1,10 +1,10 @@
 Class {
 	#name : #WormHoleSquare,
-	#superclass : #Object,
+	#superclass : #Square,
 	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #actions }
 WormHoleSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: board [
-	board move: aPlayer back: 4.
+	board move: aPlayer backwards: 4.
 ]

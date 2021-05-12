@@ -1,26 +1,26 @@
 Class {
 	#name : #MoonWalkSquare,
-	#superclass : #Object,
+	#superclass : #Square,
 	#instVars : [
-		'n'
+		'numberOfSquaresToMoveBackwards'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #'instance creation' }
-MoonWalkSquare class >> with:en [ 
-	^ self new initializeWith: en.
+MoonWalkSquare class >> with: numberOfSquaresToMoveBackwards [ 
+	^ self new initializeWith: numberOfSquaresToMoveBackwards.
 ]
 
 { #category : #initalize }
-MoonWalkSquare >> initializeWith: anInteger [ 
-	n:= anInteger.
+MoonWalkSquare >> initializeWith: aNumberOfSquaresToMoveBackwards [ 
+	numberOfSquaresToMoveBackwards:= aNumberOfSquaresToMoveBackwards.
 ]
 
 { #category : #actions }
-MoonWalkSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aFixedBoard [ 
+MoonWalkSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [ 
 	| players |
-	players:= aFixedBoard players.
+	players:= aBoard players.
 	players remove: aPlayer.
-	players do:[:player| (aFixedBoard positionOf:player) moveBack: n ]
+	players do:[:player| (aBoard positionOf:player) moveBackwards: numberOfSquaresToMoveBackwards ]
 ]

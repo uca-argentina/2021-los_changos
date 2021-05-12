@@ -8,30 +8,30 @@ Class {
 PositionTest >> testANewPositionAdvanceASquare [
 	| aPosition |
 	aPosition := Position assignedTo: Player new.
-	aPosition move: 1 upTo: 10.
-	self assert: aPosition location equals: 2.
+	aPosition movePlayerForward: 1 upTo: 10.
+	self assert: aPosition quantityOfSquaresAdvanced equals: 2.
 ]
 
 { #category : #tests }
 PositionTest >> testANewPositionAdvanceFourValuesAndThenThreeValues [
 	| aPosition |
 	aPosition := Position assignedTo: Player new.
-	aPosition move: 4 upTo: 10.
-	aPosition move: 3 upTo: 10.
-	self assert: aPosition location equals: 8.
+	aPosition movePlayerForward: 4 upTo: 10.
+	aPosition movePlayerForward: 3 upTo: 10.
+	self assert: aPosition quantityOfSquaresAdvanced equals: 8.
 ]
 
 { #category : #tests }
 PositionTest >> testANewPositionRealizedNoMoves [
 	| aPosition |
 	aPosition := Position assignedTo: Player new.
-	self assert: aPosition location equals: 1.
+	self assert: aPosition quantityOfSquaresAdvanced equals: 1.
 ]
 
 { #category : #tests }
 PositionTest >> testANewPositionStopsAtLimit [
 	| aPosition |
 	aPosition := Position assignedTo: Player new.
-	aPosition move: 23 upTo: 10.
-	self assert: aPosition location equals: 10.
+	aPosition movePlayerForward: 23 upTo: 10.
+	self assert: aPosition quantityOfSquaresAdvanced equals: 10.
 ]

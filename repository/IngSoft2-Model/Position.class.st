@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'player',
-		'location'
+		'quantityOfSquaresAdvanced'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -15,36 +15,36 @@ Position class >> assignedTo: aPlayer [
 
 { #category : #comparing }
 Position >> >= aPosition [ 
-	^ location >= aPosition location
+	^ quantityOfSquaresAdvanced >= aPosition quantityOfSquaresAdvanced
 ]
 
 { #category : #initialization }
 Position >> initializeAssignedTo: aPlayer [ 
 	player := aPlayer.
-	location := 1.
-]
-
-{ #category : #accesing }
-Position >> location [
-	^location
-]
-
-{ #category : #action }
-Position >> move: advancedSquares upTo: aLimit [
-	location := (location + advancedSquares ) min: aLimit.
+	quantityOfSquaresAdvanced := 1.
 ]
 
 { #category : #actions }
-Position >> moveBack: anInteger [ 
-	location:= (location - anInteger) max: 1.
+Position >> moveBackwards: numberOfSquares [ 
+	quantityOfSquaresAdvanced:= (quantityOfSquaresAdvanced - numberOfSquares) max: 1.
 ]
 
-{ #category : #accesing }
+{ #category : #actions }
+Position >> movePlayerForward: advancedSquares upTo: aLimit [
+	quantityOfSquaresAdvanced := (quantityOfSquaresAdvanced + advancedSquares ) min: aLimit.
+]
+
+{ #category : #accessing }
 Position >> player [
 	^ player
 ]
 
+{ #category : #accessing }
+Position >> quantityOfSquaresAdvanced [
+	^quantityOfSquaresAdvanced
+]
+
 { #category : #actions }
 Position >> restart [
-	location:=1.
+	quantityOfSquaresAdvanced:=1.
 ]

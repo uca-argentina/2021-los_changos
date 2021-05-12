@@ -1,10 +1,10 @@
 Class {
 	#name : #AtomicBombSquare,
-	#superclass : #Object,
+	#superclass : #Square,
 	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #action }
 AtomicBombSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [
-	aBoard moveAllPlayersToStart.
+	aBoard restartAllPlayers.
 ]

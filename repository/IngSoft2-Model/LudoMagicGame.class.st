@@ -32,7 +32,11 @@ LudoMagicGame class >> playedBy: players throwing: dices withNumberOfLaps: laps 
 
 { #category : #'as yet unclassified' }
 LudoMagicGame class >> throwing: dices withBoard: board [
-	^self new initializeThrowing: dices on: board.
+	
+	dices size = 0 ifTrue: [ self error: 'There must be dices' ].
+	
+	
+	^self new initializeGameWith: dices on: board.
 ]
 
 { #category : #'instance creation' }
@@ -46,13 +50,13 @@ LudoMagicGame >> checkIfRollsAreAllowed [
 		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 LudoMagicGame >> finished [
 	^ finished.
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializeThrowing: aGroupOfDices on: aBoard [
+LudoMagicGame >> initializeGameWith: aGroupOfDices on: aBoard [
 	finished:=false.
 	dices:= aGroupOfDices.
 	board:= aBoard.
@@ -64,25 +68,27 @@ LudoMagicGame >> lapOf: player [
 	^ board lapOf: player
 ]
 
-{ #category : #accesing }
-LudoMagicGame >> locationOf: player [ 
-	^ (board positionOf: player) location
-]
-
-{ #category : #accesing }
-LudoMagicGame >> turn [
-
+{ #category : #accessing }
+LudoMagicGame >> round [
 	self checkIfRollsAreAllowed.
-	
-	(board players) do: [:player  | 
-		finished ifFalse:[
-			board move: player  to: (player  throws: dices).
-			finished:=(board finished: player).
-		].
-		].
+	self throwDices 
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
+LudoMagicGame >> squaresAdvancedBy: player [ 
+	^ board quantityOfSquaresAdvancedBy: player 
+]
+
+{ #category : #accessing }
+LudoMagicGame >> throwDices [
+	board players
+		do: [ :player | 
+			finished
+				ifFalse: [ board move: player forward: (player throws: dices).
+					finished := board finished: player ] ]
+]
+
+{ #category : #accessing }
 LudoMagicGame >> winner [
 	finished
 		ifFalse:

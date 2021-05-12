@@ -27,7 +27,7 @@ Dice >> initializeWithFaces: aNumberOfFaces [
 	numberOfFaces:= aNumberOfFaces .
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Dice >> roll [
 	^ Random new nextInt: (numberOfFaces).
 ]
