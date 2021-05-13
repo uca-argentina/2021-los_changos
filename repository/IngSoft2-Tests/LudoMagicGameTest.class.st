@@ -100,7 +100,7 @@ LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollThe
 
 { #category : #tests }
 LudoMagicGameTest >> testANewGameHasNoWinner [
-	self 	should: [anOneLapGame winner]  
+	self 	should: [anOneLapGame winner] 
 			raise: Error 
 			description:  'There is no winner because game has not finished yet'.
 ]

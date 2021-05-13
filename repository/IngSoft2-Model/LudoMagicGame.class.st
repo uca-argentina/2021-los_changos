@@ -23,15 +23,6 @@ LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing:dices a
 	^self new initializePlayedBy: players withNumberOfLaps:laps throwing:dices andWithBoardOfSquares:squares .
 ]
 
-{ #category : #'as yet unclassified' }
-LudoMagicGame class >> throwing: dices withBoard: board [
-	
-	dices isEmpty ifTrue: [ self error: 'There must be dices' ].
-	
-	
-	^self new initializeGameWith: dices on: board.
-]
-
 { #category : #validation }
 LudoMagicGame >> checkIfRollsAreAllowed [
 	finished
