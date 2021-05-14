@@ -21,12 +21,56 @@ LudoMagicGameTest >> setUp [
 	players := OrderedCollection with: jorge with: julian.
 	dices:= OrderedCollection with: (LoadedDice withValues: #(1 2 3 4 5)) with: (LoadedDice withValues: #(4 5 6 7)).
 	
-	sixSquares := OrderedCollection  new: 6 withAll: EffectlessSquare new. 
-	twentySquares := OrderedCollection new:20 withAll: EffectlessSquare new. 
+	sixSquares :=  Distributor of: {EffectlessSquare new}  withProportions:#(100) andSize: 6. 
+	twentySquares := Distributor of: {EffectlessSquare new}  withProportions:#(100) andSize: 20. 
 	anOneLapGame := LudoMagicGame playedBy: players withNumberOfLaps: 1 throwing:dices andWithBoardOfSquares:twentySquares.
 	aThreeLapGame:= LudoMagicGame  playedBy: players withNumberOfLaps: 3 throwing:dices andWithBoardOfSquares:sixSquares .
 	
 
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAGameCannotHaveAWinnerIfItIsNotFinished [
+	anOneLapGame round.
+	anOneLapGame round.
+	self
+		should: [anOneLapGame winner] 
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'There is no winner because game has not finished yet' ].
+
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAGameCannotHaveAWinnerWhenItIsNew [
+
+	self
+		should: [anOneLapGame winner] 
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'There is no winner because game has not finished yet' ].
+			
+		
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAGameCannotHaveNoDices [
+	self
+		should: [ LudoMagicGame playedBy: players withNumberOfLaps:3  throwing:{}  andWithBoardOfSquares:6]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'There must be dices' ].
+		
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAGameCannotMakeARoundWhenItIsFinished [
+
+	anOneLapGame round.
+	anOneLapGame round.
+	anOneLapGame round.
+
+	self
+		should: [ anOneLapGame round]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame messageOfNoMoreRollsAllowed. ].
 ]
 
 { #category : #tests }
@@ -35,15 +79,6 @@ LudoMagicGameTest >> testAGameHasAWinner [
 	anOneLapGame round.
 	anOneLapGame round.
 	self assert: anOneLapGame winner equals: jorge.
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testAGameHasNoWinner [
-	anOneLapGame round.
-	anOneLapGame round.
-	self 	should: [anOneLapGame winner]  
-			raise: Error 
-			description:  'There is no winner because game has not finished yet'.
 ]
 
 { #category : #tests }
@@ -79,35 +114,18 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMor
 ]
 
 { #category : #tests }
-LudoMagicGameTest >> testAGameThrowsAnErrorWhenHasNoDices [
-	self
-		should: [ LudoMagicGame playedBy: players withNumberOfLaps:3  throwing:{}  andWithBoardOfSquares:6]
-		raise: Error
-		description: 'There must be dices'
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testAGameThrowsAnErrorWhenIsFinishedAndPlayerTriesToRollTheDiceAgain [
-
-	anOneLapGame round.
-	anOneLapGame round.
-	anOneLapGame round.
-	self
-		should: [ anOneLapGame round ]
-		raise: Error
-		description: LudoMagicGame messageOfNoMoreRollsAllowed 
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testANewGameHasNoWinner [
-	self 	should: [anOneLapGame winner] 
-			raise: Error 
-			description:  'There is no winner because game has not finished yet'.
-]
-
-{ #category : #tests }
 LudoMagicGameTest >> testANewGameIsNotFinished [
 	self deny: anOneLapGame finished
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAThreeLapGameCannotMakeAnotherRoundWhenItIsFinished [
+	aThreeLapGame round.
+	aThreeLapGame round.			
+	self
+		should: [aThreeLapGame round] 
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame messageOfNoMoreRollsAllowed ].
 ]
 
 { #category : #tests }
@@ -203,17 +221,6 @@ LudoMagicGameTest >> testJulianWinsAThreeLapGame [
 	aThreeLapGame round.
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testNoMoreTurnAreAllowedWhenThreeLapGameIsFinished [
-
-	aThreeLapGame round.
-	aThreeLapGame round.
-	
-	self 	should: [ aThreeLapGame round ] 
-			raise: Error
-			description: [ LudoMagicGame messageOfNoMoreRollsAllowed  ]
 ]
 
 { #category : #tests }

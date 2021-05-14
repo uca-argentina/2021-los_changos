@@ -42,7 +42,7 @@ Board class >> validatePlayers: players withNumberOfLaps: laps andWith: squares 
 
 { #category : #'instance creation - old' }
 Board class >> validateSquares: squares [
-	squares size < 4
+	squares size <= 4
 		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 

@@ -22,30 +22,49 @@ BoardTest >> should: errorBlock raise: expectedErrorClass withErrorMessage: expe
 ]
 
 { #category : #tests }
-BoardTest >> testABoardCannotBeCreatedWithInvalidNumberOfLaps [
-	self should: [  Board playedBy: { Player new } withNumberOfLaps: 0 andWith: 20 ] raise: Error description:  'Number of laps must be greater than 0'.
-	self should: [  Board playedBy: { Player new  . Player new} withNumberOfLaps: -5 andWith: 10 ] raise: Error description:   'Number of laps must be greater than 0'.
+BoardTest >> testABoardCannotBeCreatedWithFourSquaresize [
+	self
+		should: [  Board playedBy: { Player new . Player new } withNumberOfLaps: 1 andWith: { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new.}  ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Size must be greater than 4'  ].
 ]
 
 { #category : #tests }
-BoardTest >> testABoardCannotBeCreatedWithZInvalidSize [
+BoardTest >> testABoardCannotBeCreatedWithNumberOfLapsNegative [
 	self
-		should: [ Board playedBy: 	{Player new. 	Player new} withNumberOfLaps: 3 	andWith: { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. } ]
+		should: [  Board playedBy: { Player new . Player new } withNumberOfLaps: -3 andWith: { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new.}  ]
 		raise: Error
-		withErrorMessage: 'Size must be greater than 4'.
-	self
-		should: [ Board
-				playedBy:
-					{Player new.
-					Player new}
-				withNumberOfLaps: 3
-				andWith: {}]
-		raise: Error
-		description: 'Size must be greater than 4'
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Number of laps must be greater than 0' ].
 ]
 
 { #category : #tests }
-BoardTest >> testABoardCannotBeCreatedWithZeroOrOnePlayers [
-	self should: [  Board playedBy: { Player new } withNumberOfLaps: 3 andWith: 20 ] raise: Error description:  'There must be 2 or more players'.
-	self should: [  Board playedBy: {} withNumberOfLaps: 3 andWith: 20 ] raise: Error description:  'There must be 2 or more players'.
+BoardTest >> testABoardCannotBeCreatedWithNumberOfLapsZero [
+	self
+		should: [  Board playedBy: { Player new . Player new } withNumberOfLaps: 0 andWith: { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new.} ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Number of laps must be greater than 0' ].
+]
+
+{ #category : #tests }
+BoardTest >> testABoardCannotBeCreatedWithOnePlayers [	
+	self
+		should: [  Board playedBy: { Player new } withNumberOfLaps: 0 andWith: { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new.} ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'There must be 2 or more players' ].
+]
+
+{ #category : #tests }
+BoardTest >> testABoardCannotBeCreatedWithZeroPlayers [
+	self
+		should: [  Board playedBy: {} withNumberOfLaps: 0 andWith: { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new.} ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'There must be 2 or more players' ].
+]
+
+{ #category : #tests }
+BoardTest >> testABoardCannotBeCreatedWithoutSquares [
+	self
+		should: [  Board playedBy: { Player new . Player new } withNumberOfLaps: 1 andWith: { } ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Size must be greater than 4'  ].
 ]

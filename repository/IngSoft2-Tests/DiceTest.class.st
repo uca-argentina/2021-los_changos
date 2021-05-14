@@ -5,19 +5,29 @@ Class {
 }
 
 { #category : #tests }
-DiceTest >> testADiceThrowsErrorWhenNumberOfFacesIsNegative [
+DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsNegative [
+		self
+		should: [Dice withFaces: -6]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'The number of faces must be greater than 1' ].
 	
-	self should: [Dice withFaces: -6]
-	raise: Error
-	description: 'The number of faces must be greater than 1'.
+]
+
+{ #category : #tests }
+DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsOne [
+		self
+		should: [Dice withFaces: 1]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'The number of faces must be greater than 1' ].
 	
-	self should: [Dice withFaces: 0]
-	raise: Error
-	description: 'The number of faces must be greater than 1'.
-	
-	self should: [Dice withFaces: 1]
-	raise: Error
-	description: 'The number of faces must be greater than 1'.
+]
+
+{ #category : #tests }
+DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsZero [
+		self
+		should: [Dice withFaces: 0]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'The number of faces must be greater than 1' ].
 	
 ]
 
