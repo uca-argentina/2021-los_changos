@@ -120,8 +120,3 @@ Board >> restartAllPlayers [
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
 ]
-
-{ #category : #accessing }
-Board >> squares [
-	^ squares
-]

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsNegative [
 		self
 		should: [Dice withFaces: -6]
@@ -13,7 +13,7 @@ DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsNegative [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsOne [
 		self
 		should: [Dice withFaces: 1]
@@ -22,7 +22,7 @@ DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsOne [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DiceTest >> testADiceCannotBeCreatedWithNumberOfFacesIsZero [
 		self
 		should: [Dice withFaces: 0]

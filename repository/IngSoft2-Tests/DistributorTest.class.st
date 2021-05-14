@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DistributorTest >> testADistributorCannotBeCreatedWithNegativeSize [
 	self
 		should: [  Distributor of: {EffectlessSquare new . Object new . Dice withFaces:  12}  withProportions:#(45 5 50) andSize: -5 ]
@@ -16,7 +16,7 @@ DistributorTest >> testADistributorCannotBeCreatedWithNegativeSize [
 
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DistributorTest >> testADistributorCannotBeCreatedWithObjectsAndProportionsDifferentsSize [
 	self
 		should: [  Distributor of: {Object new }  withProportions:#(10 50) andSize: 10 ]
@@ -25,7 +25,7 @@ DistributorTest >> testADistributorCannotBeCreatedWithObjectsAndProportionsDiffe
 
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DistributorTest >> testADistributorCannotBeCreatedWithSizeZero [
 	self
 		should: [  Distributor of: {EffectlessSquare new . Object new . Dice withFaces:  12}  withProportions:#(45 5 50) andSize: 0 ]
@@ -34,7 +34,7 @@ DistributorTest >> testADistributorCannotBeCreatedWithSizeZero [
 
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DistributorTest >> testADistributorCannotBeCreatedWithoutObjects [
 	self
 		should: [  Distributor of: {}  withProportions:#(10 20 20 50) andSize: 10 ]
@@ -43,7 +43,7 @@ DistributorTest >> testADistributorCannotBeCreatedWithoutObjects [
 
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DistributorTest >> testADistributorCannotBeCreatedWithoutProportions [
 	self
 		should: [  Distributor of: {EffectlessSquare new . Object new . Dice withFaces:  12}  withProportions:#() andSize: 10 ]

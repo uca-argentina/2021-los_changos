@@ -5,6 +5,18 @@ Class {
 }
 
 { #category : #tests }
+PlayerTest >> testAPlayerCannotThrowZeroDices [
+
+	|  aPlayer |
+
+	aPlayer:=  Player new.
+	self
+		should: [  aPlayer throws:{} ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Player cannot throw zero dices' ].
+]
+
+{ #category : #tests }
 PlayerTest >> testAPlayerThrowsLoadedDiceOnce [
 	
 	| aLoadedDice aPlayer |

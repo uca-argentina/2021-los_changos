@@ -27,7 +27,7 @@ Distributor class >> of: aGroupOfObjects withProportions: proportions andSize: a
 	^ squares shuffle
 ]
 
-{ #category : #'instance creation' }
+{ #category : #validations }
 Distributor class >> validateProportions: proportions [
 	proportions isEmpty
 		ifTrue: [ self error: 'There must be proportions' ].
@@ -35,7 +35,7 @@ Distributor class >> validateProportions: proportions [
 		ifFalse: [ self error: 'The proportions do not sum 100' ].
 ]
 
-{ #category : #'instance creation' }
+{ #category : #validations }
 Distributor class >> validateQuantityOf: aGroupOfObjects and: proportions [
 
 	aGroupOfObjects isEmpty 
@@ -46,7 +46,7 @@ Distributor class >> validateQuantityOf: aGroupOfObjects and: proportions [
 				error: 'The number of objects do not match with the number of proportions' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #validations }
 Distributor class >> validateSize: aSize [
 	aSize < 1 ifTrue: [ self error: 'Size must be greater than 1' ]
 ]

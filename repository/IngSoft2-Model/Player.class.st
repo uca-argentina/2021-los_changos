@@ -7,5 +7,7 @@ Class {
 { #category : #actions }
 Player >> throws: dices [
 	
+	dices isEmpty ifTrue: [ self error: 'Player cannot throw zero dices' ].
+	
 	^(dices collect:[ :dice | dice roll ]) sum .
 ]
