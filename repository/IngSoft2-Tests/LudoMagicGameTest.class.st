@@ -33,8 +33,7 @@ LudoMagicGameTest >> setUp [
 LudoMagicGameTest >> testAGameCannotHaveAWinnerIfItIsNotFinished [
 	anOneLapGame round.
 	anOneLapGame round.
-	self
-		should: [anOneLapGame winner] 
+	self should: [anOneLapGame winner] 
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'There is no winner because game has not finished yet' ].
 
