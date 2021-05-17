@@ -14,13 +14,22 @@ LudoMagicGame class >> messageOfNoMoreRollsAllowed [
 	^ 'Game is finished, no more rolls are allowed'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing:dices andWithBoardOfSquares:squares [ .
 
 
 	dices isEmpty ifTrue: [ self error: 'There must be dices' ].
 	
 	^self new initializePlayedBy: players withNumberOfLaps:laps throwing:dices andWithBoardOfSquares:squares .
+]
+
+{ #category : #'instance creation' }
+LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices withSize: size [
+
+		| squares |
+	squares:= Distributor of: {EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. AtomicBombSquare new}  withProportions:#(48 20 20 10 2) andSize: size.
+		
+	^self playedBy: players withNumberOfLaps: laps throwing:  dices andWithBoardOfSquares: squares.
 ]
 
 { #category : #validation }
@@ -51,6 +60,11 @@ LudoMagicGame >> lapOf: player [
 LudoMagicGame >> round [
 	self checkIfRollsAreAllowed.
 	self throwDices 
+]
+
+{ #category : #accesing }
+LudoMagicGame >> squares [
+	^board squares.
 ]
 
 { #category : #accessing }

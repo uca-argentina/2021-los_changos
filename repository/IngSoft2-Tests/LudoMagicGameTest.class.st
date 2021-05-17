@@ -82,6 +82,51 @@ LudoMagicGameTest >> testAGameHasAWinner [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testAGameRespectsDefaultProportionsWithASizeOneHundred [
+	
+	| aGame squares quantityOfEffectlessSquares quantityOfWormHoleSquares quantityOfSpeedUpSquares quantityOfAtomicBombSquares quantityOfMoonWalkSquares |
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  withSize: 100.
+	
+	squares:= aGame squares.
+	
+	quantityOfEffectlessSquares := squares count: [ :square | EffectlessSquare = square class ].
+	quantityOfWormHoleSquares := squares count: [ :square | WormHoleSquare = square class ].
+	quantityOfSpeedUpSquares:= squares count: [ :square | SpeedUpSquare = square class ].
+	quantityOfAtomicBombSquares := squares count: [ :square | AtomicBombSquare = square class ].
+	quantityOfMoonWalkSquares := squares count: [ :square | MoonWalkSquare = square class ].
+	
+	self assert: quantityOfEffectlessSquares equals: 48.
+	self assert: quantityOfWormHoleSquares equals: 20.
+	self assert: quantityOfSpeedUpSquares equals: 20.
+	self assert: quantityOfAtomicBombSquares equals: 2.
+	self assert: quantityOfMoonWalkSquares equals: 10.
+
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testAGameRespectsDefaultProportionsWithASizeTwentyFive [
+	
+	| aGame squares quantityOfEffectlessSquares quantityOfWormHoleSquares quantityOfSpeedUpSquares quantityOfAtomicBombSquares quantityOfMoonWalkSquares |
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  withSize: 25.
+	
+	squares:= aGame squares.
+	
+	quantityOfEffectlessSquares := squares count: [ :square | EffectlessSquare = square class ].
+	quantityOfWormHoleSquares := squares count: [ :square | WormHoleSquare = square class ].
+	quantityOfSpeedUpSquares:= squares count: [ :square | SpeedUpSquare = square class ].
+	quantityOfAtomicBombSquares := squares count: [ :square | AtomicBombSquare = square class ].
+	quantityOfMoonWalkSquares := squares count: [ :square | MoonWalkSquare = square class ].
+	
+	self assert: quantityOfEffectlessSquares equals: 11.
+	self assert: quantityOfWormHoleSquares equals: 5.
+	self assert: quantityOfSpeedUpSquares equals: 5.
+	self assert: quantityOfAtomicBombSquares equals: 1.
+	self assert: quantityOfMoonWalkSquares equals: 3.
+
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	anOneLapGame round.
 	self assert: (anOneLapGame squaresAdvancedBy:jorge) equals: 6.

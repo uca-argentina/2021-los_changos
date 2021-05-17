@@ -10,7 +10,7 @@ Class {
 	#category : #'IngSoft2-Model-Core'
 }
 
-{ #category : #'instance creation - old' }
+{ #category : #'instance creation' }
 Board class >> playedBy: players withNumberOfLaps: laps andWith: squares [
 	
 	self validatePlayers: players withNumberOfLaps: laps andWith: squares.
@@ -21,26 +21,26 @@ Board class >> playedBy: players withNumberOfLaps: laps andWith: squares [
 		andWith: squares
 ]
 
-{ #category : #'instance creation - old' }
+{ #category : #'instance creation' }
 Board class >> validateLaps: laps [
 	laps < 1
 		ifTrue: [ self error: 'Number of laps must be greater than 0' ]
 ]
 
-{ #category : #'instance creation - old' }
+{ #category : #'instance creation' }
 Board class >> validatePlayers: players [
 	players size <= 1
 		ifTrue: [ self error: 'There must be 2 or more players' ]
 ]
 
-{ #category : #'instance creation - old' }
+{ #category : #'instance creation' }
 Board class >> validatePlayers: players withNumberOfLaps: laps andWith: squares [
 	self validatePlayers: players.
 	self validateLaps: laps.
 	self validateSquares: squares
 ]
 
-{ #category : #'instance creation - old' }
+{ #category : #'instance creation' }
 Board class >> validateSquares: squares [
 	squares size <= 4
 		ifTrue: [ self error: 'Size must be greater than 4' ]
@@ -119,4 +119,9 @@ Board >> restartAllPlayers [
 { #category : #accessing }
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
+]
+
+{ #category : #accesing }
+Board >> squares [
+	^ squares copy.
 ]
