@@ -47,14 +47,6 @@ Board class >> validateSquares: squares [
 ]
 
 { #category : #accessing }
-Board >> currentSquare: playerPosition [
-     | numberOfSquareToAdvance |
-	numberOfSquareToAdvance := playerPosition quantityOfSquaresAdvanced % squares size.
-	numberOfSquareToAdvance = 0 ifTrue: [ numberOfSquareToAdvance := 1 ].
-	^ numberOfSquareToAdvance
-]
-
-{ #category : #accessing }
 Board >> finished: aPlayer [
 
 	
@@ -94,7 +86,7 @@ Board >> lapOf: aPlayer [
 
 { #category : #accessing }
 Board >> limit [
-	^ self quantityOfSquaresToAdvance + 1
+	^(laps * (squares size)) + 1
 ]
 
 { #category : #actions }
@@ -130,6 +122,14 @@ Board >> move: aPlayer withoutEffectTo: squaresToMove [
 	^ newPosition
 ]
 
+{ #category : #accesing }
+Board >> moveAllPlayersBackards: numberOfSquaresToMoveBackwards except: aPlayer [ 
+	| playersToMove |
+	playersToMove:= players.
+	playersToMove remove: aPlayer.
+	playersToMove do:[:player| self move: player backwards: numberOfSquaresToMoveBackwards ].
+]
+
 { #category : #accessing }
 Board >> players [
 	^ players copy.
@@ -140,14 +140,9 @@ Board >> positionOf: aPlayer [
 	^ positions detect: [ :aPosition | aPosition player = aPlayer  ]
 ]
 
-{ #category : #accessing }
-Board >> quantityOfSquaresToAdvance [
-	^ (laps * (squares size))
-]
-
 { #category : #actions }
 Board >> restartAllPlayers [
-	positions do:[:position | position restart].
+	positions:= players collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
 ]
 
 { #category : #accessing }

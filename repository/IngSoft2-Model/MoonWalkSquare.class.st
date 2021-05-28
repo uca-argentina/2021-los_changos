@@ -19,8 +19,5 @@ MoonWalkSquare >> initializeWith: aNumberOfSquaresToMoveBackwards [
 
 { #category : #actions }
 MoonWalkSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [ 
-	| players |
-	players:= aBoard players.
-	players remove: aPlayer.
-	players do:[:player| aBoard move: player backwards: numberOfSquaresToMoveBackwards ].
+	aBoard moveAllPlayersBackards: numberOfSquaresToMoveBackwards except: aPlayer.
 ]
