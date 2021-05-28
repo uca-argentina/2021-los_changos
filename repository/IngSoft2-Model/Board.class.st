@@ -56,12 +56,31 @@ Board >> currentSquare: playerPosition [
 
 { #category : #accessing }
 Board >> finished: aPlayer [
-	^ (self quantityOfSquaresAdvancedBy: aPlayer) = self limit
+
+	
+	| playerPosition squaresAdvanced |
+	playerPosition := self positionOf: aPlayer.
+	squaresAdvanced := (playerPosition lap * squares size) + playerPosition numberOfSquare.
+
+	^ squaresAdvanced = self limit
+]
+
+{ #category : #accesing }
+Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [ 
+
+	| newLap newNumberOfSquare quantityOfSquaresAdvanced |
+	
+	quantityOfSquaresAdvanced := (( (aPosition lap * squares size) + aPosition numberOfSquare ) + numberOfSquaresToAdvance) min: self limit.
+	newLap := (quantityOfSquaresAdvanced - 1) // (squares size).
+	newNumberOfSquare := quantityOfSquaresAdvanced % squares size.
+	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := 1 ].
+	
+	^ Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)
 ]
 
 { #category : #initialization }
 Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps andWith: aGroupOfSquares [
-	positions := aGroupOfPlayers collect: [ :player |   Position assignedTo: player ].
+	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
@@ -69,7 +88,8 @@ Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLap
 
 { #category : #accessing }
 Board >> lapOf: aPlayer [ 
-	^ ( (self quantityOfSquaresAdvancedBy: aPlayer) - 1) // (squares size).
+
+	^ (self positionOf: aPlayer) lap.
 ]
 
 { #category : #accessing }
@@ -79,16 +99,35 @@ Board >> limit [
 
 { #category : #actions }
 Board >> move: aPlayer backwards: numberOfSquares [
-	(self positionOf: aPlayer) moveBackwards: numberOfSquares.
+
+	| newLap newNumberOfSquare quantityOfSquaresAdvanced aPosition |
+	aPosition := self positionOf: aPlayer.
+	quantityOfSquaresAdvanced := (( (aPosition lap * squares size) + aPosition numberOfSquare ) - numberOfSquares) max: 1.
+	newLap := (quantityOfSquaresAdvanced - 1) // (squares size).
+	newNumberOfSquare := quantityOfSquaresAdvanced % squares size.
+	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := 1 ].
+	positions remove: aPosition.
+	positions add: (Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)).
 ]
 
 { #category : #actions }
 Board >> move: aPlayer forward: squaresToMove [
-	| currentSquare playerPosition |
-	playerPosition := self positionOf: aPlayer.
-	playerPosition movePlayerForward: squaresToMove upTo: self limit.
-	currentSquare := squares at: (self currentSquare: playerPosition ).
+	| currentSquare newPosition |
+	newPosition := self move: aPlayer withoutEffectTo: squaresToMove.
+	currentSquare := squares at: newPosition numberOfSquare.
 	currentSquare makeEffectOn: aPlayer thatHasItsPositionIn: self
+]
+
+{ #category : #actions }
+Board >> move: aPlayer withoutEffectTo: squaresToMove [
+	| oldPosition newPosition |
+	oldPosition := self positionOf: aPlayer.
+	positions remove: oldPosition.
+	newPosition := self
+		getNewPositionForward: squaresToMove
+		from: oldPosition.
+	positions add: newPosition.
+	^ newPosition
 ]
 
 { #category : #accessing }
@@ -99,11 +138,6 @@ Board >> players [
 { #category : #accessing }
 Board >> positionOf: aPlayer [ 
 	^ positions detect: [ :aPosition | aPosition player = aPlayer  ]
-]
-
-{ #category : #accessing }
-Board >> quantityOfSquaresAdvancedBy: aPlayer [
-	^ (self positionOf: aPlayer) quantityOfSquaresAdvanced
 ]
 
 { #category : #accessing }

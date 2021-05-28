@@ -5,33 +5,58 @@ Class {
 }
 
 { #category : #tests }
-PositionTest >> testANewPositionAdvanceASquare [
-	| aPosition |
-	aPosition := Position assignedTo: Player new.
-	aPosition movePlayerForward: 1 upTo: 10.
-	self assert: aPosition quantityOfSquaresAdvanced equals: 2.
+PositionTest >> testNewPositionCannotHaveNegativeLap [
+
+	self
+		should: [  Position lap: -1 numberOfSquare: 5 for: Player new. ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Lap should be zero or greater' ].
 ]
 
 { #category : #tests }
-PositionTest >> testANewPositionAdvanceFourValuesAndThenThreeValues [
-	| aPosition |
-	aPosition := Position assignedTo: Player new.
-	aPosition movePlayerForward: 4 upTo: 10.
-	aPosition movePlayerForward: 3 upTo: 10.
-	self assert: aPosition quantityOfSquaresAdvanced equals: 8.
+PositionTest >> testNewPositionCannotHaveNegativeNumberOfSquare [
+
+	self
+		should: [  Position lap: 2 numberOfSquare: -3 for: Player new. ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Number of square should be greater than zero' ].
 ]
 
 { #category : #tests }
-PositionTest >> testANewPositionRealizedNoMoves [
-	| aPosition |
-	aPosition := Position assignedTo: Player new.
-	self assert: aPosition quantityOfSquaresAdvanced equals: 1.
+PositionTest >> testNewPositionCannotHaveNumberOfSquareZero [
+
+	self
+		should: [  Position lap: 2 numberOfSquare: 0 for: Player new. ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'Number of square should be greater than zero' ].
 ]
 
 { #category : #tests }
-PositionTest >> testANewPositionStopsAtLimit [
+PositionTest >> testNewPositionHasLapTwo [
 	| aPosition |
-	aPosition := Position assignedTo: Player new.
-	aPosition movePlayerForward: 23 upTo: 10.
-	self assert: aPosition quantityOfSquaresAdvanced equals: 10.
+	
+	aPosition := Position lap: 2 numberOfSquare: 3 for: Player new.
+	
+	self assert: aPosition lap equals: 2.	
+
+]
+
+{ #category : #tests }
+PositionTest >> testNewPositionHasLapZero [
+	| aPosition |
+	
+	aPosition := Position lap: 0 numberOfSquare: 3 for: Player new.
+	
+	self assert: aPosition lap equals: 0.	
+
+]
+
+{ #category : #tests }
+PositionTest >> testNewPositionIsOnSquareNumberFive [
+	| aPosition |
+	
+	aPosition := Position lap: 1 numberOfSquare: 5 for: Player new.
+	
+	self assert: aPosition numberOfSquare equals: 5.	
+
 ]

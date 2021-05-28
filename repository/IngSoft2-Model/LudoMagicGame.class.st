@@ -56,10 +56,19 @@ LudoMagicGame >> lapOf: player [
 	^ board lapOf: player
 ]
 
+{ #category : #accesing }
+LudoMagicGame >> numberOfSquareOf: aPlayer [ 
+	^ (board positionOf: aPlayer) numberOfSquare 
+]
+
 { #category : #accessing }
 LudoMagicGame >> round [
 	self checkIfRollsAreAllowed.
-	self throwDices 
+	board players
+		do: [ :player | 
+			finished
+				ifFalse: [ board move: player forward: (self throwDices: player).
+					finished := board finished: player ] ]
 ]
 
 { #category : #accesing }
@@ -73,12 +82,8 @@ LudoMagicGame >> squaresAdvancedBy: player [
 ]
 
 { #category : #accessing }
-LudoMagicGame >> throwDices [
-	board players
-		do: [ :player | 
-			finished
-				ifFalse: [ board move: player forward: (player throws: dices).
-					finished := board finished: player ] ]
+LudoMagicGame >> throwDices: player [
+	^ player throws: dices
 ]
 
 { #category : #accessing }

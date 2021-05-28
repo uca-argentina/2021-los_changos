@@ -128,8 +128,8 @@ LudoMagicGameTest >> testAGameRespectsDefaultProportionsWithASizeTwentyFive [
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	anOneLapGame round.
-	self assert: (anOneLapGame squaresAdvancedBy:jorge) equals: 6.
-	self assert: (anOneLapGame squaresAdvancedBy:julian) equals: 8.
+	self assert: (anOneLapGame numberOfSquareOf:jorge) equals: 6.
+	self assert: (anOneLapGame numberOfSquareOf:julian) equals: 8.
 ]
 
 { #category : #tests }
@@ -182,7 +182,7 @@ LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 	
 	aGame round.
 	
-	self assert: (aGame squaresAdvancedBy: jorge) equals: 1.
+	self assert: (aGame numberOfSquareOf:jorge) equals: 1.
 	
 	
 	
@@ -199,7 +199,7 @@ LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 	aGame round.
 	aGame round.
 	
-	self assert: (aGame squaresAdvancedBy: jorge) equals: 10.
+	self assert: (aGame numberOfSquareOf:jorge) equals: 10.
 
 	
 	
@@ -235,7 +235,7 @@ LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 	aGame round.
 	aGame round.
 	
-	self assert: (aGame squaresAdvancedBy: julian) equals: 16.
+	self assert: (aGame numberOfSquareOf: julian) equals: 3.
 
 	
 	
@@ -253,7 +253,7 @@ LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 	aGame round.
 	
 
-	self assert: (aGame squaresAdvancedBy: julian) equals: 4.
+	self assert: (aGame numberOfSquareOf: julian) equals: 4.
 	
 	
 ]
@@ -272,7 +272,7 @@ LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
 	anOneLapGame round.
 	anOneLapGame round.
 	anOneLapGame round.
-	self assert: (anOneLapGame squaresAdvancedBy: jorge) equals: 21.
-	self assert: (anOneLapGame squaresAdvancedBy: julian) equals: 19.
+	self assert: (anOneLapGame numberOfSquareOf: jorge) equals: 1.
+	self assert: (anOneLapGame numberOfSquareOf: julian) equals: 19.
 
 ]

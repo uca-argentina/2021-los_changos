@@ -6,5 +6,5 @@ Class {
 
 { #category : #actions }
 SpeedUpSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aFixedBoard [ 
-	(aFixedBoard positionOf: aPlayer ) movePlayerForward: 4 upTo: (aFixedBoard quantityOfSquaresToAdvance ). 
+	aFixedBoard move: aPlayer withoutEffectTo: 4
 ]

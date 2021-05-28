@@ -22,5 +22,5 @@ MoonWalkSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [
 	| players |
 	players:= aBoard players.
 	players remove: aPlayer.
-	players do:[:player| (aBoard positionOf:player) moveBackwards: numberOfSquaresToMoveBackwards ]
+	players do:[:player| aBoard move: player backwards: numberOfSquaresToMoveBackwards ].
 ]
