@@ -17,6 +17,28 @@ PlayerTest >> testAPlayerCannotThrowZeroDices [
 ]
 
 { #category : #tests }
+PlayerTest >> testAPlayerReceivesANewCard [
+	
+	|aPlayer |
+	
+	aPlayer:=  Player new.
+	aPlayer take: Card new.
+		
+	self assert: aPlayer cards size equals: 1.
+]
+
+{ #category : #tests }
+PlayerTest >> testAPlayerThatHasNoCards [
+	
+	|aPlayer |
+	
+	aPlayer:=  Player new.
+
+	
+	self assert: aPlayer cards size equals: 0.
+]
+
+{ #category : #tests }
 PlayerTest >> testAPlayerThrowsLoadedDiceOnce [
 	
 	| aLoadedDice aPlayer |

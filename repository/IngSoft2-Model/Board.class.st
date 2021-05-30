@@ -125,7 +125,7 @@ Board >> move: aPlayer withoutEffectTo: squaresToMove [
 { #category : #accesing }
 Board >> moveAllPlayersBackards: numberOfSquaresToMoveBackwards except: aPlayer [ 
 	| playersToMove |
-	playersToMove:= players.
+	playersToMove:= players copy.
 	playersToMove remove: aPlayer.
 	playersToMove do:[:player| self move: player backwards: numberOfSquaresToMoveBackwards ].
 ]

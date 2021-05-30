@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'dices',
 		'finished',
-		'board'
+		'board',
+		'turnPlayer',
+		'nextPlayerIndex'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -45,8 +47,11 @@ LudoMagicGame >> finished [
 
 { #category : #initialization }
 LudoMagicGame >> initializePlayedBy:players withNumberOfLaps:laps throwing:aGroupOfDices andWithBoardOfSquares:squares [ 
+	nextPlayerIndex:=2.
 	finished:=false.
 	dices:= aGroupOfDices.
+	players do:[:player| player take: Card new. player take:Card new.].
+	turnPlayer:= players at:1.
 	board:= Board playedBy: players withNumberOfLaps:laps  andWith:squares. 
 	
 ]
@@ -61,18 +66,6 @@ LudoMagicGame >> numberOfSquareOf: aPlayer [
 	^ (board positionOf: aPlayer) numberOfSquare 
 ]
 
-{ #category : #accessing }
-LudoMagicGame >> round [
-    self checkIfRollsAreAllowed.
-    board players
-        do: [ :player | 
-            finished
-                ifFalse: [ board move: player forward: (self throwDices: player).
-                    finished := board finished: player ]
-							ifTrue:[^self]
- ]
-]
-
 { #category : #accesing }
 LudoMagicGame >> squares [
 	^board squares.
@@ -81,6 +74,21 @@ LudoMagicGame >> squares [
 { #category : #accessing }
 LudoMagicGame >> throwDices: player [
 	^ player throws: dices
+]
+
+{ #category : #accessing }
+LudoMagicGame >> turn [
+    self checkIfRollsAreAllowed.
+		board move:turnPlayer forward:(self throwDices:turnPlayer).
+		finished:= board finished:turnPlayer.
+		turnPlayer:=(board players) at: nextPlayerIndex.
+		nextPlayerIndex:=(nextPlayerIndex rem: board players size) +1.
+     "board players
+        do: [ :player | 
+            finished
+                ifFalse: [ board move: player forward: (self throwDices: player).          
+								finished := board finished: player ]
+							ifTrue:[^self]]"
 ]
 
 { #category : #accessing }
