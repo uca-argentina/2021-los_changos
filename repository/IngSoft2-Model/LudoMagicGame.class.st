@@ -40,6 +40,11 @@ LudoMagicGame >> checkIfRollsAreAllowed [
 		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
 ]
 
+{ #category : #action }
+LudoMagicGame >> do: numberOfTurnsToDo [
+	(1 to: numberOfTurnsToDo) do: [ :number | self turn ]
+]
+
 { #category : #accessing }
 LudoMagicGame >> finished [
 	^ finished.

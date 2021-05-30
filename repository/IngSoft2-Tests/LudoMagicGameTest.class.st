@@ -34,8 +34,8 @@ LudoMagicGameTest >> setUp [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameCannotHaveAWinnerIfItIsNotFinished [
-	anOneLapGame turn.
-	anOneLapGame turn.
+
+	anOneLapGame do: 2.
 	self should: [anOneLapGame winner] 
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'There is no winner because game has not finished yet' ].
@@ -65,12 +65,7 @@ LudoMagicGameTest >> testAGameCannotHaveNoDices [
 { #category : #tests }
 LudoMagicGameTest >> testAGameCannotMakeARoundWhenItIsFinished [
 
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-
+	anOneLapGame do: 5.
 	
 	self
 		should: [ anOneLapGame turn]
@@ -80,11 +75,7 @@ LudoMagicGameTest >> testAGameCannotMakeARoundWhenItIsFinished [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameHasAWinner [
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame do: 5.
 	
 	
 	self assert: anOneLapGame winner equals: jorge.
@@ -137,8 +128,7 @@ LudoMagicGameTest >> testAGameRespectsDefaultProportionsWithASizeTwentyFive [
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame do: 2.
 	
 	self assert: (anOneLapGame numberOfSquareOf:jorge) equals: 6.
 	self assert: (anOneLapGame numberOfSquareOf:julian) equals: 8.
@@ -156,9 +146,7 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 
 	anOneLapGame := LudoMagicGame playedBy:players  withNumberOfLaps:1  throwing:someDices   andWithBoardOfSquares:(OrderedCollection new:10 withAll: EffectlessSquare new). 
 	
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame do: 3.
 	
 
 	self assert: anOneLapGame finished
@@ -166,11 +154,7 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 
 { #category : #tests }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame do: 5.
 	
 	self assert: anOneLapGame finished
 ]
@@ -182,10 +166,7 @@ LudoMagicGameTest >> testANewGameIsNotFinished [
 
 { #category : #tests }
 LudoMagicGameTest >> testAThreeLapGameCannotMakeAnotherRoundWhenItIsFinished [
-	aThreeLapGame turn.
-	aThreeLapGame turn.	
-	aThreeLapGame turn.
-	aThreeLapGame turn.					
+	aThreeLapGame do: 4.		
 	self
 		should: [aThreeLapGame turn] 
 		raise: Error
@@ -216,9 +197,7 @@ LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 	
 	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices andWithBoardOfSquares:squares. 
 	
-	aGame turn.
-	aGame turn.
-	aGame turn.
+	aGame do: 3.
 		
 	self assert: (aGame numberOfSquareOf:jorge) equals: 10.
 
@@ -230,8 +209,7 @@ LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 { #category : #tests }
 LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 
-	aThreeLapGame turn.
-	aThreeLapGame turn.	
+	aThreeLapGame do:2.
 
 	self assert: (aThreeLapGame lapOf: jorge) equals: 0.
 	self assert: (aThreeLapGame lapOf: julian) equals: 1.
@@ -240,10 +218,7 @@ LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 { #category : #tests }
 LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 
-	aThreeLapGame turn.
-	aThreeLapGame turn.
-	aThreeLapGame turn.
-	aThreeLapGame turn.		
+	aThreeLapGame do: 4.	
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
 ]
@@ -256,10 +231,7 @@ LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 	
 	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  andWithBoardOfSquares:squares. 
 	
-	aGame turn.
-	aGame turn.
-	aGame turn.
-	aGame turn.
+	aGame do: 4.
 	
 	
 	self assert: (aGame numberOfSquareOf: julian) equals: 3.
@@ -277,8 +249,7 @@ LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 	
 	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  andWithBoardOfSquares: squares.
 	
-	aGame turn.
-	aGame turn.
+	aGame do: 2.
 	
 
 	self assert: (aGame numberOfSquareOf: julian) equals: 4.
@@ -289,11 +260,7 @@ LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 { #category : #tests }
 LudoMagicGameTest >> testJulianWinsAThreeLapGame [
 
-	aThreeLapGame turn.
-	aThreeLapGame turn.
-	aThreeLapGame turn.
-	aThreeLapGame turn.
-	
+	aThreeLapGame do: 4.
 	
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
@@ -313,11 +280,7 @@ LudoMagicGameTest >> testPlayersStartWithTwoCards [
 
 { #category : #tests }
 LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
-	anOneLapGame turn.
+	anOneLapGame do: 5.
 	
 	self assert: (anOneLapGame numberOfSquareOf: jorge) equals: 1.
 	self assert: (anOneLapGame numberOfSquareOf: julian) equals: 19.
