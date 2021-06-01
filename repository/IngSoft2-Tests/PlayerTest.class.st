@@ -17,6 +17,18 @@ PlayerTest >> testAPlayerCannotThrowZeroDices [
 ]
 
 { #category : #tests }
+PlayerTest >> testAPlayerHasTwoCards [
+	| hernan |
+	hernan:= Player new. 
+
+	hernan take: Card new.
+	hernan take: Card new.
+	
+	self assert: hernan cards size equals: 2.
+
+]
+
+{ #category : #tests }
 PlayerTest >> testAPlayerReceivesANewCard [
 	
 	|aPlayer |

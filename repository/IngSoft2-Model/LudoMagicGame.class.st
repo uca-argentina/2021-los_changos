@@ -42,7 +42,7 @@ LudoMagicGame >> checkIfRollsAreAllowed [
 
 { #category : #action }
 LudoMagicGame >> do: numberOfTurnsToDo [
-	(1 to: numberOfTurnsToDo) do: [ :number | self turn ]
+	1 to: (numberOfTurnsToDo) do: [ :number | self turn ]
 ]
 
 { #category : #accessing }
@@ -55,7 +55,6 @@ LudoMagicGame >> initializePlayedBy:players withNumberOfLaps:laps throwing:aGrou
 	nextPlayerIndex:=2.
 	finished:=false.
 	dices:= aGroupOfDices.
-	players do:[:player| player take: Card new. player take:Card new.].
 	turnPlayer:= players at:1.
 	board:= Board playedBy: players withNumberOfLaps:laps  andWith:squares. 
 	
@@ -88,12 +87,6 @@ LudoMagicGame >> turn [
 		finished:= board finished:turnPlayer.
 		turnPlayer:=(board players) at: nextPlayerIndex.
 		nextPlayerIndex:=(nextPlayerIndex rem: board players size) +1.
-     "board players
-        do: [ :player | 
-            finished
-                ifFalse: [ board move: player forward: (self throwDices: player).          
-								finished := board finished: player ]
-							ifTrue:[^self]]"
 ]
 
 { #category : #accessing }

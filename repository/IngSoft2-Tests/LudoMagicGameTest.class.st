@@ -174,10 +174,25 @@ LudoMagicGameTest >> testAThreeLapGameCannotMakeAnotherRoundWhenItIsFinished [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJorgeGetsToAMoonWalkAndGoesToTheFirstSquare [
+
+	| squares  aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. MoonWalkSquare with: 5. EffectlessSquare new. EffectlessSquare new.}.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(9 2 4 5))}  andWithBoardOfSquares: squares. 
+	
+	aGame turn.
+	aGame turn.
+	self assert: (aGame lapOf:jorge) equals: 0.
+	self assert: (aGame numberOfSquareOf: jorge) equals: 5.
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 
 	| squares  aGame |
 	squares:= { EffectlessSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. AtomicBombSquare new. AtomicBombSquare new. EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. EffectlessSquare new. AtomicBombSquare new. MoonWalkSquare with:3.}.
+	dices:= OrderedCollection with: (LoadedDice withValues: #(1 2 3 4 5)) with: (LoadedDice withValues: #(4 5 6 7)).
 	
 	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing:dices  andWithBoardOfSquares: squares. 
 	
@@ -224,6 +239,22 @@ LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJulianGetsToAtomicBombSquareWhenAPlayerIsAtSecondLap [
+
+	| squares  aGame |
+	squares:= { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. AtomicBombSquare new. EffectlessSquare new.  EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. EffectlessSquare new. }.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(10 1 3 4 5)). (LoadedDice withValues: #(5 4 6 7))}  andWithBoardOfSquares: squares. 
+	
+	aGame do:2.
+	
+	self assert: (aGame lapOf:jorge) equals: 1.
+	self assert: (aGame lapOf:julian) equals: 0.
+	
+	
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 
 	| squares  aGame |
@@ -264,18 +295,6 @@ LudoMagicGameTest >> testJulianWinsAThreeLapGame [
 	
 	self assert: aThreeLapGame winner equals: julian.
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
-]
-
-{ #category : #tests }
-LudoMagicGameTest >> testPlayersStartWithTwoCards [
-	| hernan graciela |
-	hernan:= Player new.
-	graciela:= Player new. 
-	anOneLapGame := LudoMagicGame playedBy:{hernan.graciela}  withNumberOfLaps: 1 throwing:dices andWithBoardOfSquares:twentySquares.
-	
-	self assert: hernan cards size equals: 2.
-	self assert: graciela cards size equals: 2.
-
 ]
 
 { #category : #tests }

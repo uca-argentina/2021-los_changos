@@ -65,7 +65,7 @@ Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [
 	quantityOfSquaresAdvanced := (( (aPosition lap * squares size) + aPosition numberOfSquare ) + numberOfSquaresToAdvance) min: self limit.
 	newLap := (quantityOfSquaresAdvanced - 1) // (squares size).
 	newNumberOfSquare := quantityOfSquaresAdvanced % squares size.
-	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := 1 ].
+	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := squares size ].
 	
 	^ Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)
 ]
@@ -97,7 +97,7 @@ Board >> move: aPlayer backwards: numberOfSquares [
 	quantityOfSquaresAdvanced := (( (aPosition lap * squares size) + aPosition numberOfSquare ) - numberOfSquares) max: 1.
 	newLap := (quantityOfSquaresAdvanced - 1) // (squares size).
 	newNumberOfSquare := quantityOfSquaresAdvanced % squares size.
-	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := 1 ].
+	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := squares size ].
 	positions remove: aPosition.
 	positions add: (Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)).
 ]
@@ -142,7 +142,7 @@ Board >> positionOf: aPlayer [
 
 { #category : #actions }
 Board >> restartAllPlayers [
-	positions:= players collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
+	positions:= players collect: [ :player |   Position lap: (self lapOf:player) numberOfSquare: 1 for: player  ].
 ]
 
 { #category : #accessing }
