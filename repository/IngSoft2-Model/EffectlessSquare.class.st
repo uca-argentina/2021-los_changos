@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #action }
-EffectlessSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aFixedBoard [ 
+EffectlessSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [ 
 
 ]

@@ -17,40 +17,6 @@ PlayerTest >> testAPlayerCannotThrowZeroDices [
 ]
 
 { #category : #tests }
-PlayerTest >> testAPlayerHasTwoCards [
-	| hernan |
-	hernan:= Player new. 
-
-	hernan take: Card new.
-	hernan take: Card new.
-	
-	self assert: hernan cards size equals: 2.
-
-]
-
-{ #category : #tests }
-PlayerTest >> testAPlayerReceivesANewCard [
-	
-	|aPlayer |
-	
-	aPlayer:=  Player new.
-	aPlayer take: Card new.
-		
-	self assert: aPlayer cards size equals: 1.
-]
-
-{ #category : #tests }
-PlayerTest >> testAPlayerThatHasNoCards [
-	
-	|aPlayer |
-	
-	aPlayer:=  Player new.
-
-	
-	self assert: aPlayer cards size equals: 0.
-]
-
-{ #category : #tests }
 PlayerTest >> testAPlayerThrowsLoadedDiceOnce [
 	
 	| aLoadedDice aPlayer |

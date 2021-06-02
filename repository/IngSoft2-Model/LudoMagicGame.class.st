@@ -50,8 +50,14 @@ LudoMagicGame >> finished [
 	^ finished.
 ]
 
+{ #category : #boolean }
+LudoMagicGame >> has: aPlayer theCard: aCard [ 
+	^ board has: aPlayer theCard: aCard
+
+]
+
 { #category : #initialization }
-LudoMagicGame >> initializePlayedBy:players withNumberOfLaps:laps throwing:aGroupOfDices andWithBoardOfSquares:squares [ 
+LudoMagicGame >> initializePlayedBy: players withNumberOfLaps:laps throwing:aGroupOfDices andWithBoardOfSquares:squares [ 
 	nextPlayerIndex:=2.
 	finished:=false.
 	dices:= aGroupOfDices.
@@ -70,6 +76,13 @@ LudoMagicGame >> numberOfSquareOf: aPlayer [
 	^ (board positionOf: aPlayer) numberOfSquare 
 ]
 
+{ #category : #accessing }
+LudoMagicGame >> numberOfSquaresToMove [
+	| finalResult |
+	finalResult := self throwDices: turnPlayer.
+	^ finalResult
+]
+
 { #category : #accesing }
 LudoMagicGame >> squares [
 	^board squares.
@@ -82,11 +95,11 @@ LudoMagicGame >> throwDices: player [
 
 { #category : #accessing }
 LudoMagicGame >> turn [
-    self checkIfRollsAreAllowed.
-		board move:turnPlayer forward:(self throwDices:turnPlayer).
-		finished:= board finished:turnPlayer.
-		turnPlayer:=(board players) at: nextPlayerIndex.
-		nextPlayerIndex:=(nextPlayerIndex rem: board players size) +1.
+	self checkIfRollsAreAllowed.
+	board move: turnPlayer forward: self numberOfSquaresToMove.
+	finished := board finished: turnPlayer.
+	turnPlayer := board players at: nextPlayerIndex.
+	nextPlayerIndex := (nextPlayerIndex rem: board players size) + 1
 ]
 
 { #category : #accessing }

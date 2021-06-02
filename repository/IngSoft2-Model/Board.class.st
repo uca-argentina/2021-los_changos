@@ -5,7 +5,8 @@ Class {
 		'laps',
 		'players',
 		'positions',
-		'squares'
+		'squares',
+		'cardHandlers'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -46,6 +47,19 @@ Board class >> validateSquares: squares [
 		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 
+{ #category : #actions }
+Board >> add: aCard toHandlerOf: aPlayer [ 
+	(self cardHandlerOf: aPlayer) add: aCard.
+]
+
+{ #category : #boolean }
+Board >> cardHandlerOf: aPlayer [
+	| playerCardHandler |
+	playerCardHandler := cardHandlers
+		detect: [ :handler | handler player = aPlayer ].
+	^ playerCardHandler
+]
+
 { #category : #accessing }
 Board >> finished: aPlayer [
 
@@ -70,9 +84,17 @@ Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [
 	^ Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)
 ]
 
+{ #category : #boolean }
+Board >> has: aPlayer theCard: aCard [
+	| playerCardHandler |
+	playerCardHandler := self cardHandlerOf: aPlayer.
+	^ playerCardHandler has: aCard
+]
+
 { #category : #initialization }
 Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps andWith: aGroupOfSquares [
 	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
+	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
@@ -138,6 +160,11 @@ Board >> players [
 { #category : #accessing }
 Board >> positionOf: aPlayer [ 
 	^ positions detect: [ :aPosition | aPosition player = aPlayer  ]
+]
+
+{ #category : #positionsFORTEST }
+Board >> positions [
+	^ positions
 ]
 
 { #category : #actions }

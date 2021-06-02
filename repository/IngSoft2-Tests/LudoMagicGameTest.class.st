@@ -174,6 +174,62 @@ LudoMagicGameTest >> testAThreeLapGameCannotMakeAnotherRoundWhenItIsFinished [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testGracielaGetsToEffectlessSquareAndDoesntGetTheCard [
+	| aGame hernan squares aCard graciela |
+	
+	hernan := Player new.
+	graciela := Player new.
+	aCard := Card new.
+	players := OrderedCollection with: hernan with: graciela .
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new. }.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
+	
+	aGame do: 2.
+	
+	self assert: (aGame has: graciela theCard: aCard) not.
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testHernanAndGracielaGotDifferentsCards [
+	| aGame hernan squares aCard graciela anotherCard |
+	
+	graciela := Player new.
+	hernan := Player new.
+	aCard := Card new.
+	anotherCard := Card new.
+	players := OrderedCollection with: hernan with: graciela .
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anotherCard. }.
+	players := OrderedCollection with: hernan with: graciela .
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 3))} andWithBoardOfSquares: squares.
+	
+	aGame do: 2.
+	
+	self assert: (aGame has: hernan theCard: aCard).
+	self assert: (aGame has: graciela theCard: anotherCard)
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testHernanGetsToLoadedSquareAndGetACard [
+	| aGame hernan squares aCard graciela |
+	
+	graciela := Player new.
+	hernan := Player new.
+	aCard := Card new.
+	players := OrderedCollection with: hernan with: graciela .
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new.}.
+	players := OrderedCollection with: hernan with: graciela .
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 3))} andWithBoardOfSquares: squares.
+	
+	aGame do: 2.
+	
+	self assert: (aGame has: hernan theCard: aCard).
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJorgeGetsToAMoonWalkAndGoesToTheFirstSquare [
 
 	| squares  aGame |

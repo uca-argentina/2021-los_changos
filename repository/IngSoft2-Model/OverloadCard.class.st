@@ -4,6 +4,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #actions }
+OverloadCard >> makeEffect: value [
+	
+	^ value - 2
+]
+
 { #category : #accesing }
 OverloadCard >> permanent [
 	^true.
