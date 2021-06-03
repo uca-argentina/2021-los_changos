@@ -4,6 +4,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #accesing }
+OverloadCard >> effect [
+	^-2.
+]
+
 { #category : #actions }
 OverloadCard >> makeEffect: value [
 	

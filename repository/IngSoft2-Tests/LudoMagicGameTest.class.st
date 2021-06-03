@@ -16,6 +16,7 @@ Class {
 
 { #category : #running }
 LudoMagicGameTest >> setUp [
+	super setUp.
 	jorge := Player new.
 	julian := Player new.
 	
@@ -174,59 +175,70 @@ LudoMagicGameTest >> testAThreeLapGameCannotMakeAnotherRoundWhenItIsFinished [
 ]
 
 { #category : #tests }
-LudoMagicGameTest >> testGracielaGetsToEffectlessSquareAndDoesntGetTheCard [
-	| aGame hernan squares aCard graciela |
+LudoMagicGameTest >> testJorgeAndJulianGotDifferentsCards [
+	| aGame squares aCard anotherCard |
 	
-	hernan := Player new.
-	graciela := Player new.
 	aCard := Card new.
-	players := OrderedCollection with: hernan with: graciela .
+	anotherCard := Card new.
 	
-	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new. }.
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anotherCard. }.
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 3))} andWithBoardOfSquares: squares.
+	
+	aGame do: 2.
+	
+	self assert: (aGame has: jorge theCard: aCard).
+	self assert: (aGame has: julian theCard: anotherCard)
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardThatHeDoesNotHave [
+	| aGame squares anOverloadCard |
+	anOverloadCard := OverloadCard new.
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anOverloadCard. EffectlessSquare new. EffectlessSquare new. }.
 	
 	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
 	
-	aGame do: 2.
+	aGame do:2.
 	
-	self assert: (aGame has: graciela theCard: aCard) not.
+	self
+		should: [ jorge throws: (Card new) to: julian in: aGame.]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'The player cannot throw this card because he does not have it' ].
 ]
 
 { #category : #tests }
-LudoMagicGameTest >> testHernanAndGracielaGotDifferentsCards [
-	| aGame hernan squares aCard graciela anotherCard |
+LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsHisTurn [
+	| aGame squares anOverloadCard |
+	anOverloadCard := OverloadCard new.
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anOverloadCard. EffectlessSquare new. EffectlessSquare new. }.
 	
-	graciela := Player new.
-	hernan := Player new.
-	aCard := Card new.
-	anotherCard := Card new.
-	players := OrderedCollection with: hernan with: graciela .
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
 	
-	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anotherCard. }.
-	players := OrderedCollection with: hernan with: graciela .
-	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 3))} andWithBoardOfSquares: squares.
+	aGame turn.
 	
-	aGame do: 2.
-	
-	self assert: (aGame has: hernan theCard: aCard).
-	self assert: (aGame has: graciela theCard: anotherCard)
+	self
+		should: [ jorge throws: anOverloadCard to: julian in: aGame.]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: 'The player cannot throw this card because it is not his turn' ].
 ]
 
 { #category : #tests }
-LudoMagicGameTest >> testHernanGetsToLoadedSquareAndGetACard [
-	| aGame hernan squares aCard graciela |
+LudoMagicGameTest >> testJorgeGetsAnOverloadCardAndThrowItToJulian [
+	| aGame squares anOverloadCard|
 	
-	graciela := Player new.
-	hernan := Player new.
-	aCard := Card new.
-	players := OrderedCollection with: hernan with: graciela .
+	anOverloadCard := OverloadCard new.
 	
-	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new.}.
-	players := OrderedCollection with: hernan with: graciela .
-	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 3))} andWithBoardOfSquares: squares.
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anOverloadCard. EffectlessSquare new. EffectlessSquare new. }.
 	
-	aGame do: 2.
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
 	
-	self assert: (aGame has: hernan theCard: aCard).
+	aGame do:2.
+	
+	jorge throws: anOverloadCard to: julian in: aGame.
+	
+	aGame do:2.
+	
+	self assert: (aGame numberOfSquareOf: julian) equals:2.
 ]
 
 { #category : #tests }
@@ -261,6 +273,20 @@ LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJorgeGetsToLoadedSquareAndGetACard [
+	| aGame squares aCard |
+	
+	aCard := Card new.
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new.}.
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 3))} andWithBoardOfSquares: squares.
+	
+	aGame do: 2.
+	
+	self assert: (aGame has: jorge theCard: aCard).
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 
 	| squares  aGame |
@@ -287,6 +313,23 @@ LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJorgeThrowsAnOverloadCardAndDoesntHaveItAnymore [
+	| aGame squares anOverloadCard|
+
+	anOverloadCard := OverloadCard new.
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anOverloadCard. EffectlessSquare new. EffectlessSquare new. }.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
+	
+	aGame do:2.
+	
+	jorge throws: anOverloadCard to: julian in: aGame.
+	
+	self assert: (aGame has: jorge theCard: anOverloadCard) not
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 
 	aThreeLapGame do: 4.	
@@ -308,6 +351,21 @@ LudoMagicGameTest >> testJulianGetsToAtomicBombSquareWhenAPlayerIsAtSecondLap [
 	self assert: (aGame lapOf:julian) equals: 0.
 	
 	
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJulianGetsToEffectlessSquareAndDoesntGetTheCard [
+	| aGame squares aCard |
+	
+	aCard := Card new.
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aCard. EffectlessSquare new. EffectlessSquare new. }.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
+	
+	aGame do: 2.
+	
+	self assert: (aGame has: julian theCard: aCard) not.
 ]
 
 { #category : #tests }

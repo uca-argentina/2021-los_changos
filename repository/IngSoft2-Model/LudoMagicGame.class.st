@@ -34,6 +34,12 @@ LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices 
 	^self playedBy: players withNumberOfLaps: laps throwing:  dices andWithBoardOfSquares: squares.
 ]
 
+{ #category : #action }
+LudoMagicGame >> add: aCard to: aPlayer [ 
+	
+	(board cardHandlerOf: aPlayer) addEffectOf: aCard.
+]
+
 { #category : #validation }
 LudoMagicGame >> checkIfRollsAreAllowed [
 	finished
@@ -66,6 +72,11 @@ LudoMagicGame >> initializePlayedBy: players withNumberOfLaps:laps throwing:aGro
 	
 ]
 
+{ #category : #accesing }
+LudoMagicGame >> isTurnOf: aPlayer [ 
+	^turnPlayer = aPlayer
+]
+
 { #category : #accessing }
 LudoMagicGame >> lapOf: player [ 
 	^ board lapOf: player
@@ -80,7 +91,14 @@ LudoMagicGame >> numberOfSquareOf: aPlayer [
 LudoMagicGame >> numberOfSquaresToMove [
 	| finalResult |
 	finalResult := self throwDices: turnPlayer.
+	finalResult := finalResult + (board cardHandlerOf: turnPlayer) effects.
 	^ finalResult
+]
+
+{ #category : #action }
+LudoMagicGame >> remove: aCard from: aPlayer [ 
+	
+	(board cardHandlerOf: aPlayer) remove: aCard from: aPlayer.
 ]
 
 { #category : #accesing }

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accesing }
+SpeedCard >> effect [
+	^1.
+]
+
+{ #category : #accesing }
 SpeedCard >> permanent [
 	^true
 ]
