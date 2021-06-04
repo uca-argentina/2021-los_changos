@@ -40,6 +40,23 @@ LudoMagicGame >> add: aCard to: aPlayer [
 	(board cardHandlerOf: aPlayer) addEffectOf: aCard.
 ]
 
+{ #category : #actions }
+LudoMagicGame >> addCardToAll: aCard [
+	board addCardToAll:aCard.
+	
+]
+
+{ #category : #action }
+LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [ 
+		(self isTurnOf: aPlayer) ifFalse:[self error: 'The player cannot throw this card because it is not his turn'].
+	(self has: aPlayer theCard: aCard) ifFalse:[self error: 'The player cannot throw this card because he does not have it'].
+	aCard applyTo:otherPlayer in:self.
+	"self add: aCard to: otherPlayer."
+	self remove: aCard from: aPlayer.
+	
+	
+]
+
 { #category : #validation }
 LudoMagicGame >> checkIfRollsAreAllowed [
 	finished

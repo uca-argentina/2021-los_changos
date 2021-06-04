@@ -4,15 +4,14 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #action }
+OverloadCard >> applyTo: aPlayer in: aGame [
+	aGame add:self to:aPlayer. 
+]
+
 { #category : #accesing }
 OverloadCard >> effect [
 	^-2.
-]
-
-{ #category : #actions }
-OverloadCard >> makeEffect: value [
-	
-	^ value - 2
 ]
 
 { #category : #accesing }

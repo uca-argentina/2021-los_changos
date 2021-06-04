@@ -223,6 +223,45 @@ LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsHisTurn [
 ]
 
 { #category : #tests }
+LudoMagicGameTest >> testJorgeGetsASpeedCardAndThrowItToJulian [
+	| aGame squares aAccelerationCard|
+	
+	aAccelerationCard := SpeedCard new.
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: aAccelerationCard. EffectlessSquare new. EffectlessSquare new. }.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
+	
+	aGame do:2.
+	
+	aGame cardPlayedBy:jorge to:julian with: aAccelerationCard .
+	
+	aGame do:2.
+	
+	self assert: (aGame numberOfSquareOf: julian) equals:5.
+]
+
+{ #category : #tests }
+LudoMagicGameTest >> testJorgeGetsAnAccelerationAndAffectsAllPlayers [
+	| aGame squares anAccelerationCard|
+	
+	anAccelerationCard := AccelerationCard new.
+	
+	squares:= { EffectlessSquare new. EffectlessSquare new. LoadedSquare with: anAccelerationCard . EffectlessSquare new. EffectlessSquare new. }.
+	
+	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares.
+	
+	aGame do:2.
+	
+	aGame cardPlayedBy:jorge to:players with: anAccelerationCard  .
+	
+	aGame do:2.
+	
+	self assert: (aGame numberOfSquareOf: julian) equals:5.
+	self assert: (aGame numberOfSquareOf: jorge) equals:1
+]
+
+{ #category : #tests }
 LudoMagicGameTest >> testJorgeGetsAnOverloadCardAndThrowItToJulian [
 	| aGame squares anOverloadCard|
 	
@@ -234,7 +273,7 @@ LudoMagicGameTest >> testJorgeGetsAnOverloadCardAndThrowItToJulian [
 	
 	aGame do:2.
 	
-	jorge throws: anOverloadCard to: julian in: aGame.
+	aGame cardPlayedBy:jorge to:julian with: anOverloadCard .
 	
 	aGame do:2.
 	
@@ -324,7 +363,11 @@ LudoMagicGameTest >> testJorgeThrowsAnOverloadCardAndDoesntHaveItAnymore [
 	
 	aGame do:2.
 	
-	jorge throws: anOverloadCard to: julian in: aGame.
+	"aPlay := CardPlay playedBy: jorge to: julian with: anOverloadCard."
+
+  jorge throws: anOverloadCard to: julian in: aGame.
+
+	
 	
 	self assert: (aGame has: jorge theCard: anOverloadCard) not
 ]

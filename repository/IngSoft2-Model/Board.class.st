@@ -52,6 +52,11 @@ Board >> add: aCard toHandlerOf: aPlayer [
 	(self cardHandlerOf: aPlayer) add: aCard.
 ]
 
+{ #category : #action }
+Board >> addCardToAll: aCard [ 
+	cardHandlers do:[:cardHandler|cardHandler addEffectOf: aCard].
+]
+
 { #category : #boolean }
 Board >> cardHandlerOf: aPlayer [
 	| playerCardHandler |
