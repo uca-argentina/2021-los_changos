@@ -26,6 +26,11 @@ LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing:dices a
 ]
 
 { #category : #'instance creation' }
+LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: cards [
+	^self new initializePlayedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: cards.
+]
+
+{ #category : #'instance creation' }
 LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices withSize: size [
 
 		| squares |
@@ -48,10 +53,8 @@ LudoMagicGame >> addCardToAll: aCard [
 
 { #category : #action }
 LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [ 
-		(self isTurnOf: aPlayer) ifFalse:[self error: 'The player cannot throw this card because it is not his turn'].
-	(self has: aPlayer theCard: aCard) ifFalse:[self error: 'The player cannot throw this card because he does not have it'].
+	self validateThrowOf: aCard from: aPlayer.
 	aCard applyTo:otherPlayer in:self.
-	"self add: aCard to: otherPlayer."
 	self remove: aCard from: aPlayer.
 	
 	
@@ -89,6 +92,15 @@ LudoMagicGame >> initializePlayedBy: players withNumberOfLaps:laps throwing:aGro
 	
 ]
 
+{ #category : #initialization }
+LudoMagicGame >> initializePlayedBy: players withNumberOfLaps: laps throwing: aGroupOfDices andWithBoardOfSquares: squares withDeckOf: cards [
+	nextPlayerIndex:=2.
+	finished:=false.
+	dices:= aGroupOfDices.
+	turnPlayer:= players at:1.
+	board:= Board playedBy: players withNumberOfLaps:laps  with:squares and: cards.
+]
+
 { #category : #accesing }
 LudoMagicGame >> isTurnOf: aPlayer [ 
 	^turnPlayer = aPlayer
@@ -115,7 +127,12 @@ LudoMagicGame >> numberOfSquaresToMove [
 { #category : #action }
 LudoMagicGame >> remove: aCard from: aPlayer [ 
 	
-	(board cardHandlerOf: aPlayer) remove: aCard from: aPlayer.
+	(board cardHandlerOf: aPlayer) remove: aCard.
+]
+
+{ #category : #action }
+LudoMagicGame >> removePermanentCard: aCard from: aPlayer [ 
+	board removePermanentCard: aCard from: aPlayer.
 ]
 
 { #category : #accesing }
@@ -135,6 +152,16 @@ LudoMagicGame >> turn [
 	finished := board finished: turnPlayer.
 	turnPlayer := board players at: nextPlayerIndex.
 	nextPlayerIndex := (nextPlayerIndex rem: board players size) + 1
+]
+
+{ #category : #action }
+LudoMagicGame >> validateThrowOf: aCard from: aPlayer [
+	((self isTurnOf: aPlayer) or: aCard permanent not )
+		ifFalse: [ self
+				error: 'The player cannot throw this card because it is not his turn' ].
+	(self has: aPlayer theCard: aCard)
+		ifFalse: [ self
+				error: 'The player cannot throw this card because he does not have it' ]
 ]
 
 { #category : #accessing }

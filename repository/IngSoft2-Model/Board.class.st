@@ -6,7 +6,9 @@ Class {
 		'players',
 		'positions',
 		'squares',
-		'cardHandlers'
+		'cardHandlers',
+		'deck',
+		'nextCardIndex'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -20,6 +22,11 @@ Board class >> playedBy: players withNumberOfLaps: laps andWith: squares [
 		initializeBoardPlayedBy: players
 		withNumberOfLaps: laps
 		andWith: squares
+]
+
+{ #category : #'instance creation' }
+Board class >> playedBy: players withNumberOfLaps: laps with: squares and: cards [
+	^self new initializePlayedBy: players withNumberOfLaps: laps with: squares and: cards.
 ]
 
 { #category : #'instance creation' }
@@ -89,6 +96,14 @@ Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [
 	^ Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)
 ]
 
+{ #category : #action }
+Board >> giveCardFromDeckTo: aPlayer [ 
+	
+	(self cardHandlerOf: aPlayer) add: (deck at: nextCardIndex).
+	nextCardIndex:=(nextCardIndex rem: deck size) +1.
+	
+]
+
 { #category : #boolean }
 Board >> has: aPlayer theCard: aCard [
 	| playerCardHandler |
@@ -103,6 +118,17 @@ Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLap
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
+]
+
+{ #category : #initialization }
+Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquares and: cards [
+	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
+	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
+	squares := aGroupOfSquares.
+	laps := numberOfLaps.
+	players := aGroupOfPlayers.
+	deck:=cards.
+	nextCardIndex:=1.
 ]
 
 { #category : #accessing }
@@ -170,6 +196,11 @@ Board >> positionOf: aPlayer [
 { #category : #positionsFORTEST }
 Board >> positions [
 	^ positions
+]
+
+{ #category : #action }
+Board >> removePermanentCard: aCard from: aPlayer [ 
+	(self cardHandlerOf: aPlayer) removeEffectCard: aCard.
 ]
 
 { #category : #actions }

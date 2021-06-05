@@ -49,6 +49,16 @@ CardHandler >> player [
 ]
 
 { #category : #'as yet unclassified' }
+CardHandler >> remove: aCard [
+	cards remove:aCard.
+]
+
+{ #category : #'as yet unclassified' }
 CardHandler >> remove: aCard from: aPlayer [ 
 	cards remove:aCard.
+]
+
+{ #category : #action }
+CardHandler >> removeEffectCard: aCard [
+	effectCards remove: aCard ifAbsent: [ ^self error: 'This card cannot be played because there are not active cards that match' ].
 ]
