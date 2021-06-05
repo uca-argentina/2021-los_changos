@@ -1,6 +1,6 @@
 Class {
 	#name : #ReDoCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#instVars : [
 		'permanent'
 	],

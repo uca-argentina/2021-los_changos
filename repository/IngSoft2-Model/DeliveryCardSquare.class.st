@@ -1,10 +1,10 @@
 Class {
 	#name : #DeliveryCardSquare,
-	#superclass : #Object,
+	#superclass : #Square,
 	#instVars : [
 		'card'
 	],
-	#category : #'IngSoft2-Tests'
+	#category : #'IngSoft2-Model'
 }
 
 { #category : #'instance creation' }

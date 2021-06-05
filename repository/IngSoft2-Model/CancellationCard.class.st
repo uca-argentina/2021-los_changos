@@ -1,6 +1,6 @@
 Class {
 	#name : #CancellationCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#instVars : [
 		'cardToBeRemoved'
 	],
