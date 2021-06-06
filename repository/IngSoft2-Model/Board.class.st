@@ -56,11 +56,6 @@ Board class >> validateSquares: squares [
 		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 
-{ #category : #actions }
-Board >> add: aCard toHandlerOf: aPlayer [ 
-	(self cardHandlerOf: aPlayer) add: aCard.
-]
-
 { #category : #action }
 Board >> addCardToAll: aCard [ 
 	cardHandlers do:[:cardHandler|cardHandler addEffectOf: aCard].

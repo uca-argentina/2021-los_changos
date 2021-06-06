@@ -1,7 +1,7 @@
 Class {
 	#name : #OverloadCard,
 	#superclass : #Card,
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #action }

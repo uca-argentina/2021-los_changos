@@ -1,7 +1,7 @@
 Class {
 	#name : #Card,
 	#superclass : #Object,
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #action }

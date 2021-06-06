@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'cardToBeRemoved'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #action }
