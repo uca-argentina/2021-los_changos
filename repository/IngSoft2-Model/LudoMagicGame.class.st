@@ -142,7 +142,7 @@ LudoMagicGame >> squares [
 
 { #category : #accessing }
 LudoMagicGame >> throwDices: player [
-	^ player throws: dices
+	^(dices collect:[ :dice | dice roll ]) sum .
 ]
 
 { #category : #accessing }

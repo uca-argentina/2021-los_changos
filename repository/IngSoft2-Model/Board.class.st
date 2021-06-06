@@ -193,11 +193,6 @@ Board >> positionOf: aPlayer [
 	^ positions detect: [ :aPosition | aPosition player = aPlayer  ]
 ]
 
-{ #category : #positionsFORTEST }
-Board >> positions [
-	^ positions
-]
-
 { #category : #action }
 Board >> removePermanentCard: aCard from: aPlayer [ 
 	(self cardHandlerOf: aPlayer) removeEffectCard: aCard.

@@ -8,7 +8,7 @@ Class {
 PositionTest >> testNewPositionCannotHaveNegativeLap [
 
 	self
-		should: [  Position lap: -1 numberOfSquare: 5 for: Player new. ]
+		should: [  Position lap: -1 numberOfSquare: 5 for: 'jorge'. ]
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'Lap should be zero or greater' ].
 ]
@@ -17,7 +17,7 @@ PositionTest >> testNewPositionCannotHaveNegativeLap [
 PositionTest >> testNewPositionCannotHaveNegativeNumberOfSquare [
 
 	self
-		should: [  Position lap: 2 numberOfSquare: -3 for: Player new. ]
+		should: [  Position lap: 2 numberOfSquare: -3 for: 'hernan'. ]
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'Number of square should be greater than zero' ].
 ]
@@ -26,7 +26,7 @@ PositionTest >> testNewPositionCannotHaveNegativeNumberOfSquare [
 PositionTest >> testNewPositionCannotHaveNumberOfSquareZero [
 
 	self
-		should: [  Position lap: 2 numberOfSquare: 0 for: Player new. ]
+		should: [  Position lap: 2 numberOfSquare: 0 for: 'jorge'. ]
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'Number of square should be greater than zero' ].
 ]
@@ -35,7 +35,7 @@ PositionTest >> testNewPositionCannotHaveNumberOfSquareZero [
 PositionTest >> testNewPositionHasLapTwo [
 	| aPosition |
 	
-	aPosition := Position lap: 2 numberOfSquare: 3 for: Player new.
+	aPosition := Position lap: 2 numberOfSquare: 3 for: 'julian'.
 	
 	self assert: aPosition lap equals: 2.	
 
@@ -45,7 +45,7 @@ PositionTest >> testNewPositionHasLapTwo [
 PositionTest >> testNewPositionHasLapZero [
 	| aPosition |
 	
-	aPosition := Position lap: 0 numberOfSquare: 3 for: Player new.
+	aPosition := Position lap: 0 numberOfSquare: 3 for: 'jorge'.
 	
 	self assert: aPosition lap equals: 0.	
 
@@ -55,7 +55,7 @@ PositionTest >> testNewPositionHasLapZero [
 PositionTest >> testNewPositionIsOnSquareNumberFive [
 	| aPosition |
 	
-	aPosition := Position lap: 1 numberOfSquare: 5 for: Player new.
+	aPosition := Position lap: 1 numberOfSquare: 5 for: 'julian'.
 	
 	self assert: aPosition numberOfSquare equals: 5.	
 

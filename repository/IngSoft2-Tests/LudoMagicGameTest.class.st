@@ -17,8 +17,8 @@ Class {
 { #category : #running }
 LudoMagicGameTest >> setUp [
 	super setUp.
-	jorge := Player new.
-	julian := Player new.
+	jorge := 'jorge'.
+	julian := 'julian'.
 	
 	players := OrderedCollection with: jorge with: julian.
 	
@@ -217,9 +217,8 @@ LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsHisTurn [
 	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares withDeckOf: { anOverloadCard}.
 	
 	aGame turn.
-	
 	self
-		should: [ jorge throws: anOverloadCard to: julian in: aGame.]
+		should: [ aGame cardPlayedBy: jorge to: julian with: anOverloadCard.]
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'The player cannot throw this card because it is not his turn' ].
 ]
