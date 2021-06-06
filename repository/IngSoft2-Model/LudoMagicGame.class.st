@@ -6,7 +6,8 @@ Class {
 		'finished',
 		'board',
 		'turnPlayer',
-		'nextPlayerIndex'
+		'nextPlayerIndex',
+		'lastSquarePlayed'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -42,7 +43,8 @@ LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices 
 { #category : #action }
 LudoMagicGame >> add: aCard to: aPlayer [ 
 	
-	(board cardHandlerOf: aPlayer) addEffectOf: aCard.
+	board addEffectOf: aCard to: aPlayer.
+	
 ]
 
 { #category : #actions }
@@ -52,8 +54,14 @@ LudoMagicGame >> addCardToAll: aCard [
 ]
 
 { #category : #action }
-LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [ 
-	self validateThrowOf: aCard from: aPlayer.
+LudoMagicGame >> applyEffectOfTheLastPlayedSquaresTo: aPlayer [
+	board applyEffectOfTheLastPlayedSquareTo: aPlayer.
+]
+
+{ #category : #action }
+LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [
+	aCard acquireBehaviourOf: board lastCardPlayed.
+	self validateThrowOf: aCard  from: aPlayer.
 	aCard applyTo:otherPlayer in:self.
 	self remove: aCard from: aPlayer.
 	
@@ -159,9 +167,9 @@ LudoMagicGame >> validateThrowOf: aCard from: aPlayer [
 	((self isTurnOf: aPlayer) or: aCard permanent not )
 		ifFalse: [ self
 				error: 'The player cannot throw this card because it is not his turn' ].
-	(self has: aPlayer theCard: aCard)
+	((self has: aPlayer theCard: aCard))
 		ifFalse: [ self
-				error: 'The player cannot throw this card because he does not have it' ]
+				error: 'The player cannot throw this card because he does not have it' ].
 ]
 
 { #category : #accessing }

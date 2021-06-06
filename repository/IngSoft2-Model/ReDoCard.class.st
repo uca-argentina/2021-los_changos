@@ -2,7 +2,8 @@ Class {
 	#name : #ReDoCard,
 	#superclass : #Card,
 	#instVars : [
-		'permanent'
+		'permanent',
+		'card'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -17,6 +18,17 @@ ReDoCard class >> asPermanent [
 	^self new initializeAsPermanent.
 ]
 
+{ #category : #action }
+ReDoCard >> acquireBehaviourOf: aCard [
+	card:= aCard.
+	^aCard
+]
+
+{ #category : #action }
+ReDoCard >> applyTo: aPlayer in: aGame [ 
+	card applyTo: aPlayer in: aGame.
+]
+
 { #category : #initialize }
 ReDoCard >> initializeAsInstantaneous [
 	permanent:= false.
@@ -29,5 +41,5 @@ ReDoCard >> initializeAsPermanent [
 
 { #category : #accesing }
 ReDoCard >> permanent [
-	^permanent.
+	^card permanent.
 ]

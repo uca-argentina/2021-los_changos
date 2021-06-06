@@ -8,7 +8,9 @@ Class {
 		'squares',
 		'cardHandlers',
 		'deck',
-		'nextCardIndex'
+		'nextCardIndex',
+		'lastCardPlayed',
+		'lastSquarePlayed'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -62,6 +64,17 @@ Board >> add: aCard toHandlerOf: aPlayer [
 { #category : #action }
 Board >> addCardToAll: aCard [ 
 	cardHandlers do:[:cardHandler|cardHandler addEffectOf: aCard].
+]
+
+{ #category : #action }
+Board >> addEffectOf: aCard to: aPlayer [
+	(self cardHandlerOf: aPlayer) addEffectOf: aCard.
+	lastCardPlayed:= aCard.
+]
+
+{ #category : #action }
+Board >> applyEffectOfTheLastPlayedSquareTo: aPlayer [
+	lastSquarePlayed makeEffectOn: aPlayer thatHasItsPositionIn: self.
 ]
 
 { #category : #boolean }
@@ -129,12 +142,18 @@ Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps wit
 	players := aGroupOfPlayers.
 	deck:=cards.
 	nextCardIndex:=1.
+	lastSquarePlayed:= EffectlessSquare new.
 ]
 
 { #category : #accessing }
 Board >> lapOf: aPlayer [ 
 
 	^ (self positionOf: aPlayer) lap.
+]
+
+{ #category : #accesing }
+Board >> lastCardPlayed [
+	^lastCardPlayed.
 ]
 
 { #category : #accessing }
@@ -160,6 +179,7 @@ Board >> move: aPlayer forward: squaresToMove [
 	| currentSquare newPosition |
 	newPosition := self move: aPlayer withoutEffectTo: squaresToMove.
 	currentSquare := squares at: newPosition numberOfSquare.
+	lastSquarePlayed := currentSquare.
 	currentSquare makeEffectOn: aPlayer thatHasItsPositionIn: self
 ]
 
