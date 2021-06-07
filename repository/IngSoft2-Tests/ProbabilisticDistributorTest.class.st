@@ -10,7 +10,7 @@ ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGr
 	| realProportionsByEvent tolerances  |
 	realProportionsByEvent := self getProportionsByEventFrom: aGroupGeneratedByTheProbabilisticDistributor with: aProbabilisticDistributor events.
 	tolerances := aProbabilisticDistributor events collect: [ 
-				:event | ((realProportionsByEvent at: event ) - ((event probability ) * 100)) abs ].
+				:event | ((realProportionsByEvent at: event ) - ((event probability ) )) abs * 100 ].
 	self assert: ( tolerances allSatisfy: [:tolerance | (tolerance <= aTolerance) ])
 	
 	
@@ -26,7 +26,7 @@ ProbabilisticDistributorTest >> getProportionsByEventFrom: groupGenerated with: 
 	proportionsByEvent := Dictionary new.
 	
 	events do: [ :event | 
-		realProportion :=  ((groupGenerated count: [ :item | item = event object ])/(groupGenerated size)) * 100.
+		realProportion :=  ((groupGenerated count: [ :item | item = event object ])/(groupGenerated size)).
 		proportionsByEvent at: event put: realProportion   .      ].
 	
 	^proportionsByEvent .
