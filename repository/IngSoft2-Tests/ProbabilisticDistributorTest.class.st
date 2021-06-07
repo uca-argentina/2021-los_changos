@@ -6,16 +6,11 @@ Class {
 
 { #category : #'as yet unclassified' }
 ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGroupGeneratedByTheProbabilisticDistributor withTolerance: aTolerance [
-	| eventsGeneratedItems eventsGeneratedItemsWithoutRepetition eventsWithProbability tolerances  |
-	eventsWithProbability := Dictionary new.
-	aProbabilisticDistributor events do: [ :event | eventsWithProbability at: event object put: event probability ].
-	eventsGeneratedItems := (aProbabilisticDistributor events	) collect: [ :event | event object  ].
-	eventsGeneratedItemsWithoutRepetition := Set new.
-	eventsGeneratedItems do: [ :item | eventsGeneratedItemsWithoutRepetition add: item ].
-	tolerances := eventsGeneratedItemsWithoutRepetition collect: [ 
-				:item | 
-				(( ((aGroupGeneratedByTheProbabilisticDistributor count: [:anotherItem | item = anotherItem])/(aGroupGeneratedByTheProbabilisticDistributor size)) - (eventsWithProbability at: item) ) * 100) abs 
-				].
+			
+	| realProportionsByEvent tolerances  |
+	realProportionsByEvent := self getProportionsByEventFrom: aGroupGeneratedByTheProbabilisticDistributor with: aProbabilisticDistributor events.
+	tolerances := aProbabilisticDistributor events collect: [ 
+				:event | ((realProportionsByEvent at: event ) - ((event probability ) * 100)) abs ].
 	self assert: ( tolerances allSatisfy: [:tolerance | (tolerance <= aTolerance) ])
 	
 	
@@ -23,6 +18,18 @@ ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGr
 	
 
 
+]
+
+{ #category : #'as yet unclassified' }
+ProbabilisticDistributorTest >> getProportionsByEventFrom: groupGenerated with: events [
+	| proportionsByEvent realProportion |
+	proportionsByEvent := Dictionary new.
+	
+	events do: [ :event | 
+		realProportion :=  ((groupGenerated count: [ :item | item = event object ])/(groupGenerated size)) * 100.
+		proportionsByEvent at: event put: realProportion   .      ].
+	
+	^proportionsByEvent .
 ]
 
 { #category : #tests }
