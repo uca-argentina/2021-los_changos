@@ -36,8 +36,3 @@ Deck >> pick [
 	nextCardIndex = 0 ifTrue: [ nextCardIndex := 1 ].
 	^ cardToPick 
 ]
-
-{ #category : #actions }
-Deck >> size [
-	^ cards size
-]

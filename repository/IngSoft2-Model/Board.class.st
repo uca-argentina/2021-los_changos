@@ -210,8 +210,3 @@ Board >> size [
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
 ]
-
-{ #category : #accesing }
-Board >> squares [
-	^ squares copy.
-]

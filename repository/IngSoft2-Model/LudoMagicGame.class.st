@@ -149,11 +149,6 @@ LudoMagicGame >> size [
 	
 ]
 
-{ #category : #accesing }
-LudoMagicGame >> squares [
-	^board squares.
-]
-
 { #category : #accessing }
 LudoMagicGame >> throwDices: player [
 	^(dices collect:[ :dice | dice roll ]) sum .

@@ -31,11 +31,6 @@ ProbabilisticDistributor class >> withEqualProbability: groupOfItems [
 	^ self new initializeWith: events.
 ]
 
-{ #category : #'instance creation - old' }
-ProbabilisticDistributor class >> withEqualProbability: aClass generate: anInteger [ 
-	self shouldBeImplemented.
-]
-
 { #category : #accessing }
 ProbabilisticDistributor >> events [
 	^ events copy
