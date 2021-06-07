@@ -16,19 +16,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> playedBy: players withNumberOfLaps: laps andWith: squares [
-	
-	self validatePlayers: players withNumberOfLaps: laps andWith: squares.
+Board class >> playedBy: players withNumberOfLaps: laps with: squares and: deck [
 
-	^ self new
-		initializeBoardPlayedBy: players
-		withNumberOfLaps: laps
-		andWith: squares
-]
+	self validatePlayers: players withNumberOfLaps: laps  andWith: squares. 
 
-{ #category : #'instance creation' }
-Board class >> playedBy: players withNumberOfLaps: laps with: squares and: cards [
-	^self new initializePlayedBy: players withNumberOfLaps: laps with: squares and: cards.
+	^self new initializePlayedBy: players withNumberOfLaps: laps with: squares and: deck.
 ]
 
 { #category : #'instance creation' }
@@ -106,9 +98,7 @@ Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [
 
 { #category : #action }
 Board >> giveCardFromDeckTo: aPlayer [ 
-	
-	(self cardHandlerOf: aPlayer) add: (deck at: nextCardIndex).
-	nextCardIndex:=(nextCardIndex rem: deck size) +1.
+	(self cardHandlerOf: aPlayer) add: (deck pick).
 	
 ]
 
@@ -120,23 +110,16 @@ Board >> has: aPlayer theCard: aCard [
 ]
 
 { #category : #initialization }
-Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps andWith: aGroupOfSquares [
+Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquares and: aDeck [
 	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
 	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
+	
+	cardHandlers do: [ :cardHandler | cardHandler add: (aDeck pick). cardHandler add: (aDeck pick).  ].
+	
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
-]
-
-{ #category : #initialization }
-Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquares and: cards [
-	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
-	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
-	squares := aGroupOfSquares.
-	laps := numberOfLaps.
-	players := aGroupOfPlayers.
-	deck:=cards.
-	nextCardIndex:=1.
+	deck:=aDeck.
 	lastSquarePlayed:= EffectlessSquare new.
 ]
 
@@ -216,6 +199,11 @@ Board >> removePermanentCard: aCard from: aPlayer [
 { #category : #actions }
 Board >> restartAllPlayers [
 	positions:= players collect: [ :player |   Position lap: (self lapOf:player) numberOfSquare: 1 for: player  ].
+]
+
+{ #category : #initialization }
+Board >> size [
+	^ squares size
 ]
 
 { #category : #accessing }

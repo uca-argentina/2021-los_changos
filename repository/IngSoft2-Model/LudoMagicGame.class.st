@@ -18,26 +18,31 @@ LudoMagicGame class >> messageOfNoMoreRollsAllowed [
 ]
 
 { #category : #'instance creation' }
-LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing:dices andWithBoardOfSquares:squares [ .
-
-
-	dices isEmpty ifTrue: [ self error: 'There must be dices' ].
+LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck [
 	
-	^self new initializePlayedBy: players withNumberOfLaps:laps throwing:dices andWithBoardOfSquares:squares .
-]
+	dices size = 0 ifTrue: [ self error: 'There must be dices'].
 
-{ #category : #'instance creation' }
-LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: cards [
-	^self new initializePlayedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: cards.
+	^self new initializePlayedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck.
 ]
 
 { #category : #'instance creation' }
 LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices withSize: size [
 
-		| squares |
-	squares:= Distributor of: {EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. AtomicBombSquare new}  withProportions:#(48 20 20 10 2) andSize: size.
+		| squares  cardsOfVeryKind cards |
 		
-	^self playedBy: players withNumberOfLaps: laps throwing:  dices andWithBoardOfSquares: squares.
+	squares := (ProbabilisticDistributor with: { 
+		ProbabilisticEvent with: 0.45 for: EffectlessSquare new .
+		ProbabilisticEvent with: 0.15 for: WormHoleSquare new .
+		ProbabilisticEvent with: 0.15 for: SpeedUpSquare new .
+		ProbabilisticEvent with: 0.10 for: MoonWalkSquare new .
+		ProbabilisticEvent with: 0.5 for: AtomicBombSquare new .
+		ProbabilisticEvent with: 0.10 for: DeliveryCardSquare new .
+	}) generate: size.
+	
+
+	"Distributor of: {EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. AtomicBombSquare new}  withProportions:#(48 20 20 10 2) andSize: size."
+
+	^self playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: (Deck ofSize: 100).
 ]
 
 { #category : #action }
@@ -91,22 +96,12 @@ LudoMagicGame >> has: aPlayer theCard: aCard [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializePlayedBy: players withNumberOfLaps:laps throwing:aGroupOfDices andWithBoardOfSquares:squares [ 
+LudoMagicGame >> initializePlayedBy: players withNumberOfLaps: laps throwing: aGroupOfDices andWithBoardOfSquares: squares withDeckOf: aDeck [
 	nextPlayerIndex:=2.
 	finished:=false.
 	dices:= aGroupOfDices.
 	turnPlayer:= players at:1.
-	board:= Board playedBy: players withNumberOfLaps:laps  andWith:squares. 
-	
-]
-
-{ #category : #initialization }
-LudoMagicGame >> initializePlayedBy: players withNumberOfLaps: laps throwing: aGroupOfDices andWithBoardOfSquares: squares withDeckOf: cards [
-	nextPlayerIndex:=2.
-	finished:=false.
-	dices:= aGroupOfDices.
-	turnPlayer:= players at:1.
-	board:= Board playedBy: players withNumberOfLaps:laps  with:squares and: cards.
+	board:= Board playedBy: players withNumberOfLaps:laps  with:squares and: aDeck.
 ]
 
 { #category : #accesing }
@@ -132,6 +127,11 @@ LudoMagicGame >> numberOfSquaresToMove [
 	^ finalResult
 ]
 
+{ #category : #accessing }
+LudoMagicGame >> quantityOfCardInHandOf: aPlayer [
+	^ (board cardHandlerOf: aPlayer) quantityOfCardInHand
+]
+
 { #category : #action }
 LudoMagicGame >> remove: aCard from: aPlayer [ 
 	
@@ -141,6 +141,12 @@ LudoMagicGame >> remove: aCard from: aPlayer [
 { #category : #action }
 LudoMagicGame >> removePermanentCard: aCard from: aPlayer [ 
 	board removePermanentCard: aCard from: aPlayer.
+]
+
+{ #category : #initialization }
+LudoMagicGame >> size [
+	^ board size
+	
 ]
 
 { #category : #accesing }

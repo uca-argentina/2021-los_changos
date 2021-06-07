@@ -48,13 +48,13 @@ CardHandler >> player [
 	^ player
 ]
 
-{ #category : #'as yet unclassified' }
-CardHandler >> remove: aCard [
-	cards remove:aCard.
+{ #category : #accessing }
+CardHandler >> quantityOfCardInHand [
+	^ cards size
 ]
 
 { #category : #'as yet unclassified' }
-CardHandler >> remove: aCard from: aPlayer [ 
+CardHandler >> remove: aCard [
 	cards remove:aCard.
 ]
 
