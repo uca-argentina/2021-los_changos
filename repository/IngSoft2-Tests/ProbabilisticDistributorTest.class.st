@@ -33,7 +33,14 @@ ProbabilisticDistributorTest >> getProportionsByEventFrom: groupGenerated with: 
 ]
 
 { #category : #tests }
-ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatetWithProbabilityGreaterThanOne [
+ProbabilisticDistributorTest >> testAProbabilisticDistributorCannotBeCreatedWithEmptyEvents [
+	self should: [ ProbabilisticDistributor with: {  } ]
+		raise: Error
+		withExceptionDo: [ :error | self assert: error messageText equals: ProbabilisticDistributor notValidGroupOfEventsMessage ].
+]
+
+{ #category : #tests }
+ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbabilityGreaterThanOne [
 	self
 		should: [ ProbabilisticEvent with: 1.1 for: Object ]
 		raise: Error
@@ -41,7 +48,7 @@ ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatetWithProbab
 ]
 
 { #category : #tests }
-ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatetWithProbabilityLowerThanZero [
+ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbabilityLowerThanZero [
 	self
 		should: [ ProbabilisticEvent with: -2 for: Object ]
 		raise: Error
@@ -140,6 +147,20 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneEventPickThat
 	aProbabilisticDistributor := ProbabilisticDistributor with: { aProbabilisticEvent  }.
 	
 	self assert: aProbabilisticDistributor pick equals: anObject.
+]
+
+{ #category : #tests }
+ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneItemWithEqualProbability [
+	| aProbabilisticDistributor |
+	aProbabilisticDistributor := ProbabilisticDistributor withEqualProbability: { 1 }.
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000000) withTolerance: 0
+]
+
+{ #category : #tests }
+ProbabilisticDistributorTest >> testAProbabiliticDistributorWithThreeItemsWithEqualProbability [
+	| aProbabilisticDistributor |
+	aProbabilisticDistributor := ProbabilisticDistributor withEqualProbability: { 1 . 5 . 9 }.
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000000) withTolerance: 5
 ]
 
 { #category : #tests }

@@ -8,7 +8,6 @@ Class {
 		'squares',
 		'cardHandlers',
 		'deck',
-		'nextCardIndex',
 		'lastCardPlayed',
 		'lastSquarePlayed'
 	],
@@ -49,14 +48,14 @@ Board class >> validateSquares: squares [
 ]
 
 { #category : #action }
-Board >> addCardToAll: aCard [ 
-	cardHandlers do:[:cardHandler|cardHandler addEffectOf: aCard].
+Board >> addEffectOf: aCard to: aPlayer [
+	(self cardHandlerOf: aPlayer) addCardThatAffectsPlayer: aCard.
+	lastCardPlayed:= aCard.
 ]
 
 { #category : #action }
-Board >> addEffectOf: aCard to: aPlayer [
-	(self cardHandlerOf: aPlayer) addEffectOf: aCard.
-	lastCardPlayed:= aCard.
+Board >> addEffectToAllOf: aCard [ 
+	cardHandlers do:[:cardHandler|cardHandler addCardThatAffectsPlayer: aCard].
 ]
 
 { #category : #action }
@@ -98,7 +97,7 @@ Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [
 
 { #category : #action }
 Board >> giveCardFromDeckTo: aPlayer [ 
-	(self cardHandlerOf: aPlayer) add: (deck pick).
+	(self cardHandlerOf: aPlayer) addToHand: (deck pick).
 	
 ]
 
@@ -106,7 +105,7 @@ Board >> giveCardFromDeckTo: aPlayer [
 Board >> has: aPlayer theCard: aCard [
 	| playerCardHandler |
 	playerCardHandler := self cardHandlerOf: aPlayer.
-	^ playerCardHandler has: aCard
+	^ playerCardHandler hasInHand: aCard
 ]
 
 { #category : #initialization }
@@ -114,7 +113,9 @@ Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps wit
 	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
 	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
 	
-	cardHandlers do: [ :cardHandler | cardHandler add: (aDeck pick). cardHandler add: (aDeck pick).  ].
+	cardHandlers do: [ :cardHandler | 
+		cardHandler addToHand: (aDeck pick). 
+		cardHandler addToHand: (aDeck pick).  ].
 	
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
@@ -193,7 +194,7 @@ Board >> positionOf: aPlayer [
 
 { #category : #action }
 Board >> removePermanentCard: aCard from: aPlayer [ 
-	(self cardHandlerOf: aPlayer) removeEffectCard: aCard.
+	(self cardHandlerOf: aPlayer) removeCardThatAffectPlayer: aCard.
 ]
 
 { #category : #actions }

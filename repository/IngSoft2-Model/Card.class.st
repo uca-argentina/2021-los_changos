@@ -7,3 +7,13 @@ Class {
 { #category : #action }
 Card >> acquireBehaviourOf: aCard [
 ]
+
+{ #category : #accesing }
+Card >> applyTo: aPlayer in: aGame [ 
+	self subclassResponsibility 
+]
+
+{ #category : #accesing }
+Card >> permanent [
+	self subclassResponsibility 
+]

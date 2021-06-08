@@ -28,33 +28,31 @@ LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices 
 { #category : #'instance creation' }
 LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices withSize: size [
 
-		| squares  cardsOfVeryKind cards |
+		| squares aDeck |
 		
 	squares := (ProbabilisticDistributor with: { 
-		ProbabilisticEvent with: 0.45 for: EffectlessSquare new .
-		ProbabilisticEvent with: 0.15 for: WormHoleSquare new .
-		ProbabilisticEvent with: 0.15 for: SpeedUpSquare new .
+		ProbabilisticEvent with: 0.38 for: EffectlessSquare new .
+		ProbabilisticEvent with: 0.20 for: WormHoleSquare new .
+		ProbabilisticEvent with: 0.20 for: SpeedUpSquare new .
 		ProbabilisticEvent with: 0.10 for: MoonWalkSquare new .
-		ProbabilisticEvent with: 0.5 for: AtomicBombSquare new .
+		ProbabilisticEvent with: 0.02 for: AtomicBombSquare new .
 		ProbabilisticEvent with: 0.10 for: DeliveryCardSquare new .
 	}) generate: size.
 	
-
-	"Distributor of: {EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. AtomicBombSquare new}  withProportions:#(48 20 20 10 2) andSize: size."
-
-	^self playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: (Deck ofSize: 100).
+	aDeck := Deck with: (Card subclasses collect: [ :aKindOfCard | aKindOfCard new ]).
+		
+	^self playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck.
 ]
 
 { #category : #action }
-LudoMagicGame >> add: aCard to: aPlayer [ 
-	
+LudoMagicGame >> addEffectOf: aCard to: aPlayer [ 
 	board addEffectOf: aCard to: aPlayer.
 	
 ]
 
 { #category : #actions }
-LudoMagicGame >> addCardToAll: aCard [
-	board addCardToAll:aCard.
+LudoMagicGame >> addEffectToAllOf: aCard [
+	board addEffectToAllOf:aCard.
 	
 ]
 
@@ -76,12 +74,7 @@ LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [
 { #category : #validation }
 LudoMagicGame >> checkIfRollsAreAllowed [
 	finished
-		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
-]
-
-{ #category : #action }
-LudoMagicGame >> do: numberOfTurnsToDo [
-	1 to: (numberOfTurnsToDo) do: [ :number | self turn ]
+		ifTrue: [ self error: LudoMagicGame messageOfNoMoreRollsAllowed ]
 ]
 
 { #category : #accessing }
@@ -123,7 +116,7 @@ LudoMagicGame >> numberOfSquareOf: aPlayer [
 LudoMagicGame >> numberOfSquaresToMove [
 	| finalResult |
 	finalResult := self throwDices: turnPlayer.
-	finalResult := finalResult + (board cardHandlerOf: turnPlayer) effects.
+	finalResult := finalResult + (board cardHandlerOf: turnPlayer) totalEffectsOnPlayer.
 	^ finalResult
 ]
 
@@ -135,7 +128,7 @@ LudoMagicGame >> quantityOfCardInHandOf: aPlayer [
 { #category : #action }
 LudoMagicGame >> remove: aCard from: aPlayer [ 
 	
-	(board cardHandlerOf: aPlayer) remove: aCard.
+	(board cardHandlerOf: aPlayer) removeFromHand: aCard.
 ]
 
 { #category : #action }

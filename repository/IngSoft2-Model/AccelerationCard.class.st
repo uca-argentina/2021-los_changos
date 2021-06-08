@@ -6,7 +6,7 @@ Class {
 
 { #category : #action }
 AccelerationCard >> applyTo: players in: aGame [ 
-	aGame addCardToAll:self.
+	aGame addEffectToAllOf:self.
 ]
 
 { #category : #accesing }

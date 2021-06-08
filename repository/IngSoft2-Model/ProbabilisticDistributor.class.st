@@ -14,12 +14,19 @@ ProbabilisticDistributor class >> notValidGroupOfEventsMessage [
 ]
 
 { #category : #'instance creation' }
-ProbabilisticDistributor class >> with: events [
-	
+ProbabilisticDistributor class >> validate: events [
 	| sumOfProbabilities |
-	sumOfProbabilities := (events sum: [ :event | event probability  ]) asInteger.
-	(sumOfProbabilities = 1) ifFalse: [ self error: self notValidGroupOfEventsMessage ].
-	
+	events isEmpty
+		ifTrue: [ self error: self notValidGroupOfEventsMessage ].
+	sumOfProbabilities := (events sum: [ :event | event probability ])
+		asInteger.
+	sumOfProbabilities = 1
+		ifFalse: [ self error: self notValidGroupOfEventsMessage ]
+]
+
+{ #category : #'instance creation' }
+ProbabilisticDistributor class >> with: events [
+	self validate: events.
 	^ self new initializeWith: events
 ]
 

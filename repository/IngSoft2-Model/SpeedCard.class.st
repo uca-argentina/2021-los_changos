@@ -6,7 +6,7 @@ Class {
 
 { #category : #action }
 SpeedCard >> applyTo: aPlayer in: aGame [ 
-	aGame add: self to: aPlayer.
+	aGame addEffectOf: self to: aPlayer.
 ]
 
 { #category : #accesing }
