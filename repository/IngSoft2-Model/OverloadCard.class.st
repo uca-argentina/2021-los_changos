@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #action }
-OverloadCard >> applyTo: aPlayer in: aGame [
-	aGame addEffectOf:self to:aPlayer. 
-]
-
-{ #category : #action }
 OverloadCard >> applyTo: aTarget in: aGame from: aPlayer [
 	aGame validateThrowOfAPermanent: self  from: aPlayer.
 	aGame addEffectOf:self to:aTarget. 

@@ -184,16 +184,6 @@ LudoMagicGame >> validateIsTurnOf: aPlayer [
 ]
 
 { #category : #action }
-LudoMagicGame >> validateThrowOf: aCard from: aPlayer [
-	((self isTurnOf: aPlayer) or: aCard permanent not )
-		ifFalse: [ self
-				error: 'The player cannot throw this card because it is not his turn' ].
-	((self has: aPlayer theCard: aCard))
-		ifFalse: [ self
-				error: 'The player cannot throw this card because he does not have it' ].
-]
-
-{ #category : #action }
 LudoMagicGame >> validateThrowOfAPermanent: aCard from: aPlayer [
 	self validateIsTurnOf: aPlayer.
 	self validate: aPlayer has: aCard.

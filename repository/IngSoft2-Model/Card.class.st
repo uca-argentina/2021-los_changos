@@ -5,15 +5,6 @@ Class {
 }
 
 { #category : #action }
-Card >> acquireBehaviourOf: aCard [
-]
-
-{ #category : #accesing }
-Card >> applyTo: aPlayer in: aGame [ 
-	self subclassResponsibility 
-]
-
-{ #category : #action }
 Card >> applyTo: aTarget in: aGame from: aPlayer [
 	self subclassResponsibility.
 ]

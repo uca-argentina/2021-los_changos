@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #action }
-AccelerationCard >> applyTo: players in: aGame [ 
-	aGame addEffectToAllOf:self.
-]
-
-{ #category : #action }
 AccelerationCard >> applyTo: aTarget in: aGame from: aPlayer [
 	aGame validateThrowOfAPermanent: self  from: aPlayer.
 	aGame addEffectToAllOf:self.
