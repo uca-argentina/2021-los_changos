@@ -395,14 +395,13 @@ LudoMagicGameTest >> testJulianCancelsAnOverloadCardWhenIsNotHisTurn [
 
     aCancellationCard  := CancellationCard new.
     anOverloadCard  := OverloadCard new.
-		aCancellationCard cancel: anOverloadCard.
 
     squares:= { EffectlessSquare new. EffectlessSquare new. DeliveryCardSquare new.  EffectlessSquare new. DeliveryCardSquare new. }.
 
     	aGame:= LudoMagicGame playedBy: players withNumberOfLaps:2  throwing: {(LoadedDice withValues: #(1 2)). (LoadedDice withValues: #(1 2))} andWithBoardOfSquares: squares withDeckOf: (LoadedDeck withCards:{ anOverloadCard. aCancellationCard }).
     self do: 2 theGame: aGame.
     aGame cardPlayedBy:jorge to:julian with: anOverloadCard  .
-    aGame cardPlayedBy:julian to: julian with: aCancellationCard .
+    aGame cardPlayedBy:julian to: anOverloadCard  with: aCancellationCard .
     self do: 2 theGame: aGame.
 
     self assert: (aGame numberOfSquareOf: julian) equals:4.
@@ -412,9 +411,10 @@ LudoMagicGameTest >> testJulianCancelsAnOverloadCardWhenIsNotHisTurn [
 
 { #category : #tests }
 LudoMagicGameTest >> testJulianCannotCancelACardThatIsNotInTheGame [
-    | aGame squares aCancellationCard|
+    | aGame squares aCancellationCard anOverloadCard |
 
     aCancellationCard  := CancellationCard new.
+		anOverloadCard := OverloadCard new.
 
     squares:= { EffectlessSquare new. EffectlessSquare new. EffectlessSquare new.  EffectlessSquare new. DeliveryCardSquare new. }.
 
@@ -423,7 +423,7 @@ LudoMagicGameTest >> testJulianCannotCancelACardThatIsNotInTheGame [
     self do: 3 theGame: aGame.
 
 	self
-		should: [ aGame cardPlayedBy:julian to: julian with: aCancellationCard .]
+		should: [ aGame cardPlayedBy:julian to: anOverloadCard with: aCancellationCard .]
 		raise: Error
 		withExceptionDo: [ :error | self assert: error messageText equals: 'This card cannot be played because there are not active cards that match' ].
 		
@@ -436,7 +436,6 @@ LudoMagicGameTest >> testJulianGetsACancellationCardAndGetsRidOfOverloadCard [
 
     aCancellationCard  := CancellationCard new.
     anOverloadCard  := OverloadCard new.
-		aCancellationCard cancel: anOverloadCard.
 
     squares:= { EffectlessSquare new. EffectlessSquare new. DeliveryCardSquare new .  EffectlessSquare new. DeliveryCardSquare new. }.
 
@@ -445,7 +444,7 @@ LudoMagicGameTest >> testJulianGetsACancellationCardAndGetsRidOfOverloadCard [
     self do: 2 theGame: aGame.
     aGame cardPlayedBy:jorge to:julian with: anOverloadCard  .
     aGame turn.
-    aGame cardPlayedBy:julian to: julian with: aCancellationCard .
+    aGame cardPlayedBy:julian to: anOverloadCard with: aCancellationCard .
     aGame turn.
 
     self assert: (aGame numberOfSquareOf: julian) equals:4.

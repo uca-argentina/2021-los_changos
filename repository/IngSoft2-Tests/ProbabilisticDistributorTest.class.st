@@ -40,6 +40,17 @@ ProbabilisticDistributorTest >> testAProbabilisticDistributorCannotBeCreatedWith
 ]
 
 { #category : #tests }
+ProbabilisticDistributorTest >> testAProbabilisticDistributorGenerateAGroupOfObjectsThatAreEquallyDistributed [
+	| result events distributor |
+	result:= {3. 3. 3. 3. 3}.
+	events:={ProbabilisticEvent withProbabilityOf: 1 for: 3}.
+	distributor:= ProbabilisticDistributor with: events.
+	self assert: (distributor generate: 5)  equals: result.
+
+	
+]
+
+{ #category : #tests }
 ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbabilityGreaterThanOne [
 	self
 		should: [ ProbabilisticEvent with: 1.1 for: Object ]
@@ -92,7 +103,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithEventsGenerateWi
 		ProbabilisticEvent with: 1 for: 'anotherItem' .
 		ProbabilisticEvent with: 0 for: 'someItem'
 	}.
-	self assert: (aProbabilisticDistributor generate: 100) size equals: 100.
+	self assert: (aProbabilisticDistributor generate: 23) size equals: 23.
 ]
 
 { #category : #tests }
@@ -105,7 +116,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithFiveEventsGenera
 		ProbabilisticEvent with: 0 for: 'fourthItem' .
 		ProbabilisticEvent with: 0.3 for: 'fifthItem'
 	}.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 10000) withTolerance: 5.
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000) withTolerance: 5.
 ]
 
 { #category : #tests }
@@ -118,7 +129,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithFiveEventsHasNoI
 		ProbabilisticEvent with: 0 for: 'fourthItem' .
 		ProbabilisticEvent with: 0.3 for: 'fifthItem'
 	}.
-	self assert: ((aProbabilisticDistributor generate: 100000) includes: 'fourthItem') not.
+	self assert: ((aProbabilisticDistributor generate: 1000) includes: 'fourthItem') not.
 ]
 
 { #category : #tests }
@@ -135,7 +146,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneEventGenerate
 ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneEventGenerateWithToleranceZero [
 	| aProbabilisticDistributor |
 	aProbabilisticDistributor := ProbabilisticDistributor with: { ProbabilisticEvent with: 1 for: 'someItem' }.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 100) withTolerance: 0.
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 30) withTolerance: 0.
 ]
 
 { #category : #tests }
@@ -153,14 +164,14 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneEventPickThat
 ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneItemWithEqualProbability [
 	| aProbabilisticDistributor |
 	aProbabilisticDistributor := ProbabilisticDistributor withEqualProbability: { 1 }.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000000) withTolerance: 0
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000) withTolerance: 0
 ]
 
 { #category : #tests }
 ProbabilisticDistributorTest >> testAProbabiliticDistributorWithThreeItemsWithEqualProbability [
 	| aProbabilisticDistributor |
 	aProbabilisticDistributor := ProbabilisticDistributor withEqualProbability: { 1 . 5 . 9 }.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000000) withTolerance: 5
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000) withTolerance: 5
 ]
 
 { #category : #tests }
@@ -189,5 +200,5 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithTwoEventsWithZer
 		ProbabilisticEvent with: 1 for: 'anotherItem' .
 		ProbabilisticEvent with: 0 for: 'someItem'
 	}.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 100) withTolerance: 0.
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 89) withTolerance: 0.
 ]

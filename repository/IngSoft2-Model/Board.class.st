@@ -47,6 +47,11 @@ Board class >> validateSquares: squares [
 		ifTrue: [ self error: 'Size must be greater than 4' ]
 ]
 
+{ #category : #actions }
+Board >> addCardInHandOfAPlayer: aCard to: aPlayer [
+	(self cardHandlerOf: aPlayer) addToHand: aCard.
+]
+
 { #category : #action }
 Board >> addEffectOf: aCard to: aPlayer [
 	(self cardHandlerOf: aPlayer) addCardThatAffectsPlayer: aCard.
@@ -190,6 +195,17 @@ Board >> players [
 { #category : #accessing }
 Board >> positionOf: aPlayer [ 
 	^ positions detect: [ :aPosition | aPosition player = aPlayer  ]
+]
+
+{ #category : #action }
+Board >> removePermanentCard: aCard [
+	| handlersWithCardToBeRemoved |
+	handlersWithCardToBeRemoved:=cardHandlers select:[:cardHandler | cardHandler includesCardThatAffectPlayer: aCard ].
+	
+	handlersWithCardToBeRemoved isEmpty 
+	ifTrue: [self error: 'This card cannot be played because there are not active cards that match' ].
+	
+	handlersWithCardToBeRemoved do: [:cardHandler | cardHandler removeCardThatAffectPlayer: aCard ].
 ]
 
 { #category : #action }

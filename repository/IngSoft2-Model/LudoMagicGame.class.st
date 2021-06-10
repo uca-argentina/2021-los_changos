@@ -62,10 +62,8 @@ LudoMagicGame >> applyEffectOfTheLastPlayedSquaresTo: aPlayer [
 ]
 
 { #category : #action }
-LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [
-	aCard acquireBehaviourOf: board lastCardPlayed.
-	self validateThrowOf: aCard  from: aPlayer.
-	aCard applyTo:otherPlayer in:self.
+LudoMagicGame >> cardPlayedBy: aPlayer to: aTarget with: aCard [
+	aCard applyTo:aTarget in:self from:aPlayer.
 	self remove: aCard from: aPlayer.
 	
 	
@@ -107,6 +105,11 @@ LudoMagicGame >> lapOf: player [
 	^ board lapOf: player
 ]
 
+{ #category : #actions }
+LudoMagicGame >> lastCardPlayed [
+	^board lastCardPlayed.
+]
+
 { #category : #accesing }
 LudoMagicGame >> numberOfSquareOf: aPlayer [ 
 	^ (board positionOf: aPlayer) numberOfSquare 
@@ -129,6 +132,11 @@ LudoMagicGame >> quantityOfCardInHandOf: aPlayer [
 LudoMagicGame >> remove: aCard from: aPlayer [ 
 	
 	(board cardHandlerOf: aPlayer) removeFromHand: aCard.
+]
+
+{ #category : #action }
+LudoMagicGame >> removePermanentCard: aTarget [
+	board removePermanentCard: aTarget
 ]
 
 { #category : #action }
@@ -157,6 +165,20 @@ LudoMagicGame >> turn [
 ]
 
 { #category : #action }
+LudoMagicGame >> validate: aPlayer has: aCard [.
+	((self has: aPlayer theCard: aCard))
+        ifFalse: [ self
+                error: 'The player cannot throw this card because he does not have it' ].
+]
+
+{ #category : #action }
+LudoMagicGame >> validateIsTurnOf: aPlayer [
+	((self isTurnOf: aPlayer))
+		ifFalse: [ self
+				error: 'The player cannot throw this card because it is not his turn' ].
+]
+
+{ #category : #action }
 LudoMagicGame >> validateThrowOf: aCard from: aPlayer [
 	((self isTurnOf: aPlayer) or: aCard permanent not )
 		ifFalse: [ self
@@ -164,6 +186,17 @@ LudoMagicGame >> validateThrowOf: aCard from: aPlayer [
 	((self has: aPlayer theCard: aCard))
 		ifFalse: [ self
 				error: 'The player cannot throw this card because he does not have it' ].
+]
+
+{ #category : #action }
+LudoMagicGame >> validateThrowOfAPermanent: aCard from: aPlayer [
+	self validateIsTurnOf: aPlayer.
+	self validate: aPlayer has: aCard.
+]
+
+{ #category : #action }
+LudoMagicGame >> validateThrowOfAnInstantaneous: aCard from: aPlayer [
+		self validate: aPlayer has: aCard.
 ]
 
 { #category : #accessing }

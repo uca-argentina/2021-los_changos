@@ -18,12 +18,23 @@ ProbabilisticEvent class >> with: aProbability for: anObject [
 	^ self new initializeWith: aProbability for: anObject.
 ]
 
+{ #category : #'instance creation' }
+ProbabilisticEvent class >> withProbabilityOf: aProbability for: anObject [ 
+	^(self new) initializeWithProbabilityOf: aProbability for: anObject.
+]
+
 { #category : #initialization }
 ProbabilisticEvent >> initializeWith: aProbability for: anObject [
 	(aProbability between: 0 and: 1)  ifFalse: [ self error: 'Probability should be between 0 and 1' ].
 	
 	probability := aProbability.
 	object := anObject
+]
+
+{ #category : #initialization }
+ProbabilisticEvent >> initializeWithProbabilityOf: aProbability for: anObject [ 
+	probability:= aProbability.
+	object:= anObject.
 ]
 
 { #category : #accessing }

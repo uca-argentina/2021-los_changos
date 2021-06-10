@@ -29,6 +29,11 @@ CardHandler >> hasInHand: aCard [
 	^ cardsInHand includes: aCard
 ]
 
+{ #category : #actions }
+CardHandler >> includesCardThatAffectPlayer: aCard [
+	^cardsThatAffectPlayer includes: aCard.
+]
+
 { #category : #initialization }
 CardHandler >> initializeWith: aPlayer [ 
 	player := aPlayer.

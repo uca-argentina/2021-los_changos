@@ -13,6 +13,11 @@ Card >> applyTo: aPlayer in: aGame [
 	self subclassResponsibility 
 ]
 
+{ #category : #action }
+Card >> applyTo: aTarget in: aGame from: aPlayer [
+	self subclassResponsibility.
+]
+
 { #category : #accesing }
 Card >> permanent [
 	self subclassResponsibility 
