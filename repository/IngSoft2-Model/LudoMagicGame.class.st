@@ -44,6 +44,11 @@ LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices 
 	^self playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck.
 ]
 
+{ #category : #actions }
+LudoMagicGame >> addCardInHandOfAPlayer: aCard to: aPlayer [
+	(board cardHandlerOf: aPlayer) addToHand: aCard
+]
+
 { #category : #action }
 LudoMagicGame >> addEffectOf: aCard to: aPlayer [ 
 	board addEffectOf: aCard to: aPlayer.
