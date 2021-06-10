@@ -19,8 +19,3 @@ AccelerationCard >> applyTo: aTarget in: aGame from: aPlayer [
 AccelerationCard >> effect [
 	^ 1.
 ]
-
-{ #category : #accesing }
-AccelerationCard >> permanent [
-	^true.
-]

@@ -14,8 +14,3 @@ RepeatCard >> applyTo: aTarget in: aGame from: aPlayer [
 	aGame validateThrowOfAnInstantaneous: self from: aPlayer.
 	aGame applyEffectOfTheLastPlayedSquaresTo: aTarget.
 ]
-
-{ #category : #accesing }
-RepeatCard >> permanent [
-	^false.
-]

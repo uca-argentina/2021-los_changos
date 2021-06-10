@@ -19,8 +19,3 @@ OverloadCard >> applyTo: aTarget in: aGame from: aPlayer [
 OverloadCard >> effect [
 	^-2.
 ]
-
-{ #category : #accesing }
-OverloadCard >> permanent [
-	^true.
-]

@@ -27,8 +27,3 @@ ReDoCard >> applyTo: aTarget in: aGame from: aPlayer [
 	aGame addCardInHandOfAPlayer: newCard to: aPlayer.
 	newCard applyTo: aTarget in:aGame from:aPlayer.
 ]
-
-{ #category : #accesing }
-ReDoCard >> permanent [
-	^card permanent.
-]

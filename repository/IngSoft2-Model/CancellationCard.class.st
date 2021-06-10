@@ -29,8 +29,3 @@ CancellationCard >> initialize [
 
 	cardToBeRemoved:= Card new.
 ]
-
-{ #category : #accesing }
-CancellationCard >> permanent [
-	^false.
-]

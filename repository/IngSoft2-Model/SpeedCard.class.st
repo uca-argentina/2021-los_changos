@@ -19,8 +19,3 @@ SpeedCard >> applyTo: aTarget in: aGame from: aPlayer [
 SpeedCard >> effect [
 	^1.
 ]
-
-{ #category : #accesing }
-SpeedCard >> permanent [
-	^true
-]

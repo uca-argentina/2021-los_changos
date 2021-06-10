@@ -17,8 +17,3 @@ Card >> applyTo: aPlayer in: aGame [
 Card >> applyTo: aTarget in: aGame from: aPlayer [
 	self subclassResponsibility.
 ]
-
-{ #category : #accesing }
-Card >> permanent [
-	self subclassResponsibility 
-]
