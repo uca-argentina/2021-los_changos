@@ -8,7 +8,6 @@ Class {
 		'squares',
 		'cardHandlers',
 		'deck',
-		'nextCardIndex',
 		'lastCardPlayed',
 		'lastSquarePlayed'
 	],
@@ -16,19 +15,11 @@ Class {
 }
 
 { #category : #'instance creation' }
-Board class >> playedBy: players withNumberOfLaps: laps andWith: squares [
-	
-	self validatePlayers: players withNumberOfLaps: laps andWith: squares.
+Board class >> playedBy: players withNumberOfLaps: laps with: squares and: deck [
 
-	^ self new
-		initializeBoardPlayedBy: players
-		withNumberOfLaps: laps
-		andWith: squares
-]
+	self validatePlayers: players withNumberOfLaps: laps  andWith: squares. 
 
-{ #category : #'instance creation' }
-Board class >> playedBy: players withNumberOfLaps: laps with: squares and: cards [
-	^self new initializePlayedBy: players withNumberOfLaps: laps with: squares and: cards.
+	^self new initializePlayedBy: players withNumberOfLaps: laps with: squares and: deck.
 ]
 
 { #category : #'instance creation' }
@@ -57,19 +48,19 @@ Board class >> validateSquares: squares [
 ]
 
 { #category : #actions }
-Board >> add: aCard toHandlerOf: aPlayer [ 
-	(self cardHandlerOf: aPlayer) add: aCard.
-]
-
-{ #category : #action }
-Board >> addCardToAll: aCard [ 
-	cardHandlers do:[:cardHandler|cardHandler addEffectOf: aCard].
+Board >> addCardInHandOfAPlayer: aCard to: aPlayer [
+	(self cardHandlerOf: aPlayer) addToHand: aCard.
 ]
 
 { #category : #action }
 Board >> addEffectOf: aCard to: aPlayer [
-	(self cardHandlerOf: aPlayer) addEffectOf: aCard.
+	(self cardHandlerOf: aPlayer) addCardThatAffectsPlayer: aCard.
 	lastCardPlayed:= aCard.
+]
+
+{ #category : #action }
+Board >> addEffectToAllOf: aCard [ 
+	cardHandlers do:[:cardHandler|cardHandler addCardThatAffectsPlayer: aCard].
 ]
 
 { #category : #action }
@@ -111,9 +102,7 @@ Board >> getNewPositionForward: numberOfSquaresToAdvance from: aPosition [
 
 { #category : #action }
 Board >> giveCardFromDeckTo: aPlayer [ 
-	
-	(self cardHandlerOf: aPlayer) add: (deck at: nextCardIndex).
-	nextCardIndex:=(nextCardIndex rem: deck size) +1.
+	(self cardHandlerOf: aPlayer) addToHand: (deck pick).
 	
 ]
 
@@ -121,27 +110,22 @@ Board >> giveCardFromDeckTo: aPlayer [
 Board >> has: aPlayer theCard: aCard [
 	| playerCardHandler |
 	playerCardHandler := self cardHandlerOf: aPlayer.
-	^ playerCardHandler has: aCard
+	^ playerCardHandler hasInHand: aCard
 ]
 
 { #category : #initialization }
-Board >> initializeBoardPlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps andWith: aGroupOfSquares [
+Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquares and: aDeck [
 	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
 	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
+	
+	cardHandlers do: [ :cardHandler | 
+		cardHandler addToHand: (aDeck pick). 
+		cardHandler addToHand: (aDeck pick).  ].
+	
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
-]
-
-{ #category : #initialization }
-Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps with: aGroupOfSquares and: cards [
-	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
-	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
-	squares := aGroupOfSquares.
-	laps := numberOfLaps.
-	players := aGroupOfPlayers.
-	deck:=cards.
-	nextCardIndex:=1.
+	deck:=aDeck.
 	lastSquarePlayed:= EffectlessSquare new.
 ]
 
@@ -214,8 +198,19 @@ Board >> positionOf: aPlayer [
 ]
 
 { #category : #action }
+Board >> removePermanentCard: aCard [
+	| handlersWithCardToBeRemoved |
+	handlersWithCardToBeRemoved:=cardHandlers select:[:cardHandler | cardHandler includesCardThatAffectPlayer: aCard ].
+	
+	handlersWithCardToBeRemoved isEmpty 
+	ifTrue: [self error: 'This card cannot be played because there are not active cards that match' ].
+	
+	handlersWithCardToBeRemoved do: [:cardHandler | cardHandler removeCardThatAffectPlayer: aCard ].
+]
+
+{ #category : #action }
 Board >> removePermanentCard: aCard from: aPlayer [ 
-	(self cardHandlerOf: aPlayer) removeEffectCard: aCard.
+	(self cardHandlerOf: aPlayer) removeCardThatAffectPlayer: aCard.
 ]
 
 { #category : #actions }
@@ -223,12 +218,12 @@ Board >> restartAllPlayers [
 	positions:= players collect: [ :player |   Position lap: (self lapOf:player) numberOfSquare: 1 for: player  ].
 ]
 
+{ #category : #initialization }
+Board >> size [
+	^ squares size
+]
+
 { #category : #accessing }
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
-]
-
-{ #category : #accesing }
-Board >> squares [
-	^ squares copy.
 ]

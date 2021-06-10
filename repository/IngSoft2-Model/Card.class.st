@@ -1,9 +1,10 @@
 Class {
 	#name : #Card,
 	#superclass : #Object,
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
 
 { #category : #action }
-Card >> acquireBehaviourOf: aCard [
+Card >> applyTo: aTarget in: aGame from: aPlayer [
+	self subclassResponsibility.
 ]

@@ -18,38 +18,41 @@ LudoMagicGame class >> messageOfNoMoreRollsAllowed [
 ]
 
 { #category : #'instance creation' }
-LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing:dices andWithBoardOfSquares:squares [ .
-
-
-	dices isEmpty ifTrue: [ self error: 'There must be dices' ].
+LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck [
 	
-	^self new initializePlayedBy: players withNumberOfLaps:laps throwing:dices andWithBoardOfSquares:squares .
-]
+	dices size = 0 ifTrue: [ self error: 'There must be dices'].
 
-{ #category : #'instance creation' }
-LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: cards [
-	^self new initializePlayedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: cards.
+	^self new initializePlayedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck.
 ]
 
 { #category : #'instance creation' }
 LudoMagicGame class >> playedBy: players withNumberOfLaps: laps throwing: dices withSize: size [
 
-		| squares |
-	squares:= Distributor of: {EffectlessSquare new. WormHoleSquare new. SpeedUpSquare new. MoonWalkSquare with: 5. AtomicBombSquare new}  withProportions:#(48 20 20 10 2) andSize: size.
+		| squares aDeck |
 		
-	^self playedBy: players withNumberOfLaps: laps throwing:  dices andWithBoardOfSquares: squares.
+	squares := (ProbabilisticDistributor with: { 
+		ProbabilisticEvent with: 0.38 for: EffectlessSquare new .
+		ProbabilisticEvent with: 0.20 for: WormHoleSquare new .
+		ProbabilisticEvent with: 0.20 for: SpeedUpSquare new .
+		ProbabilisticEvent with: 0.10 for: MoonWalkSquare new .
+		ProbabilisticEvent with: 0.02 for: AtomicBombSquare new .
+		ProbabilisticEvent with: 0.10 for: DeliveryCardSquare new .
+	}) generate: size.
+	
+	aDeck := Deck with: (Card subclasses collect: [ :aKindOfCard | aKindOfCard new ]).
+		
+	^self playedBy: players withNumberOfLaps: laps throwing: dices andWithBoardOfSquares: squares withDeckOf: aDeck.
 ]
 
 { #category : #action }
-LudoMagicGame >> add: aCard to: aPlayer [ 
-	
+LudoMagicGame >> addEffectOf: aCard to: aPlayer [ 
 	board addEffectOf: aCard to: aPlayer.
 	
 ]
 
 { #category : #actions }
-LudoMagicGame >> addCardToAll: aCard [
-	board addCardToAll:aCard.
+LudoMagicGame >> addEffectToAllOf: aCard [
+	board addEffectToAllOf:aCard.
 	
 ]
 
@@ -59,10 +62,8 @@ LudoMagicGame >> applyEffectOfTheLastPlayedSquaresTo: aPlayer [
 ]
 
 { #category : #action }
-LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [
-	aCard acquireBehaviourOf: board lastCardPlayed.
-	self validateThrowOf: aCard  from: aPlayer.
-	aCard applyTo:otherPlayer in:self.
+LudoMagicGame >> cardPlayedBy: aPlayer to: aTarget with: aCard [
+	aCard applyTo:aTarget in:self from:aPlayer.
 	self remove: aCard from: aPlayer.
 	
 	
@@ -71,12 +72,7 @@ LudoMagicGame >> cardPlayedBy: aPlayer to: otherPlayer with: aCard [
 { #category : #validation }
 LudoMagicGame >> checkIfRollsAreAllowed [
 	finished
-		ifTrue: [ self error: 'Game is finished, no more rolls are allowed' ]
-]
-
-{ #category : #action }
-LudoMagicGame >> do: numberOfTurnsToDo [
-	1 to: (numberOfTurnsToDo) do: [ :number | self turn ]
+		ifTrue: [ self error: LudoMagicGame messageOfNoMoreRollsAllowed ]
 ]
 
 { #category : #accessing }
@@ -91,22 +87,12 @@ LudoMagicGame >> has: aPlayer theCard: aCard [
 ]
 
 { #category : #initialization }
-LudoMagicGame >> initializePlayedBy: players withNumberOfLaps:laps throwing:aGroupOfDices andWithBoardOfSquares:squares [ 
+LudoMagicGame >> initializePlayedBy: players withNumberOfLaps: laps throwing: aGroupOfDices andWithBoardOfSquares: squares withDeckOf: aDeck [
 	nextPlayerIndex:=2.
 	finished:=false.
 	dices:= aGroupOfDices.
 	turnPlayer:= players at:1.
-	board:= Board playedBy: players withNumberOfLaps:laps  andWith:squares. 
-	
-]
-
-{ #category : #initialization }
-LudoMagicGame >> initializePlayedBy: players withNumberOfLaps: laps throwing: aGroupOfDices andWithBoardOfSquares: squares withDeckOf: cards [
-	nextPlayerIndex:=2.
-	finished:=false.
-	dices:= aGroupOfDices.
-	turnPlayer:= players at:1.
-	board:= Board playedBy: players withNumberOfLaps:laps  with:squares and: cards.
+	board:= Board playedBy: players withNumberOfLaps:laps  with:squares and: aDeck.
 ]
 
 { #category : #accesing }
@@ -119,6 +105,11 @@ LudoMagicGame >> lapOf: player [
 	^ board lapOf: player
 ]
 
+{ #category : #actions }
+LudoMagicGame >> lastCardPlayed [
+	^board lastCardPlayed.
+]
+
 { #category : #accesing }
 LudoMagicGame >> numberOfSquareOf: aPlayer [ 
 	^ (board positionOf: aPlayer) numberOfSquare 
@@ -128,14 +119,24 @@ LudoMagicGame >> numberOfSquareOf: aPlayer [
 LudoMagicGame >> numberOfSquaresToMove [
 	| finalResult |
 	finalResult := self throwDices: turnPlayer.
-	finalResult := finalResult + (board cardHandlerOf: turnPlayer) effects.
+	finalResult := finalResult + (board cardHandlerOf: turnPlayer) totalEffectsOnPlayer.
 	^ finalResult
+]
+
+{ #category : #accessing }
+LudoMagicGame >> quantityOfCardInHandOf: aPlayer [
+	^ (board cardHandlerOf: aPlayer) quantityOfCardInHand
 ]
 
 { #category : #action }
 LudoMagicGame >> remove: aCard from: aPlayer [ 
 	
-	(board cardHandlerOf: aPlayer) remove: aCard.
+	(board cardHandlerOf: aPlayer) removeFromHand: aCard.
+]
+
+{ #category : #action }
+LudoMagicGame >> removePermanentCard: aTarget [
+	board removePermanentCard: aTarget
 ]
 
 { #category : #action }
@@ -143,9 +144,10 @@ LudoMagicGame >> removePermanentCard: aCard from: aPlayer [
 	board removePermanentCard: aCard from: aPlayer.
 ]
 
-{ #category : #accesing }
-LudoMagicGame >> squares [
-	^board squares.
+{ #category : #initialization }
+LudoMagicGame >> size [
+	^ board size
+	
 ]
 
 { #category : #accessing }
@@ -163,13 +165,28 @@ LudoMagicGame >> turn [
 ]
 
 { #category : #action }
-LudoMagicGame >> validateThrowOf: aCard from: aPlayer [
-	((self isTurnOf: aPlayer) or: aCard permanent not )
+LudoMagicGame >> validate: aPlayer has: aCard [.
+	((self has: aPlayer theCard: aCard))
+        ifFalse: [ self
+                error: 'The player cannot throw this card because he does not have it' ].
+]
+
+{ #category : #action }
+LudoMagicGame >> validateIsTurnOf: aPlayer [
+	((self isTurnOf: aPlayer))
 		ifFalse: [ self
 				error: 'The player cannot throw this card because it is not his turn' ].
-	((self has: aPlayer theCard: aCard))
-		ifFalse: [ self
-				error: 'The player cannot throw this card because he does not have it' ].
+]
+
+{ #category : #action }
+LudoMagicGame >> validateThrowOfAPermanent: aCard from: aPlayer [
+	self validateIsTurnOf: aPlayer.
+	self validate: aPlayer has: aCard.
+]
+
+{ #category : #action }
+LudoMagicGame >> validateThrowOfAnInstantaneous: aCard from: aPlayer [
+		self validate: aPlayer has: aCard.
 ]
 
 { #category : #accessing }

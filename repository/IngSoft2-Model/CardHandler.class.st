@@ -3,8 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'player',
-		'cards',
-		'effectCards'
+		'cardsInHand',
+		'cardsThatAffectPlayer'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -15,32 +15,30 @@ CardHandler class >> with: aPlayer [
 ]
 
 { #category : #actions }
-CardHandler >> add: aCard [ 
-	cards add: aCard.
+CardHandler >> addCardThatAffectsPlayer: aCard [ 
+	cardsThatAffectPlayer add: aCard.
 ]
 
-{ #category : #action }
-CardHandler >> addEffectOf: aCard [ 
-	effectCards add: aCard.
-]
-
-{ #category : #action }
-CardHandler >> effects [
-	effectCards isEmpty 
-	ifTrue:[^0].
-	^effectCards sum:[:card| card effect ].
+{ #category : #actions }
+CardHandler >> addToHand: aCard [ 
+	cardsInHand add: aCard.
 ]
 
 { #category : #boolean }
-CardHandler >> has: aCard [ 
-	^ cards includes: aCard
+CardHandler >> hasInHand: aCard [ 
+	^ cardsInHand includes: aCard
+]
+
+{ #category : #actions }
+CardHandler >> includesCardThatAffectPlayer: aCard [
+	^cardsThatAffectPlayer includes: aCard.
 ]
 
 { #category : #initialization }
 CardHandler >> initializeWith: aPlayer [ 
 	player := aPlayer.
-	cards := OrderedCollection new.
-	effectCards := OrderedCollection new.
+	cardsInHand := OrderedCollection new.
+	cardsThatAffectPlayer := OrderedCollection new.
 ]
 
 { #category : #accesing }
@@ -48,17 +46,23 @@ CardHandler >> player [
 	^ player
 ]
 
-{ #category : #'as yet unclassified' }
-CardHandler >> remove: aCard [
-	cards remove:aCard.
+{ #category : #accessing }
+CardHandler >> quantityOfCardInHand [
+	^ cardsInHand size
 ]
 
-{ #category : #'as yet unclassified' }
-CardHandler >> remove: aCard from: aPlayer [ 
-	cards remove:aCard.
+{ #category : #actions }
+CardHandler >> removeCardThatAffectPlayer: aCard [
+	cardsThatAffectPlayer remove: aCard ifAbsent: [ ^self error: 'This card cannot be played because there are not active cards that match' ].
 ]
 
-{ #category : #action }
-CardHandler >> removeEffectCard: aCard [
-	effectCards remove: aCard ifAbsent: [ ^self error: 'This card cannot be played because there are not active cards that match' ].
+{ #category : #actions }
+CardHandler >> removeFromHand: aCard [
+	cardsInHand remove:aCard.
+]
+
+{ #category : #actions }
+CardHandler >> totalEffectsOnPlayer [
+	cardsThatAffectPlayer isEmpty ifTrue:[^0].
+	^cardsThatAffectPlayer sum:[:card| card effect ].
 ]

@@ -5,41 +5,14 @@ Class {
 		'permanent',
 		'card'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
 
-{ #category : #'instance creation' }
-ReDoCard class >> asInstantaneous [
-	^self new initializeAsInstantaneous.
-]
-
-{ #category : #'instance creation' }
-ReDoCard class >> asPermanent [
-	^self new initializeAsPermanent.
-]
-
 { #category : #action }
-ReDoCard >> acquireBehaviourOf: aCard [
-	card:= aCard.
-	^aCard
-]
-
-{ #category : #action }
-ReDoCard >> applyTo: aPlayer in: aGame [ 
-	card applyTo: aPlayer in: aGame.
-]
-
-{ #category : #initialize }
-ReDoCard >> initializeAsInstantaneous [
-	permanent:= false.
-]
-
-{ #category : #initialization }
-ReDoCard >> initializeAsPermanent [
-	permanent:=true.
-]
-
-{ #category : #accesing }
-ReDoCard >> permanent [
-	^card permanent.
+ReDoCard >> applyTo: aTarget in: aGame from: aPlayer [
+	| newCard |
+	aGame validate: aPlayer has: self.
+	newCard := ((aGame lastCardPlayed) class) new.
+	aGame addCardInHandOfAPlayer: newCard to: aPlayer.
+	newCard applyTo: aTarget in:aGame from:aPlayer.
 ]

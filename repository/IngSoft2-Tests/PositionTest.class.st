@@ -57,6 +57,6 @@ PositionTest >> testNewPositionIsOnSquareNumberFive [
 	
 	aPosition := Position lap: 1 numberOfSquare: 5 for: 'julian'.
 	
-	self assert: aPosition numberOfSquare equals: 5.	
+	self assert: aPosition numberOfSquare equals: 5.
 
 ]

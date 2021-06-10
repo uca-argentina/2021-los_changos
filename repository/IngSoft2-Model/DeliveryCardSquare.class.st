@@ -4,18 +4,8 @@ Class {
 	#instVars : [
 		'card'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Model-Core'
 }
-
-{ #category : #'instance creation' }
-DeliveryCardSquare class >> with: aCard [ 
-	^ self new initializeWith: aCard
-]
-
-{ #category : #initialization }
-DeliveryCardSquare >> initializeWith: aCard [ 
-	card := aCard
-]
 
 { #category : #actions }
 DeliveryCardSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [ 
