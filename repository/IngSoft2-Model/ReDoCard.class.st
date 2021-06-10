@@ -14,5 +14,6 @@ ReDoCard >> applyTo: aTarget in: aGame from: aPlayer [
 	aGame validate: aPlayer has: self.
 	newCard := ((aGame lastCardPlayed) class) new.
 	aGame addCardInHandOfAPlayer: newCard to: aPlayer.
-	newCard applyTo: aTarget in:aGame from:aPlayer.
+	aGame cardPlayedBy:aPlayer to:aTarget  with:newCard. 
+	
 ]

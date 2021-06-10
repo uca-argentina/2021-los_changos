@@ -60,12 +60,14 @@ Board >> addEffectOf: aCard to: aPlayer [
 
 { #category : #action }
 Board >> addEffectToAllOf: aCard [ 
-	cardHandlers do:[:cardHandler|cardHandler addCardThatAffectsPlayer: aCard].
+	players do:[:player | self addEffectOf: aCard to:player].
+	
 ]
 
 { #category : #action }
-Board >> applyEffectOfTheLastPlayedSquareTo: aPlayer [
+Board >> applyEffectOfTheLastPlayedSquareTo: aPlayer from:aCard [
 	lastSquarePlayed makeEffectOn: aPlayer thatHasItsPositionIn: self.
+	lastCardPlayed:= aCard.
 ]
 
 { #category : #boolean }
@@ -126,6 +128,7 @@ Board >> initializePlayedBy: aGroupOfPlayers withNumberOfLaps:  numberOfLaps wit
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
 	deck:=aDeck.
+	lastCardPlayed := EmptyCard new.
 	lastSquarePlayed:= EffectlessSquare new.
 ]
 

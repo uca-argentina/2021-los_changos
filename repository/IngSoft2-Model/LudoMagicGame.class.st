@@ -62,8 +62,9 @@ LudoMagicGame >> addEffectToAllOf: aCard [
 ]
 
 { #category : #action }
-LudoMagicGame >> applyEffectOfTheLastPlayedSquaresTo: aPlayer [
-	board applyEffectOfTheLastPlayedSquareTo: aPlayer.
+LudoMagicGame >> applyEffectOfTheLastPlayedSquaresTo: aPlayer from:aCard [
+	board applyEffectOfTheLastPlayedSquareTo: aPlayer from:aCard.
+	
 ]
 
 { #category : #action }
