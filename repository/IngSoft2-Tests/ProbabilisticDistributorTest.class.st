@@ -5,6 +5,34 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGroupGeneratedByTheProbabilisticDistributor withMaxDifferenceBetweenThemOf: aTolerance [
+	
+ | maxDifference realProportionsbyEvents events realProportionOfEvent realProportionOfAnotherEvent |
+	maxDifference := 0.
+	events := aProbabilisticDistributor events.
+	
+	realProportionsbyEvents := self getProportionsByEventFrom: aGroupGeneratedByTheProbabilisticDistributor with: events.
+	
+	
+	events do: [ 
+				:event | events do: [ 
+				:anotherEvent |        
+					realProportionOfEvent := realProportionsbyEvents at: event.
+					realProportionOfAnotherEvent := realProportionsbyEvents at: anotherEvent.
+					maxDifference := (maxDifference max: ((realProportionOfEvent-realProportionOfAnotherEvent) * 100) abs).
+				].    
+				
+				
+				].	
+
+		self assert: (maxDifference <= aTolerance)
+	
+	
+	
+
+]
+
+{ #category : #'as yet unclassified' }
 ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGroupGeneratedByTheProbabilisticDistributor withTolerance: aTolerance [
 			
 	| realProportionsByEvent tolerances  |
@@ -164,14 +192,14 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneEventPickThat
 ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneItemWithEqualProbability [
 	| aProbabilisticDistributor |
 	aProbabilisticDistributor := ProbabilisticDistributor withEqualProbability: { 1 }.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000) withTolerance: 0
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000) withMaxDifferenceBetweenThemOf: 0.
 ]
 
 { #category : #tests }
 ProbabilisticDistributorTest >> testAProbabiliticDistributorWithThreeItemsWithEqualProbability [
 	| aProbabilisticDistributor |
 	aProbabilisticDistributor := ProbabilisticDistributor withEqualProbability: { 1 . 5 . 9 }.
-	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 1000) withTolerance: 5
+	self assert: aProbabilisticDistributor generates: (aProbabilisticDistributor generate: 10000) withMaxDifferenceBetweenThemOf: 4.
 ]
 
 { #category : #tests }
