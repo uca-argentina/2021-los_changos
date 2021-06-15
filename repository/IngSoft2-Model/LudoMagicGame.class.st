@@ -77,7 +77,7 @@ LudoMagicGame >> addEffectOf: aCard to: aPlayer [
 
 { #category : #action }
 LudoMagicGame >> addInHand: aCard to: aPlayer [
-	(board cardHandlerOf: aPlayer) addToHand: aCard
+	board addInHand: aCard to: aPlayer.
 ]
 
 { #category : #action }

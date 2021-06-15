@@ -216,11 +216,6 @@ Board >> removeFromHand: aCard to: aPlayer [
 ]
 
 { #category : #action }
-Board >> removePermanent: card from: aPlayer [ 
-	(self cardHandlerOf: aPlayer) removeEffectOf: card.
-]
-
-{ #category : #action }
 Board >> removeToAllPlayersPermanent: card [
 	| handlersWithCardToBeRemoved |
 	handlersWithCardToBeRemoved:=cardHandlers select:[:cardHandler | cardHandler affectsPlayer: card ].
