@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 DeckTest >> testADeckCannotBeCreatedWithoutCards [
 	self
 		should: [Deck with: {} ] 

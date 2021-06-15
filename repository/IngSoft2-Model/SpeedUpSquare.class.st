@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model-Core'
 }
 
-{ #category : #actions }
+{ #category : #action }
 SpeedUpSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [ 
 	aBoard move: aPlayer withoutEffectTo: 4
 ]

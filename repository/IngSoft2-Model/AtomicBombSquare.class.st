@@ -6,5 +6,5 @@ Class {
 
 { #category : #action }
 AtomicBombSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [
-	aBoard restartAllPlayers.
+	aBoard restartPositionOfAllPlayers.
 ]

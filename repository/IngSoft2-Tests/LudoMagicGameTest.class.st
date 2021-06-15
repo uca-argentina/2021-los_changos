@@ -15,7 +15,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #support }
 LudoMagicGameTest >> do: numberOfTurnsToDo theGame: aLudoMagicGame [ 
 	1 to: (numberOfTurnsToDo) do: [ :number | aLudoMagicGame turn ]
 ]
@@ -38,37 +38,37 @@ LudoMagicGameTest >> setUp [
 
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testAGameCannotHaveAWinnerIfItIsNotFinished [
 
 	self do: 2 theGame: anOneLapGame.
 	self should: [anOneLapGame winner] 
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'There is no winner because game has not finished yet' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame noWinnerErrorMessage ].
 
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testAGameCannotHaveAWinnerWhenItIsNew [
 
 	self
 		should: [anOneLapGame winner] 
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'There is no winner because game has not finished yet' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame noWinnerErrorMessage  ].
 			
 		
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testAGameCannotHaveNoDices [
 	self
 		should: [ LudoMagicGame playedBy: players withNumberOfLaps:3  throwing: {}  withSize: 6 ]
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'There must be dices' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame noDicesErrorMessage ].
 		
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testAGameCannotMakeARoundWhenItIsFinished [
 	
 
@@ -77,24 +77,24 @@ LudoMagicGameTest >> testAGameCannotMakeARoundWhenItIsFinished [
 	self
 		should: [ anOneLapGame turn]
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame messageOfNoMoreRollsAllowed. ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame noMoreRollsAllowedErrorMessage. ].
 ]
 
-{ #category : #tests }
-LudoMagicGameTest >> testAGameHasABoardThatRespectSize [
-	| aGame |
-	aGame := LudoMagicGame playedBy: players withNumberOfLaps: 3 throwing: dices withSize: 100.
-	self assert: aGame size equals: 100.
-]
-
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testAGameHasAWinner [
 	self do: 5 theGame: anOneLapGame .
 	
 	self assert: anOneLapGame winner equals: jorge.
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
+LudoMagicGameTest >> testAGameHasTheRightSize [
+	| aGame |
+	aGame := LudoMagicGame playedBy: players withNumberOfLaps: 3 throwing: dices withSize: 100.
+	self assert: aGame size equals: 100.
+]
+
+{ #category : #'main tests' }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	self do: 2 theGame: anOneLapGame .
 	
@@ -102,7 +102,7 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayers [
 	self assert: (anOneLapGame numberOfSquareOf:julian) equals: 8.
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEnoughPoints [
 	
 	| someDices |
@@ -120,21 +120,14 @@ LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithEno
 	self assert: anOneLapGame finished
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testAGameRollsTheDiceForThePlayersTwiceAndIsFinishedWithMoreThanEnoughPoints [
 	self do: 5 theGame: anOneLapGame .
 	
 	self assert: anOneLapGame finished
 ]
 
-{ #category : #tests }
-LudoMagicGameTest >> testAGameThatGiveToPlayersToCards [
-	| aGame |
-	aGame := LudoMagicGame playedBy: players withNumberOfLaps: 3 throwing: dices withSize: 100.
-	self assert: aGame size equals: 100.
-]
-
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testAGameThatGiveToPlayersTwoCards [
 	| aGame |
 	aGame := LudoMagicGame playedBy: players withNumberOfLaps: 3 throwing: dices withSize: 100.
@@ -142,21 +135,21 @@ LudoMagicGameTest >> testAGameThatGiveToPlayersTwoCards [
 	self assert: (aGame quantityOfCardInHandOf: jorge) equals: 2.
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testANewGameIsNotFinished [
 	self deny: anOneLapGame finished
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testAThreeLapGameCannotMakeAnotherRoundWhenItIsFinished [
 	self do: 4 theGame: aThreeLapGame .
 	self
 		should: [aThreeLapGame turn] 
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame messageOfNoMoreRollsAllowed ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame noMoreRollsAllowedErrorMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJorgeAndJulianGotDifferentsCards [
 	| aGame squares aCard anotherCard |
 	
@@ -168,11 +161,11 @@ LudoMagicGameTest >> testJorgeAndJulianGotDifferentsCards [
 	
 	self do: 2 theGame: aGame.
 	
-	self assert: (aGame has: jorge theCard: aCard).
-	self assert: (aGame has: julian theCard: anotherCard)
+	self assert: (aGame has: jorge the: aCard).
+	self assert: (aGame has: julian the: anotherCard)
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardThatHeDoesNotHave [
 	| aGame squares anOverloadCard |
 	anOverloadCard := OverloadCard new.
@@ -184,10 +177,10 @@ LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardThatHeDoesNotHave [
 	self
 		should: [ 	aGame cardPlayedBy: jorge to: julian with: SpeedCard new.]
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'The player cannot throw this card because he does not have it' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame cardNotInHandErrorMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsHisTurn [
 	| aGame squares anOverloadCard |
 	anOverloadCard := OverloadCard new.
@@ -199,10 +192,10 @@ LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsHisTurn [
 	self
 		should: [ aGame cardPlayedBy: jorge to: julian with: anOverloadCard.]
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'The player cannot throw this card because it is not his turn' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame notCurrentTurnErrorMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsNotHisTurn [
 	| aGame squares anOverloadCard |
 	anOverloadCard := OverloadCard new.
@@ -215,10 +208,10 @@ LudoMagicGameTest >> testJorgeCannotThrowAnOverloadCardWhenItIsNotHisTurn [
 	self
 		should: [ aGame cardPlayedBy: jorge to: julian with: anOverloadCard. ]
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'The player cannot throw this card because it is not his turn' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: LudoMagicGame notCurrentTurnErrorMessage  ].
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJorgeGetsASpeedCardAndThrowItToJulian [
 	| aGame squares aSpeedCard|
 	
@@ -236,7 +229,7 @@ LudoMagicGameTest >> testJorgeGetsASpeedCardAndThrowItToJulian [
 	self assert: (aGame numberOfSquareOf: julian) equals:5.
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJorgeGetsASpeedCardAndThrowItToJulian2 [
 	| aGame squares aAccelerationCard|
 	
@@ -255,7 +248,7 @@ LudoMagicGameTest >> testJorgeGetsASpeedCardAndThrowItToJulian2 [
 	self assert: (aGame numberOfSquareOf: julian) equals:5.
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJorgeGetsAnAccelerationAndAffectsAllPlayers [
 	| aGame squares anAccelerationCard|
 	
@@ -275,7 +268,7 @@ LudoMagicGameTest >> testJorgeGetsAnAccelerationAndAffectsAllPlayers [
 	self assert: (aGame numberOfSquareOf: jorge) equals:1
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJorgeGetsAnOverloadCardAndThrowItToJulian [
 	| aGame squares anOverloadCard|
 	
@@ -294,7 +287,7 @@ LudoMagicGameTest >> testJorgeGetsAnOverloadCardAndThrowItToJulian [
 	self assert: (aGame numberOfSquareOf: julian) equals:2.
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJorgeGetsToAMoonWalkAndGoesToTheFirstSquare [
 
 	| squares  aGame |
@@ -308,7 +301,7 @@ LudoMagicGameTest >> testJorgeGetsToAMoonWalkAndGoesToTheFirstSquare [
 	self assert: (aGame numberOfSquareOf: jorge) equals: 5.
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 
 	| squares  aGame |
@@ -325,7 +318,7 @@ LudoMagicGameTest >> testJorgeGetsToAtomicBombSquare [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJorgeGetsToLoadedSquareAndGetACard [
 	| aGame squares aCard |
 	
@@ -336,10 +329,10 @@ LudoMagicGameTest >> testJorgeGetsToLoadedSquareAndGetACard [
 	
 	self do: 2 theGame: aGame .
 	
-	self assert: (aGame has: jorge theCard: aCard).
+	self assert: (aGame has: jorge the: aCard).
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 
 	| squares  aGame |
@@ -356,7 +349,7 @@ LudoMagicGameTest >> testJorgeGetsToMoonWalkSquare [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 
 	self do: 2 theGame: aThreeLapGame  .
@@ -365,7 +358,7 @@ LudoMagicGameTest >> testJorgeIsAtTheLapOneAndJulianIsAtTheLapZero [
 	self assert: (aThreeLapGame lapOf: julian) equals: 1.
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJorgeThrowsAnOverloadCardAndDoesntHaveItAnymore [
 	| aGame squares anOverloadCard|
 
@@ -381,7 +374,7 @@ LudoMagicGameTest >> testJorgeThrowsAnOverloadCardAndDoesntHaveItAnymore [
 	self assert: ( aGame quantityOfCardInHandOf: jorge ) equals: 2.
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 
 	self do: 4 theGame: aThreeLapGame .
@@ -389,7 +382,7 @@ LudoMagicGameTest >> testJorgeWinsAThreeLapGame [
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJulianCancelsAnOverloadCardWhenIsNotHisTurn [
  | aGame squares aCancellationCard anOverloadCard |
 
@@ -409,7 +402,7 @@ LudoMagicGameTest >> testJulianCancelsAnOverloadCardWhenIsNotHisTurn [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testJulianCannotCancelACardThatIsNotInTheGame [
     | aGame squares aCancellationCard anOverloadCard |
 
@@ -425,12 +418,12 @@ LudoMagicGameTest >> testJulianCannotCancelACardThatIsNotInTheGame [
 	self
 		should: [ aGame cardPlayedBy:julian to: anOverloadCard with: aCancellationCard .]
 		raise: Error
-		withExceptionDo: [ :error | self assert: error messageText equals: 'This card cannot be played because there are not active cards that match' ].
+		withExceptionDo: [ :error | self assert: error messageText equals: CardHandler noCardMatchErrorMessage ].
 		
 	
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 LudoMagicGameTest >> testJulianCannotThrowAReDoCardBecauseThereWasNoCardPlayedBefore [
     | aGame squares aReDoCard   |
 
@@ -440,14 +433,14 @@ LudoMagicGameTest >> testJulianCannotThrowAReDoCardBecauseThereWasNoCardPlayedBe
 
 	self should: [aGame cardPlayedBy:jorge to:jorge with: aReDoCard ]
 	raise:Error 
-	withExceptionDo:[:error| self assert: error messageText equals:'This card cannot be played because there was no card played before'].
+	withExceptionDo:[:error| self assert: error messageText equals: LudoMagicGame noActiveCardsErrorMessage ].
 	
 
 
 
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJulianGetsACancellationCardAndGetsRidOfAccelerationCard [
     | aGame squares aCancellationCard anAccelerationCard |
 
@@ -468,7 +461,7 @@ LudoMagicGameTest >> testJulianGetsACancellationCardAndGetsRidOfAccelerationCard
     self assert: (aGame numberOfSquareOf: julian) equals:4.
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJulianGetsACancellationCardAndGetsRidOfOverloadCard [
     | aGame squares aCancellationCard anOverloadCard |
 
@@ -488,7 +481,7 @@ LudoMagicGameTest >> testJulianGetsACancellationCardAndGetsRidOfOverloadCard [
     self assert: (aGame numberOfSquareOf: julian) equals:4.
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnOverloadCardAndPlaysIt [
     | aGame squares aReDoCard aRepeatCard  |
 
@@ -506,7 +499,7 @@ LudoMagicGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnOverloadCardAndPlay
 
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJulianGetsARepeatCardAndPlaysIt [
     | aGame squares aRepeatCard |
 
@@ -521,7 +514,7 @@ LudoMagicGameTest >> testJulianGetsARepeatCardAndPlaysIt [
     self assert: (aGame numberOfSquareOf: jorge) equals:7.
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJulianGetsToAtomicBombSquareWhenAPlayerIsAtSecondLap [
 
 	| squares  aGame |
@@ -537,7 +530,7 @@ LudoMagicGameTest >> testJulianGetsToAtomicBombSquareWhenAPlayerIsAtSecondLap [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJulianGetsToEffectlessSquareAndDoesntGetTheCard [
 	| aGame squares aCard |
 	
@@ -551,7 +544,7 @@ LudoMagicGameTest >> testJulianGetsToEffectlessSquareAndDoesntGetTheCard [
 	self assert: (aGame quantityOfCardInHandOf: julian) equals: 2.
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 
 	| squares  aGame |
@@ -569,7 +562,7 @@ LudoMagicGameTest >> testJulianGetsToSpeedUpSquare [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'squares usage tests' }
 LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 
 	| squares aGame |
@@ -585,7 +578,7 @@ LudoMagicGameTest >> testJulianGetsToWormHoleSquare [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'card usage tests' }
 LudoMagicGameTest >> testJulianThrowsAReDoCardAndNoLongerHasItInHisHand [
     | aGame squares aReDoCard aSpeedCard   |
 
@@ -598,14 +591,14 @@ LudoMagicGameTest >> testJulianThrowsAReDoCardAndNoLongerHasItInHisHand [
 		aGame cardPlayedBy:jorge to:jorge with:   aSpeedCard .
 		aGame cardPlayedBy:jorge to:jorge with: aReDoCard.
 		
-  		self deny: (aGame has:jorge  theCard:aSpeedCard).
-		self deny:  (aGame has:jorge  theCard:aReDoCard ). 
+  		self deny: (aGame has:jorge  the:aSpeedCard).
+		self deny:  (aGame has:jorge  the:aReDoCard ). 
 
 
 
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testJulianWinsAThreeLapGame [
 
 	self do: 4 theGame: aThreeLapGame .
@@ -614,7 +607,7 @@ LudoMagicGameTest >> testJulianWinsAThreeLapGame [
 	self assert: (aThreeLapGame lapOf: julian) equals: 3.
 ]
 
-{ #category : #tests }
+{ #category : #'main tests' }
 LudoMagicGameTest >> testWhenAPlayerWinsTheOtherPlayersDoesNotRollTheDice [
 	self do: 5 theGame: anOneLapGame.
 	

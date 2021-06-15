@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #asserting }
 ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGroupGeneratedByTheProbabilisticDistributor withMaxDifferenceBetweenThemOf: aTolerance [
 	
  | maxDifference realProportionsbyEvents events realProportionOfEvent realProportionOfAnotherEvent |
@@ -32,7 +32,7 @@ ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGr
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #asserting }
 ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGroupGeneratedByTheProbabilisticDistributor withTolerance: aTolerance [
 			
 	| realProportionsByEvent tolerances  |
@@ -48,7 +48,7 @@ ProbabilisticDistributorTest >> assert: aProbabilisticDistributor generates: aGr
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #support }
 ProbabilisticDistributorTest >> getProportionsByEventFrom: groupGenerated with: events [
 	| proportionsByEvent realProportion |
 	proportionsByEvent := Dictionary new.
@@ -60,7 +60,7 @@ ProbabilisticDistributorTest >> getProportionsByEventFrom: groupGenerated with: 
 	^proportionsByEvent .
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 ProbabilisticDistributorTest >> testAProbabilisticDistributorCannotBeCreatedWithEmptyEvents [
 	self should: [ ProbabilisticDistributor with: {  } ]
 		raise: Error
@@ -78,7 +78,7 @@ ProbabilisticDistributorTest >> testAProbabilisticDistributorGenerateAGroupOfObj
 	
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbabilityGreaterThanOne [
 	self
 		should: [ ProbabilisticEvent with: 1.1 for: Object ]
@@ -86,7 +86,7 @@ ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbab
 		withExceptionDo: [ :error | self assert: error messageText equals: ProbabilisticEvent notValidProbabilityMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbabilityLowerThanZero [
 	self
 		should: [ ProbabilisticEvent with: -2 for: Object ]
@@ -94,7 +94,7 @@ ProbabilisticDistributorTest >> testAProbabilisticEventCannotBeCreatedWithProbab
 		withExceptionDo: [ :error | self assert: error messageText equals: ProbabilisticEvent notValidProbabilityMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 ProbabilisticDistributorTest >> testAProbabiliticDistributorCannotHaveEventsWithAllEventsInOne [
 	| events |
 	events := { ProbabilisticEvent with: 1 for: 6 . ProbabilisticEvent with: 1 for: 10 }.
@@ -104,7 +104,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorCannotHaveEventsWith
 		withExceptionDo: [ :error | self assert: error messageText equals: ProbabilisticDistributor notValidGroupOfEventsMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 ProbabilisticDistributorTest >> testAProbabiliticDistributorCannotHaveEventsWithAllEventsInZero [
 	| events |
 	events := { ProbabilisticEvent with: 0 for: 6 . ProbabilisticEvent with: 0 for: 10 }.
@@ -114,7 +114,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorCannotHaveEventsWith
 		withExceptionDo: [ :error | self assert: error messageText equals: ProbabilisticDistributor notValidGroupOfEventsMessage ].
 ]
 
-{ #category : #tests }
+{ #category : #'exception tests' }
 ProbabilisticDistributorTest >> testAProbabiliticDistributorCannotHaveSumOfEventsProbabilitiesNotEqualToOne [
 	| events |
 	events := { ProbabilisticEvent with: 0.1 for: 6 . ProbabilisticEvent with: 0.4 for: 10 }.
@@ -167,7 +167,7 @@ ProbabilisticDistributorTest >> testAProbabiliticDistributorWithOneEventGenerate
 	aProbabilisticDistributor := ProbabilisticDistributor with: { ProbabilisticEvent with: 1 for: 'someItem' }.
 	
 	
-	self assert: ((aProbabilisticDistributor generate: 10) allSatisfy: [ :item | 'someItem' = item ])
+	self assert: ((aProbabilisticDistributor generate: 1000) allSatisfy: [ :item | 'someItem' = item ])
 ]
 
 { #category : #tests }

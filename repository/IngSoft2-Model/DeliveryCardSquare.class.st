@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model-Core'
 }
 
-{ #category : #actions }
+{ #category : #action }
 DeliveryCardSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: aBoard [ 
 	aBoard giveCardFromDeckTo: aPlayer.
 ]

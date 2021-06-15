@@ -8,16 +8,20 @@ Class {
 }
 
 { #category : #validation }
-Dice class >> validateADiceWithFaces: aNumberOfFaces [
-	
+Dice class >> notValidNumberOfFacesErrorMessage [
+	^ 'The number of faces must be greater than 1'
+]
+
+{ #category : #validation }
+Dice class >> validateNumberOfFaces: aNumberOfFaces [
 	aNumberOfFaces <= 2
-		ifTrue: [self error: 'The number of faces must be greater than 1']
+		ifTrue: [ self error: self notValidNumberOfFacesErrorMessage ]
 ]
 
 { #category : #'instance creation' }
 Dice class >> withFaces: numberOfFaces [. 
 
-	self validateADiceWithFaces: numberOfFaces.
+	self validateNumberOfFaces: numberOfFaces.
 	
 	^self new initializeWithFaces: numberOfFaces .
 ]
@@ -27,7 +31,7 @@ Dice >> initializeWithFaces: aNumberOfFaces [
 	numberOfFaces:= aNumberOfFaces .
 ]
 
-{ #category : #accessing }
+{ #category : #action }
 Dice >> roll [
 	^ Random new nextInt: (numberOfFaces).
 ]

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model-Core'
 }
 
-{ #category : #actions }
+{ #category : #action }
 WormHoleSquare >> makeEffectOn: aPlayer thatHasItsPositionIn: board [
 	board move: aPlayer backwards: 4.
 ]

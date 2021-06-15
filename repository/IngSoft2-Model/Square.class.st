@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model-Core'
 }
 
-{ #category : #actions }
+{ #category : #action }
 Square >> makeEffectOn: aPlayer thatHasItsPositionIn: board [
 	self subclassResponsibility.
 ]

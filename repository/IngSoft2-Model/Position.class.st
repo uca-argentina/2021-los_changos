@@ -18,6 +18,16 @@ Position class >> lap: lap numberOfSquare: numberOfSquare for: aPlayer [
 	^self new initializeWithLap: lap numberOfSquare:  numberOfSquare  for: aPlayer 
 ]
 
+{ #category : #'error messages' }
+Position class >> notValidLapErrorMessage [
+	^ 'Lap should be zero or greater'
+]
+
+{ #category : #'error messages' }
+Position class >> notValidNumberOfSquare [
+	^ 'Number of square should be greater than zero'
+]
+
 { #category : #comparing }
 Position >> >= aPosition [ 
 
@@ -25,19 +35,19 @@ Position >> >= aPosition [
 	^ self lap >= aPosition lap.
 ]
 
-{ #category : #'initialization-release' }
+{ #category : #initialization }
 Position >> initializeWithLap: aLap numberOfSquare: aNumberOfSquare for: aPlayer [ 
 	lap := aLap.
 	numberOfSquare := aNumberOfSquare.
 	player := aPlayer.
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Position >> lap [
 	^ lap
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 Position >> numberOfSquare [
 	^ numberOfSquare
 ]
