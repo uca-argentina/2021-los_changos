@@ -30,7 +30,7 @@ Board class >> notValidNumberOfSquaresErrorMessage [
 ]
 
 { #category : #'instance creation' }
-Board class >> playedBy: players withNumberOf: laps with: squares andCardsFrom: deck [
+Board class >> playedBy: players with: squares andCardsFrom: deck finishingAfter: laps [
 	self validate: players withNumberOf: laps  andWith: squares. 
 	^self new initializePlayedBy: players withNumberOf: laps with: squares andCardsFrom: deck.
 ]
@@ -91,6 +91,14 @@ Board >> cardHandlerOf: aPlayer [
 	^ playerCardHandler
 ]
 
+{ #category : #initialization }
+Board >> distributeCardsFrom: aDeck [
+	cardHandlers
+		do: [ :cardHandler | 
+			cardHandler addToHand: aDeck pick.
+			cardHandler addToHand: aDeck pick ]
+]
+
 { #category : #accessing }
 Board >> finished: aPlayer [
 	| playerPosition squaresAdvanced |
@@ -114,19 +122,17 @@ Board >> has: aPlayer the: aCard [
 
 { #category : #initialization }
 Board >> initializePlayedBy: aGroupOfPlayers withNumberOf: numberOfLaps with: aGroupOfSquares andCardsFrom: aDeck [
-	positions := aGroupOfPlayers collect: [ :player |   Position lap: 0 numberOfSquare: 1 for: player  ].
-	cardHandlers := aGroupOfPlayers collect: [ :player |   CardHandler with: player ].
-	
-	cardHandlers do: [ :cardHandler | 
-		cardHandler addToHand: (aDeck pick). 
-		cardHandler addToHand: (aDeck pick).  ].
-	
+	positions := aGroupOfPlayers
+		collect: [ :player | Position of: player at: 1 after: 0 ].
+	cardHandlers := aGroupOfPlayers
+		collect: [ :player | CardHandler with: player ].
+	self distributeCardsFrom: aDeck.
 	squares := aGroupOfSquares.
 	laps := numberOfLaps.
 	players := aGroupOfPlayers.
-	deck:=aDeck.
-	lastCardPlayed := EmptyCard new.
-	lastSquarePlayed:= EffectlessSquare new.
+	deck := aDeck.
+	lastCardPlayed := nil.
+	lastSquarePlayed := EffectlessSquare new
 ]
 
 { #category : #accessing }
@@ -182,17 +188,17 @@ Board >> moveAllPlayersBackards: numberOfSquaresToMoveBackwards except: aPlayer 
 ]
 
 { #category : #accessing }
-Board >> newPosition: numberOfSquaresToAdvance from: aPosition [ 
-
+Board >> newPosition: numberOfSquaresToAdvance from: aPosition [
 	| newLap newNumberOfSquare quantityOfSquaresAdvanced |
-	
-	quantityOfSquaresAdvanced := ( (self numberOfSquaresAdvancedOf: aPosition) + numberOfSquaresToAdvance) min: self limit max: 1.
-	
-	newLap := (quantityOfSquaresAdvanced - 1) // (self size).
+	quantityOfSquaresAdvanced := (self
+		numberOfSquaresAdvancedOf: aPosition) + numberOfSquaresToAdvance
+		min: self limit
+		max: 1.
+	newLap := (quantityOfSquaresAdvanced - 1) // self size.
 	newNumberOfSquare := quantityOfSquaresAdvanced % self size.
-	newNumberOfSquare = 0 ifTrue: [ newNumberOfSquare := self size ].
-	
-	^ Position lap: newLap numberOfSquare: newNumberOfSquare for: (aPosition player)
+	newNumberOfSquare = 0
+		ifTrue: [ newNumberOfSquare := self size ].
+	^ Position of: aPosition player at: newNumberOfSquare after: newLap
 ]
 
 { #category : #accessing }
@@ -218,17 +224,19 @@ Board >> removeFromHand: aCard to: aPlayer [
 { #category : #action }
 Board >> removeToAllPlayersPermanent: card [
 	| handlersWithCardToBeRemoved |
-	handlersWithCardToBeRemoved:=cardHandlers select:[:cardHandler | cardHandler affectsPlayer: card ].
-	
-	handlersWithCardToBeRemoved isEmpty 
-	ifTrue: [self error: CardHandler noCardMatchErrorMessage  ].
-	
-	handlersWithCardToBeRemoved do: [:cardHandler | cardHandler removeEffectOf: card ].
+	handlersWithCardToBeRemoved := cardHandlers
+		select: [ :cardHandler | cardHandler affectsPlayer: card ].
+	self
+		validateIsNotEmpty: handlersWithCardToBeRemoved.
+	handlersWithCardToBeRemoved
+		do: [ :cardHandler | cardHandler removeEffectOf: card ]
 ]
 
 { #category : #action }
 Board >> restartPositionOfAllPlayers [
-	positions:= players collect: [ :player | Position lap: (self lapOf:player) numberOfSquare: 1 for: player  ].
+	positions := players
+		collect:
+			[ :player | Position of: player at: 1 after: (self lapOf: player) ]
 ]
 
 { #category : #accessing }
@@ -239,4 +247,10 @@ Board >> size [
 { #category : #accessing }
 Board >> sortedPositions [
 	^ positions asSortedCollection: [ :playerA :playerB | playerA >= playerB ]
+]
+
+{ #category : #action }
+Board >> validateIsNotEmpty: handlersWithCardToBeRemoved [
+	handlersWithCardToBeRemoved isEmpty
+		ifTrue: [ self error: CardHandler noCardMatchErrorMessage ]
 ]

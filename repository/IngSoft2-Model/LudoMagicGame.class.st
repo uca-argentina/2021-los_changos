@@ -6,8 +6,7 @@ Class {
 		'finished',
 		'board',
 		'turnPlayer',
-		'nextPlayerIndex',
-		'lastSquarePlayed'
+		'nextPlayerIndex'
 	],
 	#category : #'IngSoft2-Model-Core'
 }
@@ -87,16 +86,16 @@ LudoMagicGame >> addToAllEffectOf: aCard [
 ]
 
 { #category : #action }
-LudoMagicGame >> applyEffectOfTheLastPlayedSquaresTo: aPlayer from:aCard [
-	board applyEffectOfTheLastPlayedSquareTo: aPlayer from:aCard.
+LudoMagicGame >> affect: aTarget using: aCard by: aPlayer [
+	aCard applyTo:aTarget in:self from:aPlayer.
+	self removeFromHand: aCard of: aPlayer.
+	
 	
 ]
 
 { #category : #action }
-LudoMagicGame >> cardPlayedBy: aPlayer to: aTarget with: aCard [
-	aCard applyTo:aTarget in:self from:aPlayer.
-	self removeFromHand: aCard of: aPlayer.
-	
+LudoMagicGame >> applyEffectOfTheLastPlayedSquareTo: aPlayer from:aCard [
+	board applyEffectOfTheLastPlayedSquareTo: aPlayer from:aCard.
 	
 ]
 
@@ -113,11 +112,15 @@ LudoMagicGame >> has: aPlayer the: aCard [
 
 { #category : #initialization }
 LudoMagicGame >> initializePlayedBy: players withNumberOf: laps throwing: aGroupOfDices andWithBoardOf: squares with: aDeck [
-	nextPlayerIndex:=2.
-	finished:=false.
-	dices:= aGroupOfDices.
-	turnPlayer:= players at:1.
-	board:= Board playedBy: players withNumberOf:laps  with:squares andCardsFrom: aDeck.
+	nextPlayerIndex := 2.
+	finished := false.
+	dices := aGroupOfDices.
+	turnPlayer := players at: 1.
+	board := Board
+		playedBy: players
+		with: squares
+		andCardsFrom: aDeck
+		finishingAfter: laps
 ]
 
 { #category : #boolean }

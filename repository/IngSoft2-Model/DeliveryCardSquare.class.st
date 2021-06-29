@@ -1,9 +1,6 @@
 Class {
 	#name : #DeliveryCardSquare,
 	#superclass : #Square,
-	#instVars : [
-		'card'
-	],
 	#category : #'IngSoft2-Model-Core'
 }
 
