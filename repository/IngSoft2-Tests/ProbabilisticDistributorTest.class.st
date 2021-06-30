@@ -71,7 +71,7 @@ ProbabilisticDistributorTest >> testAProbabilisticDistributorCannotBeCreatedWith
 ProbabilisticDistributorTest >> testAProbabilisticDistributorGenerateAGroupOfObjectsThatAreEquallyDistributed [
 	| result events distributor |
 	result:= {3. 3. 3. 3. 3}.
-	events:={ProbabilisticEvent withProbabilityOf: 1 for: 3}.
+	events:={ProbabilisticEvent with: 1 for: 3}.
 	distributor:= ProbabilisticDistributor with: events.
 	self assert: (distributor generate: 5)  equals: result.
 

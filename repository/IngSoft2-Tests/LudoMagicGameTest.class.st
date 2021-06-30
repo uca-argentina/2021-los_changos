@@ -716,11 +716,12 @@ LudoMagicGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnAccelerationCardAnd
 ]
 
 { #category : #'card usage tests' }
-LudoMagicGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnCancellationCardAndPlaysIt_TO_FIX [
-	| aGame squares aReDoCard aCancellationCard anOverloadCard |
+LudoMagicGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnCancellationCardAndPlaysIt [
+	| aGame squares aReDoCard aCancellationCard anOverloadCard aSpeedCard |
 	aReDoCard := ReDoCard new.
 	aCancellationCard := CancellationCard new.
 	anOverloadCard := OverloadCard new.
+	aSpeedCard:= SpeedCard new.
 	squares := {
 		EffectlessSquare new.
 		EffectlessSquare new.
@@ -738,18 +739,18 @@ LudoMagicGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnCancellationCardAnd
 			(LoadedDeck
 				withCards:
 					{anOverloadCard . aCancellationCard.
-					aReDoCard}).
-	self do: 4 theGame: aGame.
-	aGame affect: julian using: anOverloadCard by: jorge.
-	self do: 1 theGame: aGame.
-	aGame affect: anOverloadCard using: aCancellationCard by: julian.
-	aGame affect: jorge using: anOverloadCard by: julian.
-	self do: 2 theGame: aGame.
-	aGame affect: jorge using: aReDoCard by: julian.
-	self do: 1 theGame: aGame.
-	
+					aReDoCard. aSpeedCard}).
+	aGame affect:julian  using:anOverloadCard   by:jorge.
+	aGame turn.
+	aGame affect:jorge  using:aSpeedCard  by:julian.
+	aGame turn.
+	aGame affect:aSpeedCard   using:aCancellationCard   by:jorge.
+	aGame turn.
+	aGame affect:anOverloadCard  using:aReDoCard  by: julian.  
+	aGame turn. 
+	 
 	self assert: (aGame numberOfSquareOf: julian) equals: 2.
-	self assert: (aGame numberOfSquareOf: jorge) equals: 2
+	self assert: (aGame numberOfSquareOf: jorge) equals: 5.
 ]
 
 { #category : #'card usage tests' }

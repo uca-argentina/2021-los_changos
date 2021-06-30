@@ -14,18 +14,21 @@ ProbabilisticEvent class >> notValidProbabilityMessage [
 ]
 
 { #category : #'instance creation' }
-ProbabilisticEvent class >> with: aProbability for: anObject [
-	^ self new initializeWith: aProbability for: anObject.
+ProbabilisticEvent class >> validateIsInRange: aProbability [
+	(aProbability between: 0 and: 1)
+		ifFalse: [ self error: self notValidProbabilityMessage ]
 ]
 
 { #category : #'instance creation' }
-ProbabilisticEvent class >> withProbabilityOf: aProbability for: anObject [ 
-	^(self new) initializeWith: aProbability for: anObject
+ProbabilisticEvent class >> with: aProbability for: anObject [
+
+	self validateIsInRange: aProbability.
+	^ self new initializeWith: aProbability for: anObject.
 ]
 
 { #category : #initialization }
 ProbabilisticEvent >> initializeWith: aProbability for: anObject [
-	self validateIsInRange: aProbability.
+	
 	probability := aProbability.
 	object := anObject
 ]
@@ -38,10 +41,4 @@ ProbabilisticEvent >> object [
 { #category : #accesing }
 ProbabilisticEvent >> probability [
 	^ probability
-]
-
-{ #category : #initialization }
-ProbabilisticEvent >> validateIsInRange: aProbability [
-	(aProbability between: 0 and: 1)
-		ifFalse: [ self error: 'Probability should be between 0 and 1' ]
 ]

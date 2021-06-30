@@ -132,7 +132,7 @@ Board >> initializePlayedBy: aGroupOfPlayers withNumberOf: numberOfLaps with: aG
 	players := aGroupOfPlayers.
 	deck := aDeck.
 	lastCardPlayed := nil.
-	lastSquarePlayed := EffectlessSquare new
+	lastSquarePlayed := EffectlessSquare new.
 ]
 
 { #category : #accessing }
@@ -227,9 +227,10 @@ Board >> removeToAllPlayersPermanent: card [
 	handlersWithCardToBeRemoved := cardHandlers
 		select: [ :cardHandler | cardHandler affectsPlayer: card ].
 	self
-		validateIsNotEmpty: handlersWithCardToBeRemoved.
+	validateIsNotEmpty: handlersWithCardToBeRemoved.
 	handlersWithCardToBeRemoved
-		do: [ :cardHandler | cardHandler removeEffectOf: card ]
+		do: [ :cardHandler | cardHandler removeEffectOf: card ].
+		lastCardPlayed := CancellationCard  new.
 ]
 
 { #category : #action }
