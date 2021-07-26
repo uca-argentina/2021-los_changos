@@ -1,6 +1,6 @@
 # Ingenieria del Software II - Template
 
-[![Build Status](https://travis-ci.org/uca-is2/2021-los_changos.svg?branch=master)](https://travis-ci.org/uca-is2/2021-los_changos)
+![GHA Status](https://github.com/uca-is2/2021-los_changos/actions/workflows/GHA.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/uca-is2/2021-los_changos/badge.svg?branch=master)](https://coveralls.io/github/uca-is2/2021-los_changos?branch=master)
 
 ## Metacello
